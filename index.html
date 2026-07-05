@@ -10,8 +10,10 @@
             background-color: #f4f7f6;
             color: #333;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             padding: 40px 20px;
+            gap: 30px;
         }
         .calculator-container {
             background: #ffffff;
@@ -21,13 +23,15 @@
             width: 100%;
             max-width: 1450px; 
         }
-        h2 {
+        h2, h3 {
             margin-top: 0;
-            margin-bottom: 25px;
             font-weight: 500;
             color: #2c3e50;
             text-align: center;
         }
+        h2 { margin-bottom: 25px; }
+        h3 { margin-bottom: 20px; font-size: 20px; }
+        
         /* Grid for Policy Details */
         .policy-details {
             display: grid;
@@ -49,12 +53,11 @@
             margin-bottom: 6px;
             color: #555;
             line-height: 1.3;
-            /* Allow text to wrap for longer labels */
             white-space: normal; 
             min-height: 34px; 
         }
         
-        /* New Tools Bar for BMI and Clear Buttons */
+        /* Tools Bar for BMI and Clear Buttons */
         .tools-bar {
             display: flex;
             justify-content: space-between;
@@ -77,13 +80,8 @@
             font-weight: 600; 
             color: #555;
         }
-        .tools-section input {
-            width: 100px;
-        }
-        .tools-section select {
-            width: auto;
-            min-width: 120px;
-        }
+        .tools-section input { width: 100px; }
+        .tools-section select { width: auto; min-width: 120px; }
         
         /* Buttons */
         .btn {
@@ -117,9 +115,11 @@
         
         table {
             width: 100%;
-            min-width: 1700px;
             border-collapse: collapse;
         }
+        .main-table { min-width: 1700px; }
+        .working-table { min-width: 1000px; }
+        
         th, td {
             padding: 10px;
             border-bottom: 1px solid #eee;
@@ -140,9 +140,19 @@
             font-size: 13px;
             white-space: nowrap;
         }
-        .divider-left {
-            border-left: 2px solid #cbd5e1;
-        }
+        .divider-left { border-left: 2px solid #cbd5e1; }
+        
+        /* Working Table Specific Styles */
+        .working-table td { padding: 6px 10px; font-size: 13px; }
+        .working-table .col-label { width: 300px; font-weight: 500; }
+        .working-table .col-action { width: 100px; color: #666; }
+        .working-table .col-data { min-width: 100px; }
+        
+        .row-total { background-color: #cfd8dc !important; }
+        .row-total td { font-weight: bold; border-top: 1px solid #90a4ae; border-bottom: 1px solid #90a4ae; }
+        .row-final { background-color: #fde047 !important; }
+        .row-final td { font-weight: bold; border-top: 2px solid #ca8a04; }
+        .row-header td { background-color: #f1f5f9; font-weight: bold; padding-top: 20px; text-transform: uppercase;}
         
         input[type="text"], input[type="number"], select {
             width: 100%;
@@ -153,6 +163,10 @@
             font-family: inherit;
             font-size: 13px;
         }
+        .working-table input { background-color: transparent; border-color: #ddd; }
+        .working-table input:focus { background-color: #fff; }
+        .row-total input, .row-final input { font-weight: bold; }
+        
         input:focus, select:focus {
             outline: none;
             border-color: #0066cc;
@@ -168,8 +182,8 @@
             <div class="form-group">
                 <label>Zone</label>
                 <select id="zone" title="Zone 1: Delhi, National Capital Region (NCR), Mumbai, Mumbai Suburban, Thane and Navi Mumbai, Surat, Ahmedabad and Vadodara. Zone 2: Rest of India">
+                    <option value="Zone 2" selected>Zone 2 (Rest of India)</option>
                     <option value="Zone 1">Zone 1 (Delhi, National Capital Region (NCR), Mumbai, Mumbai Suburban, Thane and Navi Mumbai, Surat, Ahmedabad and Vadodara)</option>
-                    <option value="Zone 2">Zone 2 (Rest of India)</option>
                 </select>
             </div>
             
@@ -220,7 +234,7 @@
             </div>
             
             <div class="form-group">
-                <label>Loyalty Discount</label>
+                <label>Loyalty Discount<br><small>(Min prem 5,000 with NIA)</small></label>
                 <select id="loyaltyDiscount">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
@@ -253,7 +267,7 @@
         </div>
 
         <div class="table-responsive">
-            <table>
+            <table class="main-table">
                 <thead>
                     <tr>
                         <th colspan="5" class="group-head">Basic Details</th>
@@ -285,57 +299,67 @@
         </div>
     </div>
 
+    <div class="calculator-container">
+        <h3>Premium Working</h3>
+        <div class="table-responsive">
+            <table class="working-table">
+                <thead>
+                    <tr>
+                        <th class="col-label"></th>
+                        <th class="col-action"></th>
+                        <th class="col-data" style="text-align: center;">1</th>
+                        <th class="col-data" style="text-align: center;">2</th>
+                        <th class="col-data" style="text-align: center;">3</th>
+                        <th class="col-data" style="text-align: center;">4</th>
+                        <th class="col-data" style="text-align: center;">5</th>
+                        <th class="col-data" style="text-align: center;">6</th>
+                    </tr>
+                </thead>
+                <tbody id="working-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         const rowCount = 6;
-        const tbody = document.getElementById('calculator-body');
         
-        // Dropdown Configuration Arrays
+        // --- 1. POPULATE MAIN ENTRY TABLE ---
+        const tbody = document.getElementById('calculator-body');
         const relations = ['Self', 'Spouse', 'Children'];
         const sumInsuredOptions = ['5 Lakh', '10 Lakh', '15 Lakh', '25 Lakh', '50 Lakh', '75 Lakh', '1 Cr'];
         
-        // Custom Health Options 
         const bmiOptions = `
             <option value="">Select...</option>
             <option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option>
             <option value="> 32">&gt; 32</option>
         `;
-        
         const diabeticOptions = `
             <option value="">Select...</option>
             <option value="<6.4 HbA1c">&lt;6.4 HbA1c</option>
             <option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
         `;
-
         const hypertensiveOptions = `
             <option value="">Select...</option>
             <option value="<=120/80">&lt;=120/80</option>
             <option value=">139/89">&gt;139/89</option>
         `;
-
-        // Updated Hospitalisation - Removed 'in past 3 yrs'
         const hospitalisationOptions = `
             <option value="">Select...</option>
             <option value="Not in past 3 yrs">Not in past 3 yrs</option>
         `;
-
         const yesNoOptions = `
             <option value="No">No</option>
             <option value="Yes">Yes</option>
         `;
 
-        // Generate Table Rows
         for (let i = 1; i <= rowCount; i++) {
             const tr = document.createElement('tr');
             
             let relationHTML = '<option value="">Select...</option>';
-            relations.forEach(rel => {
-                relationHTML += `<option value="${rel}">${rel}</option>`;
-            });
-
+            relations.forEach(rel => relationHTML += `<option value="${rel}">${rel}</option>`);
             let sumInsuredHTML = '<option value="">Select...</option>';
-            sumInsuredOptions.forEach(amount => {
-                sumInsuredHTML += `<option value="${amount}">${amount}</option>`;
-            });
+            sumInsuredOptions.forEach(amount => sumInsuredHTML += `<option value="${amount}">${amount}</option>`);
 
             tr.innerHTML = `
                 <td style="text-align: center; color: #777;">${i}</td>
@@ -343,12 +367,10 @@
                 <td><input type="number" id="age_${i}" min="0" placeholder="Age"></td>
                 <td><select id="relation_${i}">${relationHTML}</select></td>
                 <td><select id="sumInsured_${i}">${sumInsuredHTML}</select></td>
-
                 <td class="divider-left"><select id="bmi_${i}">${bmiOptions}</select></td>
                 <td><select id="diabetic_${i}">${diabeticOptions}</select></td>
                 <td><select id="hypertensive_${i}">${hypertensiveOptions}</select></td>
                 <td><select id="hospitalisation_${i}">${hospitalisationOptions}</select></td>
-
                 <td class="divider-left"><select id="nonMedical_${i}">${yesNoOptions}</select></td>
                 <td><select id="modernTreatments_${i}">${yesNoOptions}</select></td>
                 <td><select id="durableDevices_${i}">${yesNoOptions}</select></td>
@@ -358,10 +380,62 @@
             tbody.appendChild(tr);
         }
 
-        // --- NEW FUNCTIONALITY ---
+        // --- 2. POPULATE PREMIUM WORKING TABLE ---
+        const workingBody = document.getElementById('working-body');
+        const workingRowsConfig = [
+            { label: "Name", action: "" },
+            { label: "Basic Premium", action: "" },
+            { label: "BMI", action: "minus /add" },
+            { label: "Diabetic", action: "minus /add" },
+            { label: "Hypertensive", action: "minus /add" },
+            { label: "No Hospitalisation", action: "minus" },
+            { label: "TOTAL", action: "", styleClass: "row-total" },
+            { label: "Maternity Enhancement (Platinum Plan)", action: "add" },
+            { label: "Floater Discount", action: "minus" },
+            { label: "Loyalty Discount", action: "minus" },
+            { label: "TOTAL", action: "", styleClass: "row-total" },
+            { label: "RIDERS", action: "", styleClass: "row-header" },
+            { label: "Non medical consumables Rider", action: "add" },
+            { label: "Modern Treatment Rider", action: "add" },
+            { label: "Durable Medical Devices Rider", action: "add" },
+            { label: "Pre & Post Hospitalisation Rider", action: "add" },
+            { label: "Critical Illness Rider (18-45 yr only)", action: "add" },
+            { label: "TOTAL", action: "", styleClass: "row-total" },
+            { label: "Long Term Discount", action: "minus" },
+            { label: "FINAL PREMIUM PAYABLE", action: "", styleClass: "row-final" }
+        ];
 
+        workingRowsConfig.forEach((row, index) => {
+            const tr = document.createElement('tr');
+            if (row.styleClass) tr.classList.add(row.styleClass);
+            
+            // Header row for Riders needs to span across
+            if (row.label === "RIDERS") {
+                tr.innerHTML = `<td colspan="8">${row.label}</td>`;
+            } else {
+                let html = `
+                    <td class="col-label">${row.label}</td>
+                    <td class="col-action">${row.action}</td>
+                `;
+                // Generate the 6 input columns
+                for (let i = 1; i <= 6; i++) {
+                    // Creating dynamic IDs so values can easily be pushed here later
+                    // e.g. "wrk_basicPremium_1"
+                    let safeId = row.label.replace(/[^a-zA-Z0-9]/g, ''); 
+                    
+                    if(row.label === "Name") {
+                        html += `<td><input type="text" id="wrk_${safeId}_${i}" class="working-input" readonly style="border:none; background:transparent; font-weight:bold; text-align:center;"></td>`;
+                    } else {
+                        html += `<td><input type="number" step="0.01" id="wrk_${safeId}_${i}" class="working-input"></td>`;
+                    }
+                }
+                tr.innerHTML = html;
+            }
+            workingBody.appendChild(tr);
+        });
+
+        // --- 3. FUNCTIONALITY ---
         function calculateBMI() {
-            // Height is now expected in Metres natively based on the prompt
             const h = parseFloat(document.getElementById('calcHeight').value);
             const w = parseFloat(document.getElementById('calcWeight').value);
             const resultSpan = document.getElementById('bmiResult');
@@ -372,18 +446,15 @@
                 return;
             }
             
-            // Formula: Weight / (Height in Metres)^2
-            // Rounded to 2 decimal points
             const bmi = (w / (h * h)).toFixed(2);
             
             if (bmi >= 18.5 && bmi <= 32) {
                 resultSpan.innerText = `BMI: ${bmi} (Discount 2.5%)`;
-                resultSpan.style.color = "#27ae60"; // Green
+                resultSpan.style.color = "#27ae60"; 
             } else if (bmi > 32) {
                 resultSpan.innerText = `BMI: ${bmi} (Loading 2.5%)`;
-                resultSpan.style.color = "#e74c3c"; // Red
+                resultSpan.style.color = "#e74c3c"; 
             } else {
-                // Catches BMI < 18.5
                 resultSpan.innerText = `BMI: ${bmi}`;
                 resultSpan.style.color = "#555"; 
             }
@@ -396,8 +467,8 @@
                 return;
             }
             
+            // Clear Main Table Row
             const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'];
-            
             fields.forEach(field => {
                 const element = document.getElementById(`${field}_${rowNo}`);
                 if (element) {
@@ -409,15 +480,23 @@
                 }
             });
             
+            // Clear Working Table Column corresponding to the row
+            workingRowsConfig.forEach(row => {
+                if(row.label !== "RIDERS") {
+                    let safeId = row.label.replace(/[^a-zA-Z0-9]/g, '');
+                    let element = document.getElementById(`wrk_${safeId}_${rowNo}`);
+                    if(element) element.value = "";
+                }
+            });
+            
             document.getElementById('clearRowSelect').value = "";
         }
 
         function clearAll() {
             if(confirm("Are you sure you want to clear all data in the calculator?")) {
-                // Clear Table Rows
+                // Clear Main Table Rows
                 for (let i = 1; i <= rowCount; i++) {
                     const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'];
-                    
                     fields.forEach(field => {
                         const element = document.getElementById(`${field}_${i}`);
                         if (element) {
@@ -430,8 +509,12 @@
                     });
                 }
                 
+                // Clear Working Table
+                const workingInputs = document.querySelectorAll('.working-input');
+                workingInputs.forEach(input => input.value = "");
+                
                 // Clear Top Policy Settings to Defaults
-                document.getElementById('zone').selectedIndex = 0;
+                document.getElementById('zone').selectedIndex = 0; // Zone 2 default
                 document.getElementById('maternityCover').selectedIndex = 0;
                 document.getElementById('indFloater').selectedIndex = 0;
                 document.getElementById('planType').selectedIndex = 0;
