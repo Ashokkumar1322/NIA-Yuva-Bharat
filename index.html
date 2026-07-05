@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Premium Calculator</title>
+    <title>New India Yuva Bharat Premium Calc</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -19,20 +19,42 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px; /* Slightly wider to accommodate the new column */
         }
         h2 {
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-weight: 500;
+            color: #2c3e50;
+            text-align: center;
+        }
+        /* Grid for Policy Details */
+        .policy-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: #f9fbfc;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e8ed;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 25px;
         }
         th, td {
-            padding: 12px;
+            padding: 10px;
             border-bottom: 1px solid #eee;
             text-align: left;
         }
@@ -40,90 +62,124 @@
             font-weight: 600;
             color: #555;
             background-color: #fafafa;
+            font-size: 14px;
         }
         input[type="text"], input[type="number"], select {
             width: 100%;
-            padding: 10px;
+            padding: 9px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
             font-family: inherit;
+            font-size: 14px;
         }
         input:focus, select:focus {
             outline: none;
             border-color: #0066cc;
-        }
-        .btn {
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-        .btn:hover {
-            background-color: #0052a3;
         }
     </style>
 </head>
 <body>
 
     <div class="calculator-container">
-        <h2>Health Premium Calculator</h2>
+        <h2>New India Yuva Bharat Premium Calc</h2>
+        
+        <!-- Global Policy Settings -->
+        <div class="policy-details">
+            <div class="form-group">
+                <label>Zone</label>
+                <select id="zone">
+                    <option value="Zone 1">Zone 1</option>
+                    <option value="Zone 2">Zone 2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Plan Type</label>
+                <select id="planType">
+                    <option value="Individual">Individual</option>
+                    <option value="Floater">Floater</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Policy Period</label>
+                <select id="policyPeriod">
+                    <option value="1 yr">1 yr</option>
+                    <option value="2 yr">2 yr</option>
+                    <option value="3 yr">3 yr</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Premium Frequency</label>
+                <select id="frequency">
+                    <option value="Annual">Annual</option>
+                    <option value="Half Yearly">Half Yearly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Monthly">Monthly</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Loyalty Discount</label>
+                <select id="loyaltyDiscount">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Family Member Table -->
         <table>
             <thead>
                 <tr>
-                    <th style="width: 10%;">Sl No</th>
-                    <th style="width: 40%;">Name</th>
-                    <th style="width: 20%;">Age</th>
-                    <th style="width: 30%;">Relation</th>
+                    <th style="width: 5%;">Sl No</th>
+                    <th style="width: 35%;">Name</th>
+                    <th style="width: 15%;">Age</th>
+                    <th style="width: 20%;">Relation</th>
+                    <th style="width: 25%;">Sum Insured</th>
                 </tr>
             </thead>
             <tbody id="calculator-body">
-                </tbody>
+                <!-- Rows will be generated by JavaScript -->
+            </tbody>
         </table>
-        <button class="btn" onclick="calculatePremium()">Calculate Premium</button>
     </div>
 
     <script>
-        // Number of rows requested
         const rowCount = 6;
         const tbody = document.getElementById('calculator-body');
         const relations = ['Self', 'Spouse', 'Children'];
+        const sumInsuredOptions = ['5 Lakh', '10 Lakh', '15 Lakh', '25 Lakh', '50 Lakh', '75 Lakh', '1 Cr'];
 
-        // Generate the 6 rows dynamically
         for (let i = 1; i <= rowCount; i++) {
             const tr = document.createElement('tr');
             
-            // Create the dropdown options
-            let optionsHTML = '<option value="">Select...</option>';
+            // Build Relation Dropdown
+            let relationHTML = '<option value="">Select...</option>';
             relations.forEach(rel => {
-                optionsHTML += `<option value="${rel}">${rel}</option>`;
+                relationHTML += `<option value="${rel}">${rel}</option>`;
+            });
+
+            // Build Sum Insured Dropdown
+            let sumInsuredHTML = '<option value="">Select...</option>';
+            sumInsuredOptions.forEach(amount => {
+                sumInsuredHTML += `<option value="${amount}">${amount}</option>`;
             });
 
             tr.innerHTML = `
-                <td>${i}</td>
+                <td style="text-align: center; color: #777;">${i}</td>
                 <td><input type="text" id="name_${i}" placeholder="Enter name"></td>
                 <td><input type="number" id="age_${i}" min="0" placeholder="Age"></td>
                 <td>
                     <select id="relation_${i}">
-                        ${optionsHTML}
+                        ${relationHTML}
+                    </select>
+                </td>
+                <td>
+                    <select id="sumInsured_${i}">
+                        ${sumInsuredHTML}
                     </select>
                 </td>
             `;
             tbody.appendChild(tr);
-        }
-
-        // Placeholder for your future calculation logic
-        function calculatePremium() {
-            // Example of how to grab the data from the first row when you're ready
-            const firstName = document.getElementById('name_1').value;
-            const firstAge = document.getElementById('age_1').value;
-            
-            alert("Calculation logic will go here! You are ready to start coding the math.");
         }
     </script>
 
