@@ -207,7 +207,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Maternity Cover S.I</label>
+                <label style="margin-bottom: 2px;">Maternity Cover S.I</label>
+                <span style="font-size: 11px; color: #888; margin-top: -4px; margin-bottom: 4px;">(Platinum Plan Only)</span>
                 <select id="maternityCover">
                     <option value="None">None</option>
                     <option value="50,000">50,000</option>
@@ -816,14 +817,40 @@
             let frequency = document.getElementById('frequency').value;
             const policyPeriod = document.getElementById('policyPeriod').value;
             const globalLoyalty = document.getElementById('loyaltyDiscount').value;
+            const maternitySelect = document.getElementById('maternityCover');
             
+            // Handle Platinum Plan only condition for Maternity Cover
+            if (planType !== "Platinum Plan") {
+                maternitySelect.value = "None";
+                maternitySelect.disabled = true;
+            } else {
+                maternitySelect.disabled = false;
+            }
+
+            let totalMatAmt = 0;
+            if (maternitySelect.value === "50,000") totalMatAmt = 8260;
+            else if (maternitySelect.value === "75,000") totalMatAmt = 12390;
+            else if (maternitySelect.value === "1,00,000") totalMatAmt = 16522;
+            
+            // To ensure the heavy maternity cost isn't repeatedly added per member in a family floater
+            let matApplied = false;
+
             let totalPayable = 0;
             let activeMembersCount = 0;
 
-            // Count rows containing active member definitions
+            // Count rows containing active member definitions to apply exact floater discount rates
             for (let i = 1; i <= rowCount; i++) {
                 const age = document.getElementById(`age_${i}`).value;
-                if (age !== "") activeMembersCount++;
+                const sumInsured = document.getElementById(`sumInsured_${i}`).value;
+                if (age !== "" && sumInsured !== "") activeMembersCount++;
+            }
+
+            // Determine accurate floater discount rate
+            let floaterRate = 0;
+            if (indFloater === "Floater") {
+                if (activeMembersCount === 2) floaterRate = 0.05;
+                else if (activeMembersCount === 3) floaterRate = 0.10;
+                else if (activeMembersCount >= 4) floaterRate = 0.15;
             }
 
             for (let i = 1; i <= rowCount; i++) {
@@ -857,7 +884,6 @@
                 const cellTotB = document.getElementById(`total_b_${i}`);
                 const cellNM = document.getElementById(`nm_amt_${i}`);
                 const cellMT = document.getElementById(`mt_amt_${i}`);
-                const cellDMD = document.getElementById(`durableDevices_${i}`); 
                 const cellDmdReal = document.getElementById(`dmd_amt_${i}`);
                 const cellPPH = document.getElementById(`pph_amt_${i}`);
                 const cellCI = document.getElementById(`ci_amt_${i}`);
@@ -909,10 +935,14 @@
                 cellTotA.innerText = totalA;
 
                 // Enhancements and standard discounts evaluation rules
-                let matAmt = (planType === "Platinum Plan") ? 450 : 0;
+                let matAmt = 0;
+                if (!matApplied && totalMatAmt > 0) {
+                    matAmt = totalMatAmt;
+                    matApplied = true; // Prevents being applied to remaining members
+                }
                 cellMat.innerText = matAmt;
 
-                let floatDisc = (indFloater === "Floater" && activeMembersCount > 1) ? -Math.round(totalA * 0.10) : 0;
+                let floatDisc = -Math.round(totalA * floaterRate);
                 cellFloat.innerText = floatDisc;
 
                 let loyalDisc = (globalLoyalty === "Yes") ? -Math.round(totalA * 0.05) : 0;
@@ -921,12 +951,35 @@
                 let totalB = totalA + matAmt + floatDisc + loyalDisc;
                 cellTotB.innerText = totalB;
 
-                // Riders pricing parameters simulation configurations matching data logic
-                let nmAmt = (riderNM === "Yes") ? 250 : 0;
+                // Riders pricing parameters calculation
+                let nmAmt = (riderNM === "Yes") ? 1500 : 0;
                 let mtAmt = (riderMT === "Yes") ? 350 : 0;
-                let dmdAmt = (riderDMD === "Yes") ? 200 : 0;
+                
+                // Durable Medical Devices logic: Base SI * 10% (max 2,50,000). Premium is 1% of that derived SI.
+                let numericSI = 0;
+                if (sumInsured === '5 Lakh') numericSI = 500000;
+                else if (sumInsured === '10 Lakh') numericSI = 1000000;
+                else if (sumInsured === '15 Lakh') numericSI = 1500000;
+                else if (sumInsured === '25 Lakh') numericSI = 2500000;
+                else if (sumInsured === '50 Lakh') numericSI = 5000000;
+                else if (sumInsured === '75 Lakh') numericSI = 7500000;
+                else if (sumInsured === '1 Cr') numericSI = 10000000;
+                
+                let riderSI = Math.min(numericSI * 0.10, 250000);
+                let dmdAmt = (riderDMD === "Yes") ? Math.round(riderSI * 0.01) : 0; 
+                
                 let pphAmt = (riderPPH === "Yes") ? 180 : 0;
-                let ciAmt = (riderCI === "Yes" && age >= 18 && age <= 45) ? 600 : 0;
+                
+                let ciAmt = 0;
+                if (riderCI === "Yes") {
+                    if (age >= 18 && age <= 45) {
+                        ciAmt = 600;
+                    } else {
+                        // Silent reset if selected and outside of accepted age rules
+                        document.getElementById(`criticalIllness_${i}`).value = "No";
+                        ciAmt = 0;
+                    }
+                }
 
                 cellNM.innerText = nmAmt;
                 cellMT.innerText = mtAmt;
