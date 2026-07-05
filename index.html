@@ -19,7 +19,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             width: 100%;
-            max-width: 1400px; /* Widened significantly for the new columns */
+            max-width: 1450px; 
         }
         h2 {
             margin-top: 0;
@@ -28,10 +28,10 @@
             color: #2c3e50;
             text-align: center;
         }
-        /* Grid for Policy Details */
+        /* Grid for Policy Details - Adjusted minmax to shorten widths and fit more items */
         .policy-details {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
             gap: 15px;
             margin-bottom: 30px;
             background-color: #f9fbfc;
@@ -48,6 +48,7 @@
             font-weight: 600;
             margin-bottom: 6px;
             color: #555;
+            white-space: nowrap;
         }
         
         /* Table Wrapper for Horizontal Scrolling */
@@ -60,7 +61,7 @@
         
         table {
             width: 100%;
-            min-width: 1600px; /* Forces table to stretch so columns don't crush */
+            min-width: 1700px; /* Increased slightly to fit wider dropdown text */
             border-collapse: collapse;
         }
         th, td {
@@ -69,7 +70,6 @@
             text-align: left;
             vertical-align: middle;
         }
-        /* Styling for the new group headers */
         th.group-head {
             background-color: #eef2f5;
             text-align: center;
@@ -84,7 +84,6 @@
             font-size: 13px;
             white-space: nowrap;
         }
-        /* Visual dividers between groups */
         .divider-left {
             border-left: 2px solid #cbd5e1;
         }
@@ -133,7 +132,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Premium Frequency</label>
+                <label>Premium Freq.</label>
                 <select id="frequency">
                     <option value="Annual">Annual</option>
                     <option value="Half Yearly">Half Yearly</option>
@@ -146,6 +145,15 @@
                 <select id="loyaltyDiscount">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Maternity Cover S.I</label>
+                <select id="maternityCover">
+                    <option value="None">None</option>
+                    <option value="50,000">50,000</option>
+                    <option value="75,000">75,000</option>
+                    <option value="1,00,000">1,00,000</option>
                 </select>
             </div>
         </div>
@@ -163,18 +171,18 @@
                         <th style="width: 150px;">Name</th>
                         <th style="width: 70px;">Age</th>
                         <th style="width: 100px;">Relation</th>
-                        <th style="width: 120px;">Sum Insured</th>
+                        <th style="width: 110px;">Sum Insured</th>
                         
-                        <th class="divider-left" style="width: 80px;">BMI</th>
-                        <th style="width: 90px;">Diabetic</th>
-                        <th style="width: 110px;">Hypertensive</th>
-                        <th style="width: 130px;">Hospitalisation</th>
+                        <th class="divider-left" style="width: 140px;">BMI</th>
+                        <th style="width: 140px;">Diabetic</th>
+                        <th style="width: 130px;">Hypertensive</th>
+                        <th style="width: 160px;">Hospitalisation</th>
                         
-                        <th class="divider-left" style="width: 120px;">Non-Medical</th>
-                        <th style="width: 150px;">Modern Treatments</th>
-                        <th style="width: 140px;">Durable Devices</th>
-                        <th style="width: 180px;">Pre/Post Hospitalisation</th>
-                        <th style="width: 130px;">Critical Illness</th>
+                        <th class="divider-left" style="width: 110px;">Non-Medical</th>
+                        <th style="width: 140px;">Modern Treatments</th>
+                        <th style="width: 130px;">Durable Devices</th>
+                        <th style="width: 170px;">Pre/Post Hospitalisation</th>
+                        <th style="width: 120px;">Critical Illness</th>
                     </tr>
                 </thead>
                 <tbody id="calculator-body">
@@ -191,7 +199,32 @@
         const relations = ['Self', 'Spouse', 'Children'];
         const sumInsuredOptions = ['5 Lakh', '10 Lakh', '15 Lakh', '25 Lakh', '50 Lakh', '75 Lakh', '1 Cr'];
         
-        // Helper string for standard Yes/No dropdowns
+        // Custom Health Options (HTML entities used for < and > symbols)
+        const bmiOptions = `
+            <option value="">Select...</option>
+            <option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option>
+            <option value="> 32">&gt; 32</option>
+        `;
+        
+        const diabeticOptions = `
+            <option value="">Select...</option>
+            <option value="<6.4 HbA1c">&lt;6.4 HbA1c</option>
+            <option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+        `;
+
+        const hypertensiveOptions = `
+            <option value="">Select...</option>
+            <option value="<=120/80">&lt;=120/80</option>
+            <option value=">139/89">&gt;139/89</option>
+        `;
+
+        const hospitalisationOptions = `
+            <option value="">Select...</option>
+            <option value="Not in past 3 yrs">Not in past 3 yrs</option>
+            <option value="In past 3 yrs">In past 3 yrs</option>
+        `;
+
+        // Standard Yes/No for Riders
         const yesNoOptions = `
             <option value="No">No</option>
             <option value="Yes">Yes</option>
@@ -228,16 +261,16 @@
                 </td>
 
                 <td class="divider-left">
-                    <input type="number" id="bmi_${i}" step="0.1" placeholder="BMI">
+                    <select id="bmi_${i}">${bmiOptions}</select>
                 </td>
                 <td>
-                    <select id="diabetic_${i}">${yesNoOptions}</select>
+                    <select id="diabetic_${i}">${diabeticOptions}</select>
                 </td>
                 <td>
-                    <select id="hypertensive_${i}">${yesNoOptions}</select>
+                    <select id="hypertensive_${i}">${hypertensiveOptions}</select>
                 </td>
                 <td>
-                    <select id="hospitalisation_${i}">${yesNoOptions}</select>
+                    <select id="hospitalisation_${i}">${hospitalisationOptions}</select>
                 </td>
 
                 <td class="divider-left">
