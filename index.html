@@ -28,6 +28,7 @@
             color: #2c3e50;
             text-align: center;
         }
+        
         /* Grid for Policy Details */
         .policy-details {
             display: grid;
@@ -51,7 +52,7 @@
             white-space: nowrap;
         }
         
-        /* New Tools Bar for BMI and Clear Buttons */
+        /* Tools Bar */
         .tools-bar {
             display: flex;
             justify-content: space-between;
@@ -104,41 +105,41 @@
             min-width: 150px;
         }
 
-        /* Table Wrapper for Horizontal Scrolling */
+        /* Tables Common */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
             border: 1px solid #eee;
             border-radius: 6px;
+            margin-bottom: 40px;
         }
-        
         table {
             width: 100%;
-            min-width: 1700px;
+            min-width: 1700px; /* Reduced for the second table via specific class if needed, but keeping global for alignment */
             border-collapse: collapse;
         }
         th, td {
             padding: 10px;
-            border-bottom: 1px solid #eee;
+            border: 1px solid #cbd5e1;
             text-align: left;
             vertical-align: middle;
+            font-size: 13px;
         }
         th.group-head {
             background-color: #eef2f5;
             text-align: center;
-            border-bottom: 2px solid #cbd5e1;
             font-size: 15px;
             color: #2c3e50;
+            font-weight: 700;
         }
         th {
             font-weight: 600;
             color: #555;
             background-color: #fafafa;
-            font-size: 13px;
             white-space: nowrap;
         }
         .divider-left {
-            border-left: 2px solid #cbd5e1;
+            border-left: 2px solid #94a3b8;
         }
         
         input[type="text"], input[type="number"], select {
@@ -153,6 +154,41 @@
         input:focus, select:focus {
             outline: none;
             border-color: #0066cc;
+        }
+
+        /* Specific Styles for Premium Working Table */
+        .premium-working-table {
+            min-width: 1000px; /* Can be smaller than the main table */
+        }
+        .premium-working-table th.main-title {
+            text-align: center;
+            font-size: 16px;
+            letter-spacing: 1px;
+            background-color: #ffffff;
+            border-top: none;
+        }
+        .premium-working-table .col-member {
+            width: 10%;
+            text-align: center;
+            font-weight: 700;
+            background-color: #f4f7f6;
+        }
+        .premium-working-table .sub-header {
+            background-color: #b4c6e7; /* Light blue from excel */
+            font-weight: 700;
+            color: #1a252f;
+        }
+        .premium-working-table .total-row {
+            background-color: #d9d9d9; /* Gray totals */
+            font-weight: 700;
+        }
+        .premium-working-table .bg-yellow {
+            background-color: #ffe699 !important; /* Yellow highlights */
+            font-weight: 700;
+        }
+        .premium-working-table .action-col {
+            width: 100px;
+            color: #555;
         }
     </style>
 </head>
@@ -274,6 +310,156 @@
                     </tbody>
             </table>
         </div>
+
+        <div class="table-responsive">
+            <table class="premium-working-table">
+                <thead>
+                    <tr>
+                        <th colspan="8" class="main-title">PREMIUM WORKING</th>
+                    </tr>
+                    <tr>
+                        <th style="width: 25%;"></th>
+                        <th class="action-col">Name's</th>
+                        <th class="col-member">1</th>
+                        <th class="col-member">2</th>
+                        <th class="col-member">3</th>
+                        <th class="col-member">4</th>
+                        <th class="col-member">5</th>
+                        <th class="col-member">6</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Basic Premium</td>
+                        <td></td>
+                        <td id="bp_1"></td><td id="bp_2"></td><td id="bp_3"></td>
+                        <td id="bp_4"></td><td id="bp_5"></td><td id="bp_6"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="8" class="sub-header">HEALTH DISCOUNTS / LOADINGS</td>
+                    </tr>
+                    <tr>
+                        <td>BMI</td>
+                        <td class="action-col">less /add</td>
+                        <td id="bmi_amt_1"></td><td id="bmi_amt_2"></td><td id="bmi_amt_3"></td>
+                        <td id="bmi_amt_4"></td><td id="bmi_amt_5"></td><td id="bmi_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Diabetic</td>
+                        <td class="action-col">less /add</td>
+                        <td id="dia_amt_1"></td><td id="dia_amt_2"></td><td id="dia_amt_3"></td>
+                        <td id="dia_amt_4"></td><td id="dia_amt_5"></td><td id="dia_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Hypertensive</td>
+                        <td class="action-col">less /add</td>
+                        <td id="hyp_amt_1"></td><td id="hyp_amt_2"></td><td id="hyp_amt_3"></td>
+                        <td id="hyp_amt_4"></td><td id="hyp_amt_5"></td><td id="hyp_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>No Hospitalisation</td>
+                        <td class="action-col">less</td>
+                        <td id="hosp_amt_1"></td><td id="hosp_amt_2"></td><td id="hosp_amt_3"></td>
+                        <td id="hosp_amt_4"></td><td id="hosp_amt_5"></td><td id="hosp_amt_6"></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>TOTAL A</td>
+                        <td></td>
+                        <td id="total_a_1"></td><td id="total_a_2"></td><td id="total_a_3"></td>
+                        <td id="total_a_4"></td><td id="total_a_5"></td><td id="total_a_6"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Maternity Enhancement (Platinum Plan)</td>
+                        <td class="action-col">add</td>
+                        <td id="mat_amt_1"></td><td id="mat_amt_2"></td><td id="mat_amt_3"></td>
+                        <td id="mat_amt_4"></td><td id="mat_amt_5"></td><td id="mat_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Floater Discount</td>
+                        <td class="action-col">less</td>
+                        <td id="floater_disc_1"></td><td id="floater_disc_2"></td><td id="floater_disc_3"></td>
+                        <td id="floater_disc_4"></td><td id="floater_disc_5"></td><td id="floater_disc_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Loyalty Discount</td>
+                        <td class="action-col">less</td>
+                        <td id="loyal_disc_1"></td><td id="loyal_disc_2"></td><td id="loyal_disc_3"></td>
+                        <td id="loyal_disc_4"></td><td id="loyal_disc_5"></td><td id="loyal_disc_6"></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>TOTAL B</td>
+                        <td></td>
+                        <td id="total_b_1"></td><td id="total_b_2"></td><td id="total_b_3"></td>
+                        <td id="total_b_4"></td><td id="total_b_5"></td><td id="total_b_6"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="8" class="sub-header">RIDERS</td>
+                    </tr>
+                    <tr>
+                        <td>Non medical consumables Rider</td>
+                        <td class="action-col">add</td>
+                        <td id="nm_amt_1"></td><td id="nm_amt_2"></td><td id="nm_amt_3"></td>
+                        <td id="nm_amt_4"></td><td id="nm_amt_5"></td><td id="nm_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Modern Treatment Rider</td>
+                        <td class="action-col">add</td>
+                        <td id="mt_amt_1"></td><td id="mt_amt_2"></td><td id="mt_amt_3"></td>
+                        <td id="mt_amt_4"></td><td id="mt_amt_5"></td><td id="mt_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Durable Medical Devices Rider</td>
+                        <td class="action-col">add</td>
+                        <td id="dmd_amt_1"></td><td id="dmd_amt_2"></td><td id="dmd_amt_3"></td>
+                        <td id="dmd_amt_4"></td><td id="dmd_amt_5"></td><td id="dmd_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Pre & Post Hospitalisation Rider</td>
+                        <td class="action-col">add</td>
+                        <td id="pph_amt_1"></td><td id="pph_amt_2"></td><td id="pph_amt_3"></td>
+                        <td id="pph_amt_4"></td><td id="pph_amt_5"></td><td id="pph_amt_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Critical Illness Rider (18-45 yr only)</td>
+                        <td class="action-col">add</td>
+                        <td id="ci_amt_1"></td><td id="ci_amt_2"></td><td id="ci_amt_3"></td>
+                        <td id="ci_amt_4"></td><td id="ci_amt_5"></td><td id="ci_amt_6"></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>TOTAL C</td>
+                        <td></td>
+                        <td id="total_c_1"></td><td id="total_c_2"></td><td id="total_c_3"></td>
+                        <td id="total_c_4"></td><td id="total_c_5"></td><td id="total_c_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Long Term Discount</td>
+                        <td class="action-col">less</td>
+                        <td id="ltd_amt_1"></td><td id="ltd_amt_2"></td><td id="ltd_amt_3"></td>
+                        <td id="ltd_amt_4"></td><td id="ltd_amt_5"></td><td id="ltd_amt_6"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="total-row">MEMBER WISE PREMIUM</td>
+                        <td class="total-row"></td>
+                        <td class="bg-yellow" id="member_prem_1"></td>
+                        <td class="bg-yellow" id="member_prem_2"></td>
+                        <td class="bg-yellow" id="member_prem_3"></td>
+                        <td class="bg-yellow" id="member_prem_4"></td>
+                        <td class="bg-yellow" id="member_prem_5"></td>
+                        <td class="bg-yellow" id="member_prem_6"></td>
+                    </tr>
+                    <tr>
+                        <td class="total-row">FINAL TOTAL PREMIUM PAYABLE</td>
+                        <td class="bg-yellow" id="final_total_premium"></td>
+                        <td colspan="6"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
     </div>
 
     <script>
@@ -391,9 +577,6 @@
             fields.forEach(field => {
                 const element = document.getElementById(`${field}_${rowNo}`);
                 if (element) {
-                    // For selects, value="" resets to default "Select...". For text/number, it empties it.
-                    // For Rider Yes/No selects, you may want to reset to "No" instead of blank. 
-                    // To do that, check if it's a rider field. For now, setting to "" resets to top option.
                     if (['nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'].includes(field)) {
                         element.value = "No"; 
                     } else {
@@ -422,6 +605,13 @@
                             }
                         }
                     });
+                    
+                    // Also clear calculated output cells in the lower table
+                    const outputFields = ['bp', 'bmi_amt', 'dia_amt', 'hyp_amt', 'hosp_amt', 'total_a', 'mat_amt', 'floater_disc', 'loyal_disc', 'total_b', 'nm_amt', 'mt_amt', 'dmd_amt', 'pph_amt', 'ci_amt', 'total_c', 'ltd_amt', 'member_prem'];
+                    outputFields.forEach(outField => {
+                        const cell = document.getElementById(`${outField}_${i}`);
+                        if(cell) cell.innerText = "";
+                    });
                 }
                 
                 // Clear Top Policy Settings to Defaults (Index 0)
@@ -433,6 +623,9 @@
                 document.getElementById('frequency').selectedIndex = 0;
                 document.getElementById('loyaltyDiscount').selectedIndex = 0;
                 
+                // Clear Final Output Totals
+                document.getElementById('final_total_premium').innerText = "";
+
                 // Clear BMI Calculator
                 document.getElementById('calcHeight').value = "";
                 document.getElementById('calcWeight').value = "";
