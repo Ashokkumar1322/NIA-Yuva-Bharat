@@ -1,28 +1,410 @@
-// --- 2. POPULATE PREMIUM WORKING TABLE ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New India Yuva Bharat Premium Calc</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 30px;
+        }
+        .calculator-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 1450px; 
+        }
+        h2, h3 {
+            margin-top: 0;
+            font-weight: 500;
+            color: #2c3e50;
+            text-align: center;
+        }
+        h2 { margin-bottom: 25px; }
+        h3 { margin-bottom: 20px; font-size: 20px; }
+        
+        /* Grid for Policy Details */
+        .policy-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 15px;
+            margin-bottom: 20px;
+            background-color: #f9fbfc;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e8ed;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            line-height: 1.3;
+            white-space: normal; 
+            min-height: 34px; 
+        }
+        
+        /* Tools Bar for BMI and Clear Buttons */
+        .tools-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9fbfc;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e8ed;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .tools-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tools-label {
+            font-size: 13px; 
+            font-weight: 600; 
+            color: #555;
+        }
+        .tools-section input { width: 100px; }
+        .tools-section select { width: auto; min-width: 120px; }
+        
+        /* Buttons */
+        .btn {
+            background: #2c3e50; 
+            color: white; 
+            border: none; 
+            padding: 8px 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .btn:hover { background: #1a252f; }
+        .btn-danger { background: #e74c3c; }
+        .btn-danger:hover { background: #c0392b; }
+        .bmi-msg {
+            font-size: 13px; 
+            font-weight: 700; 
+            margin-left: 10px;
+            min-width: 150px;
+        }
+
+        /* Table Wrapper for Horizontal Scrolling */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #eee;
+            border-radius: 6px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .main-table { min-width: 1700px; }
+        .working-table { min-width: 1000px; }
+        
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th.group-head {
+            background-color: #eef2f5;
+            text-align: center;
+            border-bottom: 2px solid #cbd5e1;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+        th {
+            font-weight: 600;
+            color: #555;
+            background-color: #fafafa;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .divider-left { border-left: 2px solid #cbd5e1; }
+        
+        /* Working Table Specific Styles */
+        .working-table td { padding: 6px 10px; font-size: 13px; }
+        .working-table .col-label { width: 300px; font-weight: 500; }
+        .working-table .col-action { width: 100px; color: #666; }
+        .working-table .col-data { min-width: 100px; }
+        
+        .row-total { background-color: #cfd8dc !important; }
+        .row-total td { font-weight: bold; border-top: 1px solid #90a4ae; border-bottom: 1px solid #90a4ae; }
+        .row-final { background-color: #fde047 !important; }
+        .row-final td { font-weight: bold; border-top: 2px solid #ca8a04; }
+        .row-header td { background-color: #f1f5f9; font-weight: bold; padding-top: 20px; text-transform: uppercase;}
+        
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 13px;
+        }
+        .working-table input { background-color: transparent; border-color: #ddd; }
+        .working-table input:focus { background-color: #fff; }
+        .row-total input, .row-final input { font-weight: bold; }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h2>New India Yuva Bharat Premium Calc</h2>
+        
+        <div class="policy-details">
+            <div class="form-group">
+                <label>Zone</label>
+                <select id="zone" title="Zone 1: Delhi, National Capital Region (NCR), Mumbai, Mumbai Suburban, Thane and Navi Mumbai, Surat, Ahmedabad and Vadodara. Zone 2: Rest of India">
+                    <option value="Zone 2" selected>Zone 2 (Rest of India)</option>
+                    <option value="Zone 1">Zone 1 (Delhi, National Capital Region (NCR), Mumbai, Mumbai Suburban, Thane and Navi Mumbai, Surat, Ahmedabad and Vadodara)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Maternity Enhanced S.I<br><small>(Platinum Plan Only)</small></label>
+                <select id="maternityCover">
+                    <option value="None">None</option>
+                    <option value="50,000">50,000</option>
+                    <option value="75,000">75,000</option>
+                    <option value="1,00,000">1,00,000</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Individual / Floater</label>
+                <select id="indFloater">
+                    <option value="Individual">Individual</option>
+                    <option value="Floater">Floater</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Plan Type</label>
+                <select id="planType">
+                    <option value="Base Plan">Base Plan</option>
+                    <option value="Gold Plan">Gold Plan</option>
+                    <option value="Platinum Plan">Platinum Plan</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Policy Period</label>
+                <select id="policyPeriod">
+                    <option value="1 yr">1 yr</option>
+                    <option value="2 yr">2 yr</option>
+                    <option value="3 yr">3 yr</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Premium Freq.</label>
+                <select id="frequency">
+                    <option value="Annual">Annual</option>
+                    <option value="Half Yearly">Half Yearly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Monthly">Monthly</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Loyalty Discount<br><small>(Min prem 5,000 with NIA)</small></label>
+                <select id="loyaltyDiscount">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="tools-bar">
+            <div class="tools-section">
+                <span class="tools-label">BMI Calc:</span>
+                <input type="number" id="calcHeight" step="0.01" placeholder="Ht (Metres)">
+                <input type="number" id="calcWeight" step="0.1" placeholder="Wt (Kgs)">
+                <button class="btn" onclick="calculateBMI()">Calculate</button>
+                <span id="bmiResult" class="bmi-msg"></span>
+            </div>
+            
+            <div class="tools-section">
+                <select id="clearRowSelect">
+                    <option value="">Select Row...</option>
+                    <option value="1">Sl No 1</option>
+                    <option value="2">Sl No 2</option>
+                    <option value="3">Sl No 3</option>
+                    <option value="4">Sl No 4</option>
+                    <option value="5">Sl No 5</option>
+                    <option value="6">Sl No 6</option>
+                </select>
+                <button class="btn" onclick="clearRow()">Clear By Row</button>
+                <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="main-table">
+                <thead>
+                    <tr>
+                        <th colspan="5" class="group-head">Basic Details</th>
+                        <th colspan="4" class="group-head divider-left">Health Discounts/Loadings</th>
+                        <th colspan="5" class="group-head divider-left">Riders</th>
+                    </tr>
+                    <tr>
+                        <th style="width: 40px;">Sl No</th>
+                        <th style="width: 150px;">Name</th>
+                        <th style="width: 70px;">Age</th>
+                        <th style="width: 100px;">Relation</th>
+                        <th style="width: 110px;">Sum Insured</th>
+                        
+                        <th class="divider-left" style="width: 140px;">BMI</th>
+                        <th style="width: 140px;">Diabetic</th>
+                        <th style="width: 130px;">Hypertensive</th>
+                        <th style="width: 160px;">Hospitalisation</th>
+                        
+                        <th class="divider-left" style="width: 110px;">Non-Medical</th>
+                        <th style="width: 140px;">Modern Treatments</th>
+                        <th style="width: 130px;">Durable Devices</th>
+                        <th style="width: 170px;">Pre/Post Hospitalisation</th>
+                        <th style="width: 120px;">Critical Illness</th>
+                    </tr>
+                </thead>
+                <tbody id="calculator-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="calculator-container">
+        <h3>Premium Working</h3>
+        <div class="table-responsive">
+            <table class="working-table">
+                <thead>
+                    <tr>
+                        <th class="col-label"></th>
+                        <th class="col-action"></th>
+                        <th class="col-data" style="text-align: center;">1</th>
+                        <th class="col-data" style="text-align: center;">2</th>
+                        <th class="col-data" style="text-align: center;">3</th>
+                        <th class="col-data" style="text-align: center;">4</th>
+                        <th class="col-data" style="text-align: center;">5</th>
+                        <th class="col-data" style="text-align: center;">6</th>
+                    </tr>
+                </thead>
+                <tbody id="working-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const rowCount = 6;
+        
+        // --- 1. POPULATE MAIN ENTRY TABLE ---
+        const tbody = document.getElementById('calculator-body');
+        const relations = ['Self', 'Spouse', 'Children'];
+        const sumInsuredOptions = ['5 Lakh', '10 Lakh', '15 Lakh', '25 Lakh', '50 Lakh', '75 Lakh', '1 Cr'];
+        
+        const bmiOptions = `
+            <option value="">Select...</option>
+            <option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option>
+            <option value="> 32">&gt; 32</option>
+        `;
+        const diabeticOptions = `
+            <option value="">Select...</option>
+            <option value="<6.4 HbA1c">&lt;6.4 HbA1c</option>
+            <option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+        `;
+        const hypertensiveOptions = `
+            <option value="">Select...</option>
+            <option value="<=120/80">&lt;=120/80</option>
+            <option value=">139/89">&gt;139/89</option>
+        `;
+        const hospitalisationOptions = `
+            <option value="">Select...</option>
+            <option value="Not in past 3 yrs">Not in past 3 yrs</option>
+        `;
+        const yesNoOptions = `
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        `;
+
+        for (let i = 1; i <= rowCount; i++) {
+            const tr = document.createElement('tr');
+            
+            let relationHTML = '<option value="">Select...</option>';
+            relations.forEach(rel => relationHTML += `<option value="${rel}">${rel}</option>`);
+            let sumInsuredHTML = '<option value="">Select...</option>';
+            sumInsuredOptions.forEach(amount => sumInsuredHTML += `<option value="${amount}">${amount}</option>`);
+
+            tr.innerHTML = `
+                <td style="text-align: center; color: #777;">${i}</td>
+                <td><input type="text" id="name_${i}" placeholder="Enter name"></td>
+                <td><input type="number" id="age_${i}" min="0" placeholder="Age"></td>
+                <td><select id="relation_${i}">${relationHTML}</select></td>
+                <td><select id="sumInsured_${i}">${sumInsuredHTML}</select></td>
+                <td class="divider-left"><select id="bmi_${i}">${bmiOptions}</select></td>
+                <td><select id="diabetic_${i}">${diabeticOptions}</select></td>
+                <td><select id="hypertensive_${i}">${hypertensiveOptions}</select></td>
+                <td><select id="hospitalisation_${i}">${hospitalisationOptions}</select></td>
+                <td class="divider-left"><select id="nonMedical_${i}">${yesNoOptions}</select></td>
+                <td><select id="modernTreatments_${i}">${yesNoOptions}</select></td>
+                <td><select id="durableDevices_${i}">${yesNoOptions}</select></td>
+                <td><select id="prePostHosp_${i}">${yesNoOptions}</select></td>
+                <td><select id="criticalIllness_${i}">${yesNoOptions}</select></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        // --- 2. POPULATE PREMIUM WORKING TABLE ---
         const workingBody = document.getElementById('working-body');
         const workingRowsConfig = [
             { label: "Name", action: "" },
             { label: "Basic Premium", action: "" },
-            { label: "HEALTH DISCOUNTS/LOADINGS", action: "", styleClass: "row-header" }, // 1. Added Header
+            { label: "HEALTH DISCOUNTS/LOADINGS", action: "", styleClass: "row-header" },
             { label: "BMI", action: "minus /add" },
             { label: "Diabetic", action: "minus /add" },
             { label: "Hypertensive", action: "minus /add" },
             { label: "No Hospitalisation", action: "minus" },
-            { label: "TOTAL", action: "", styleClass: "row-total" },
+            { label: "Total A", action: "", styleClass: "row-total" },
             { label: "Maternity Enhancement (Platinum Plan)", action: "add" },
             { label: "Floater Discount", action: "minus" },
             { label: "Loyalty Discount", action: "minus" },
-            { label: "TOTAL", action: "", styleClass: "row-total" },
+            { label: "Total B", action: "", styleClass: "row-total" },
             { label: "RIDERS", action: "", styleClass: "row-header" },
             { label: "Non medical consumables Rider", action: "add" },
             { label: "Modern Treatment Rider", action: "add" },
             { label: "Durable Medical Devices Rider", action: "add" },
             { label: "Pre & Post Hospitalisation Rider", action: "add" },
             { label: "Critical Illness Rider (18-45 yr only)", action: "add" },
-            { label: "TOTAL", action: "", styleClass: "row-total" },
+            { label: "Total C", action: "", styleClass: "row-total" },
             { label: "Long Term Discount", action: "minus" },
-            { label: "Premium-Each member", action: "", styleClass: "row-total" }, // 2. Renamed
-            { label: "GRAND TOTAL- Final Premium payable", action: "", styleClass: "row-final" } // 3. Added Grand Total
+            { label: "Premium-Each member", action: "", styleClass: "row-total" },
+            { label: "GRAND TOTAL- Final Premium payable", action: "", styleClass: "row-final" }
         ];
 
         workingRowsConfig.forEach((row, index) => {
@@ -62,3 +444,212 @@
             }
             workingBody.appendChild(tr);
         });
+
+        // --- 3. FUNCTIONALITY ---
+        function calculateBMI() {
+            const h = parseFloat(document.getElementById('calcHeight').value);
+            const w = parseFloat(document.getElementById('calcWeight').value);
+            const resultSpan = document.getElementById('bmiResult');
+            
+            if (!h || !w || h <= 0 || w <= 0) {
+                resultSpan.innerText = "Please enter valid numbers";
+                resultSpan.style.color = "#e74c3c";
+                return;
+            }
+            
+            const bmi = (w / (h * h)).toFixed(2);
+            
+            if (bmi >= 18.5 && bmi <= 32) {
+                resultSpan.innerText = `BMI: ${bmi} (Discount 2.5%)`;
+                resultSpan.style.color = "#27ae60"; 
+            } else if (bmi > 32) {
+                resultSpan.innerText = `BMI: ${bmi} (Loading 2.5%)`;
+                resultSpan.style.color = "#e74c3c"; 
+            } else {
+                resultSpan.innerText = `BMI: ${bmi}`;
+                resultSpan.style.color = "#555"; 
+            }
+        }
+
+        function clearRow() {
+            const rowNo = document.getElementById('clearRowSelect').value;
+            if (!rowNo) {
+                alert("Please select a row to clear first.");
+                return;
+            }
+            
+            // Clear Main Table Row
+            const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'];
+            fields.forEach(field => {
+                const element = document.getElementById(`${field}_${rowNo}`);
+                if (element) {
+                    if (['nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'].includes(field)) {
+                        element.value = "No"; 
+                    } else {
+                        element.value = ""; 
+                    }
+                }
+            });
+            
+            // Clear Working Table Column corresponding to the row
+            workingRowsConfig.forEach(row => {
+                if(row.label !== "RIDERS" && row.label !== "HEALTH DISCOUNTS/LOADINGS" && row.label !== "GRAND TOTAL- Final Premium payable") {
+                    let safeId = row.label.replace(/[^a-zA-Z0-9]/g, '');
+                    let element = document.getElementById(`wrk_${safeId}_${rowNo}`);
+                    if(element) element.value = "";
+                }
+            });
+            
+            document.getElementById('clearRowSelect').value = "";
+            calculateFinalTotals();
+        }
+
+        function clearAll() {
+            if(confirm("Are you sure you want to clear all data in the calculator?")) {
+                // Clear Main Table Rows
+                for (let i = 1; i <= rowCount; i++) {
+                    const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'];
+                    fields.forEach(field => {
+                        const element = document.getElementById(`${field}_${i}`);
+                        if (element) {
+                            if (['nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'].includes(field)) {
+                                element.value = "No"; 
+                            } else {
+                                element.value = ""; 
+                            }
+                        }
+                    });
+                }
+                
+                // Clear Working Table
+                const workingInputs = document.querySelectorAll('.working-input');
+                workingInputs.forEach(input => input.value = "");
+                
+                // Clear Top Policy Settings to Defaults
+                document.getElementById('zone').selectedIndex = 0;
+                document.getElementById('maternityCover').selectedIndex = 0;
+                document.getElementById('indFloater').selectedIndex = 0;
+                document.getElementById('planType').selectedIndex = 0;
+                document.getElementById('policyPeriod').selectedIndex = 0;
+                document.getElementById('frequency').selectedIndex = 0;
+                document.getElementById('loyaltyDiscount').selectedIndex = 0;
+                
+                // Clear BMI Calculator
+                document.getElementById('calcHeight').value = "";
+                document.getElementById('calcWeight').value = "";
+                document.getElementById('bmiResult').innerText = "";
+
+                calculateFinalTotals();
+            }
+        }
+
+        // --- 4. EVENT LISTENERS & CALCULATIONS ---
+        function setupEventListeners() {
+            // Sync Names Instantly from Top Table to Bottom Table
+            for (let i = 1; i <= rowCount; i++) {
+                const nameInput = document.getElementById(`name_${i}`);
+                if (nameInput) {
+                    nameInput.addEventListener('input', (e) => {
+                        const workingName = document.getElementById(`wrk_Name_${i}`);
+                        if (workingName) workingName.value = e.target.value;
+                    });
+                }
+            }
+
+            // Listen for manual inputs in the working table to update the Totals
+            const workingInputs = document.querySelectorAll('.working-input');
+            workingInputs.forEach(input => {
+                if (input.type === 'number') {
+                    input.addEventListener('input', calculateFinalTotals);
+                }
+            });
+        }
+
+        function calculateFinalTotals() {
+            let grandTotal = 0;
+
+            for (let i = 1; i <= rowCount; i++) {
+                // Helper function to safely grab a number from an input
+                const getVal = (id) => {
+                    const el = document.getElementById(`wrk_${id}_${i}`);
+                    return el && el.value ? parseFloat(el.value) : 0;
+                };
+
+                // Helper function to safely set a value to a total row
+                const setTotal = (id, amount) => {
+                    const el = document.getElementById(`wrk_${id}_${i}`);
+                    if (el) {
+                        el.value = amount > 0 ? amount.toFixed(2) : "";
+                        el.readOnly = true; 
+                        el.style.backgroundColor = "transparent";
+                        el.style.border = "none";
+                    }
+                };
+
+                // Grab the starting Basic Premium
+                let basic = getVal('BasicPremium');
+
+                if (basic <= 0) {
+                    setTotal('TotalA', 0);
+                    setTotal('TotalB', 0);
+                    setTotal('TotalC', 0);
+                    setTotal('PremiumEachmember', 0);
+                    continue; 
+                }
+
+                // --- 1. CALCULATE TOTAL A ---
+                let bmi = getVal('BMI'); 
+                let diabetic = getVal('Diabetic');
+                let hyper = getVal('Hypertensive');
+                let noHosp = Math.abs(getVal('NoHospitalisation')); 
+
+                let totalA = basic + bmi + diabetic + hyper - noHosp;
+                if (totalA < 0) totalA = 0;
+                setTotal('TotalA', totalA);
+
+                // --- 2. CALCULATE TOTAL B ---
+                let maternity = getVal('MaternityEnhancementPlatinumPlan');
+                let floaterDiscount = Math.abs(getVal('FloaterDiscount'));
+                let loyaltyDiscount = Math.abs(getVal('LoyaltyDiscount'));
+
+                let totalB = totalA + maternity - floaterDiscount - loyaltyDiscount;
+                if (totalB < 0) totalB = 0;
+                setTotal('TotalB', totalB);
+
+                // --- 3. CALCULATE TOTAL C (RIDERS) ---
+                let nonMed = getVal('NonmedicalconsumablesRider');
+                let modern = getVal('ModernTreatmentRider');
+                let durable = getVal('DurableMedicalDevicesRider');
+                let prePost = getVal('PrePostHospitalisationRider');
+                let critical = getVal('CriticalIllnessRider1845yronly');
+
+                let totalC = nonMed + modern + durable + prePost + critical;
+                setTotal('TotalC', totalC);
+
+                // --- 4. CALCULATE PREMIUM FOR EACH MEMBER ---
+                let longTermDiscount = Math.abs(getVal('LongTermDiscount'));
+                
+                let memberPremium = totalB + totalC - longTermDiscount;
+                if (memberPremium < 0) memberPremium = 0;
+                setTotal('PremiumEachmember', memberPremium);
+
+                // --- 5. ADD TO GRAND TOTAL ---
+                grandTotal += memberPremium;
+            }
+
+            // Update the Grand Total Field
+            const grandTotalElement = document.getElementById('grand_total_premium');
+            if (grandTotalElement) {
+                if (grandTotal > 0) {
+                    grandTotalElement.value = "₹ " + grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                } else {
+                    grandTotalElement.value = "";
+                }
+            }
+        }
+
+        // Initialize the listeners when the page loads
+        setupEventListeners();
+    </script>
+</body>
+</html>
