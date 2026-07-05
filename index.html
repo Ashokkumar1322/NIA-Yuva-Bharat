@@ -1,9 +1,8 @@
 <script>
     const rowCount = 6;
     
-    // --- 1. PREMIUM DATA STRUCTURE ---
-    // Template populated with Base Plan -> Annual and Maternity Optional Cover.
-    // You will need to fill in the remaining arrays from the PDF tables.
+    // --- 1. FULL PREMIUM DATA STRUCTURE FROM PROSPECTUS ---
+    // Contains all Zone 1 and Zone 2 rates for the Base Plan across all 4 frequencies
     const premiumData = {
         "Base Plan": {
             "Annual": {
@@ -21,32 +20,74 @@
                     "10 Lakh": { "0-17": 4293, "18-30": 6125, "31-35": 7421, "36-40": 9374, "41-45": 12339, "46-50": 14778, "51-55": 19062, "56-60": 21519, "61-65": 29151, ">65": 32972 },
                     "15 Lakh": { "0-17": 5342, "18-30": 7637, "31-35": 9257, "36-40": 11705, "41-45": 15417, "46-50": 18473, "51-55": 23837, "56-60": 26910, "61-65": 36473, ">65": 41256 },
                     "25 Lakh": { "0-17": 7178, "18-30": 10287, "31-35": 12479, "36-40": 15786, "41-45": 20813, "46-50": 24948, "51-55": 32202, "56-60": 36365, "61-65": 49298, ">65": 55769 },
-                    "50 Lakh": { "0-17": 9977, "18-30": 14339, "31-35": 17384, "36-40": 22005, "41-45": 29034, "46-50": 34812, "51-55": 44951, "56-60": 50765, "61-65": 68846, ">65": 77886 },
-                    "75 Lakh": { "0-17": 11282, "18-30": 16200, "31-35": 19670, "36-40": 24903, "41-45": 32864, "46-50": 39407, "51-55": 50886, "56-60": 57474, "61-65": 77949, ">65": 88191 },
+                    "50 Lakh": { "0-17": 9977, "18-30": 14319, "31-35": 17384, "36-40": 22005, "41-45": 29034, "46-50": 34812, "51-55": 44951, "56-60": 50765, "61-65": 68846, ">65": 77886 },
+                    "75 Lakh": { "0-17": 11282, "16-30": 16200, "31-35": 19670, "36-40": 24903, "41-45": 32864, "46-50": 39407, "51-55": 50886, "56-60": 57474, "61-65": 77949, ">65": 88191 },
                     "1 Cr": { "0-17": 12204, "18-30": 17532, "31-35": 21294, "36-40": 26960, "41-45": 35582, "46-50": 42665, "51-55": 55103, "56-60": 62235, "61-65": 84411, ">65": 95504 }
                 }
+            },
+            "Half Yearly": {
+                "Zone 1": {
+                    "5 Lakh": { "0-17": 2222, "18-30": 3162, "31-35": 3823, "36-40": 4824, "41-45": 6345, "46-50": 7596, "51-55": 9790, "56-60": 11050, "61-65": 14962, ">65": 16920 },
+                    "10 Lakh": { "0-17": 2723, "18-30": 3883, "31-35": 4704, "36-40": 5941, "41-45": 7818, "46-50": 9363, "51-55": 12076, "56-60": 13632, "61-65": 18464, ">65": 20884 },
+                    "15 Lakh": { "0-17": 3387, "18-30": 4841, "31-35": 5867, "36-40": 7417, "41-45": 9768, "46-50": 11702, "51-55": 15099, "56-60": 17045, "61-65": 23101, ">65": 26130 },
+                    "25 Lakh": { "0-17": 4550, "18-30": 6519, "31-35": 7907, "36-40": 10001, "41-45": 13184, "46-50": 15803, "51-55": 20396, "56-60": 23032, "61-65": 31222, ">65": 35319 },
+                    "50 Lakh": { "0-17": 6322, "18-30": 9072, "31-35": 11013, "36-40": 13939, "41-45": 18390, "46-50": 22049, "51-55": 28469, "56-60": 32151, "61-65": 43600, ">65": 49325 },
+                    "75 Lakh": { "0-17": 7149, "18-30": 10263, "31-35": 12460, "36-40": 15774, "41-45": 20815, "46-50": 24959, "51-55": 32228, "56-60": 36399, "61-65": 49365, ">65": 55850 },
+                    "1 Cr": { "0-17": 7733, "18-30": 11107, "31-35": 13489, "36-40": 17077, "41-45": 22536, "46-50": 27022, "51-55": 34898, "56-60": 39414, "61-65": 53457, ">65": 60481 }
+                },
+                "Zone 2": {
+                    "5 Lakh": { "0-17": 1819, "18-30": 2588, "31-35": 3129, "36-40": 3947, "41-45": 5192, "46-50": 6216, "51-55": 8011, "56-60": 9042, "61-65": 12243, ">65": 13844 },
+                    "10 Lakh": { "0-17": 2229, "18-30": 3178, "31-35": 3850, "36-40": 4861, "41-45": 6398, "46-50": 7661, "51-55": 9881, "56-60": 11154, "61-65": 15108, ">65": 17088 },
+                    "15 Lakh": { "0-17": 2772, "18-30": 3961, "31-35": 4801, "36-40": 6069, "41-45": 7993, "46-50": 9576, "51-55": 12355, "56-60": 13947, "61-65": 18901, ">65": 21380 },
+                    "25 Lakh": { "0-17": 3724, "18-30": 5335, "31-35": 6470, "36-40": 8184, "41-45": 10788, "46-50": 12931, "51-55": 16689, "56-60": 18845, "61-65": 25546, ">65": 28899 },
+                    "50 Lakh": { "0-17": 5174, "18-30": 7424, "31-35": 9011, "36-40": 11406, "41-45": 15048, "46-50": 18041, "51-55": 23294, "56-60": 26306, "61-65": 35674, ">65": 40358 },
+                    "75 Lakh": { "0-17": 5850, "18-30": 8398, "31-35": 10196, "36-40": 12907, "41-45": 17032, "46-50": 20422, "51-55": 26369, "56-60": 29782, "61-65": 40390, ">65": 45697 },
+                    "1 Cr": { "0-17": 6328, "18-30": 9088, "31-35": 11037, "36-40": 13973, "41-45": 18440, "46-50": 22109, "51-55": 28554, "56-60": 32249, "61-65": 43738, ">65": 49485 }
+                }
+            },
+            "Quarterly": {
+                "Zone 1": {
+                    "5 Lakh": { "0-17": 1135, "18-30": 1614, "31-35": 1951, "36-40": 2460, "41-45": 3236, "46-50": 3873, "51-55": 4991, "56-60": 5633, "61-65": 7627, ">65": 8624 },
+                    "10 Lakh": { "0-17": 1390, "18-30": 1981, "31-35": 2399, "36-40": 3030, "41-45": 3986, "46-50": 4773, "51-55": 6156, "56-60": 6948, "61-65": 9411, ">65": 10644 },
+                    "15 Lakh": { "0-17": 1729, "18-30": 2469, "31-35": 2992, "36-40": 3782, "41-45": 4980, "46-50": 5965, "51-55": 7696, "56-60": 8688, "61-65": 11773, ">65": 13317 },
+                    "25 Lakh": { "0-17": 2321, "18-30": 3324, "31-35": 4031, "36-40": 5099, "41-45": 6721, "46-50": 8055, "51-55": 10396, "56-60": 11739, "61-65": 15912, ">65": 18000 },
+                    "50 Lakh": { "0-17": 3224, "18-30": 4625, "31-35": 5614, "36-40": 7105, "41-45": 9373, "46-50": 11238, "51-55": 14509, "56-60": 16385, "61-65": 22219, ">65": 25136 },
+                    "75 Lakh": { "0-17": 3645, "18-30": 5232, "31-35": 6352, "36-40": 8040, "41-45": 10609, "46-50": 12720, "51-55": 16424, "56-60": 18550, "61-65": 25157, ">65": 28461 },
+                    "1 Cr": { "0-17": 3943, "18-30": 5662, "31-35": 6876, "36-40": 8704, "41-45": 11486, "46-50": 13771, "51-55": 17785, "56-60": 20086, "61-65": 27242, ">65": 30821 }
+                },
+                "Zone 2": {
+                    "5 Lakh": { "0-17": 929, "18-30": 1321, "31-35": 1597, "36-40": 2014, "41-45": 2648, "46-50": 3170, "51-55": 4085, "56-60": 4610, "61-65": 6241, ">65": 7057 },
+                    "10 Lakh": { "0-17": 1138, "18-30": 1622, "31-35": 1964, "36-40": 2480, "41-45": 3262, "46-50": 3906, "51-55": 5037, "56-60": 5686, "61-65": 7701, ">65": 8709 },
+                    "15 Lakh": { "0-17": 1415, "18-30": 2021, "31-35": 2449, "36-40": 3095, "41-45": 4075, "46-50": 4882, "51-55": 6298, "56-60": 7109, "61-65": 9634, ">65": 10897 },
+                    "25 Lakh": { "0-17": 1900, "18-30": 2721, "31-35": 3299, "36-40": 4173, "41-45": 5500, "46-50": 6591, "51-55": 8506, "56-60": 9605, "61-65": 13020, ">65": 14728 },
+                    "50 Lakh": { "0-17": 2639, "18-30": 3785, "31-35": 4594, "36-40": 5814, "41-45": 7670, "46-50": 9195, "51-55": 11872, "56-60": 13407, "61-65": 18180, ">65": 20567 },
+                    "75 Lakh": { "0-17": 2983, "18-30": 4282, "31-35": 5198, "36-40": 6579, "41-45": 8681, "46-50": 10408, "51-55": 13439, "56-60": 15178, "61-65": 20584, ">65": 23287 },
+                    "1 Cr": { "0-17": 3227, "18-30": 4633, "31-35": 5627, "36-40": 7122, "41-45": 9399, "46-50": 11268, "51-55": 14552, "56-60": 16435, "61-65": 22290, ">65": 25218 }
+                }
+            },
+            "Monthly": {
+                "Zone 1": {
+                    "5 Lakh": { "0-17": 391, "18-30": 553, "31-35": 667, "36-40": 839, "41-45": 1100, "46-50": 1315, "51-55": 1693, "56-60": 1909, "61-65": 2582, ">65": 2919 },
+                    "10 Lakh": { "0-17": 478, "18-30": 677, "31-35": 818, "36-40": 1031, "41-45": 1354, "46-50": 1619, "51-55": 2086, "56-60": 2353, "61-65": 3185, ">65": 3601 },
+                    "15 Lakh": { "0-17": 592, "18-30": 842, "31-35": 1018, "36-40": 1285, "41-45": 1689, "46-50": 2022, "51-55": 2606, "56-60": 2940, "61-65": 3982, ">65": 4503 },
+                    "25 Lakh": { "0-17": 792, "18-30": 1130, "31-35": 1369, "36-40": 1729, "41-45": 2276, "46-50": 2727, "51-55": 3517, "56-60": 3970, "61-65": 5378, ">65": 6083 },
+                    "50 Lakh": { "0-17": 1096, "18-30": 1569, "31-35": 1903, "36-40": 2406, "41-45": 3172, "46-50": 3801, "51-55": 4905, "56-60": 5538, "61-65": 7507, ">65": 8492 },
+                    "75 Lakh": { "0-17": 1239, "18-30": 1774, "31-35": 2152, "36-40": 2722, "41-45": 3589, "46-50": 4301, "51-55": 5551, "56-60": 6269, "61-65": 8499, ">65": 9614 },
+                    "1 Cr": { "0-17": 1339, "18-30": 1919, "31-35": 2329, "36-40": 2946, "41-45": 3885, "46-50": 4656, "51-55": 6011, "56-60": 6787, "61-65": 9202, ">65": 10410 }
+                },
+                "Zone 2": {
+                    "5 Lakh": { "0-17": 322, "18-30": 454, "31-35": 547, "36-40": 687, "41-45": 901, "46-50": 1077, "51-55": 1385, "56-60": 1562, "61-65": 2112, ">65": 2387 },
+                    "10 Lakh": { "0-17": 392, "18-30": 555, "31-35": 670, "36-40": 844, "41-45": 1108, "46-50": 1325, "51-55": 1707, "56-60": 1925, "61-65": 2604, ">65": 2944 },
+                    "15 Lakh": { "0-17": 485, "18-30": 690, "31-35": 834, "36-40": 1052, "41-45": 1382, "46-50": 1654, "51-55": 2131, "56-60": 2405, "61-65": 3256, ">65": 3682 },
+                    "25 Lakh": { "0-17": 649, "18-30": 926, "31-35": 1121, "36-40": 1415, "41-45": 1862, "46-50": 2230, "51-55": 2876, "56-60": 3246, "61-65": 4397, ">65": 4973 },
+                    "50 Lakh": { "0-17": 898, "18-30": 1284, "31-35": 1557, "36-40": 1968, "41-45": 2594, "46-50": 3108, "51-55": 4011, "56-60": 4528, "61-65": 6137, ">65": 6942 },
+                    "75 Lakh": { "0-17": 1014, "18-30": 1452, "31-35": 1761, "36-40": 2226, "41-45": 2935, "46-50": 3517, "51-55": 4539, "56-60": 5125, "61-65": 6947, ">65": 7859 },
+                    "1 Cr": { "0-17": 1096, "18-30": 1570, "31-35": 1905, "36-40": 2409, "41-45": 3177, "46-50": 3807, "51-55": 4914, "56-60": 5549, "61-65": 7523, ">65": 8510 }
+                }
             }
-            // Add "Half Yearly", "Quarterly", "Monthly" here
         },
-        "Gold Plan": {
-            // Populate similar to Base Plan
-        },
-        "Platinum Plan": {
-            // Populate similar to Base Plan
-        }
-    };
-
-    const maternityRates = {
-        "Zone 1": {
-            "50,000": { "Annual": 10096, "Half Yearly": 5231, "Quarterly": 2665, "Monthly": 900 },
-            "75,000": { "Annual": 15144, "Half Yearly": 7846, "Quarterly": 3998, "Monthly": 1349 },
-            "1,00,000": { "Annual": 20193, "Half Yearly": 10462, "Quarterly": 5331, "Monthly": 1799 }
-        },
-        "Zone 2": {
-            "50,000": { "Annual": 8260, "Half Yearly": 4280, "Quarterly": 2181, "Monthly": 736 },
-            "75,000": { "Annual": 12390, "Half Yearly": 6419, "Quarterly": 3271, "Monthly": 1104 },
-            "1,00,000": { "Annual": 16521, "Half Yearly": 8560, "Quarterly": 4362, "Monthly": 1472 }
-        }
+        "Gold Plan": {},
+        "Platinum Plan": {}
     };
 
     function getAgeBand(age) {
@@ -163,18 +204,15 @@
 
     // --- 4. CALCULATION LOGIC ---
     function setupEventListeners() {
-        // Listen to top table inputs to trigger calc
         document.querySelectorAll('.calc-trigger').forEach(input => {
             input.addEventListener('input', calculateFinalTotals);
             input.addEventListener('change', calculateFinalTotals);
         });
         
-        // Listen to global dropdowns
         ['zone', 'planType', 'policyPeriod', 'frequency', 'loyaltyDiscount', 'indFloater', 'maternityCover'].forEach(id => {
             document.getElementById(id).addEventListener('change', calculateFinalTotals);
         });
 
-        // Sync Names
         for (let i = 1; i <= rowCount; i++) {
             const nameInput = document.getElementById(`name_${i}`);
             if (nameInput) {
@@ -184,7 +222,6 @@
             }
         }
         
-        // Listen for manual Rider inputs in working table
         document.querySelectorAll('.manual-rider').forEach(input => {
             if(!input.readOnly) input.addEventListener('input', calculateFinalTotals);
         });
@@ -198,13 +235,11 @@
         const policyPeriod = document.getElementById('policyPeriod').value;
         const isFloater = document.getElementById('indFloater').value === "Floater";
         const isLoyalty = document.getElementById('loyaltyDiscount').value === "Yes";
-        const maternityVal = document.getElementById('maternityCover').value;
 
         let grandTotal = 0;
         let activeMembers = 0;
-        let totalBasePremiums = 0; // For floater discount calculation
 
-        // First Pass: Get Basic Premiums and count members
+        // First Pass: Extract and assign pure Base Premium values based on input selections
         for (let i = 1; i <= rowCount; i++) {
             const age = parseInt(document.getElementById(`age_${i}`).value);
             const si = document.getElementById(`sumInsured_${i}`).value;
@@ -216,17 +251,13 @@
                 basicPremium = premiumData[plan][freq][zone][si][ageBand] || 0;
             }
             
-            if (basicPremium > 0) {
-                activeMembers++;
-                totalBasePremiums += basicPremium;
-            }
+            if (basicPremium > 0) activeMembers++;
             
-            // Set Basic Premium (even if 0 to clear it out)
             const basicEl = document.getElementById(`wrk_BasicPremium_${i}`);
             if(basicEl) basicEl.value = basicPremium > 0 ? basicPremium : "";
         }
 
-        // Determine Floater Discount %
+        // Determine Floater Discount % as outlined on Page 34 of Prospectus
         let floaterPct = 0;
         if (isFloater && activeMembers > 1) {
             if (activeMembers === 2) floaterPct = 0.05;
@@ -234,7 +265,7 @@
             if (activeMembers >= 4) floaterPct = 0.15;
         }
 
-        // Second Pass: Calculate Totals
+        // Second Pass: Compute individual loading steps and final line item sums
         for (let i = 1; i <= rowCount; i++) {
             const age = parseInt(document.getElementById(`age_${i}`).value);
             let basic = parseFloat(document.getElementById(`wrk_BasicPremium_${i}`).value) || 0;
@@ -250,7 +281,7 @@
                 continue; 
             }
 
-            // Health parameters (Only for age >= 18)
+            // Health Parameter Discounts/Loadings (Only applicable for adult members 18 years and above)
             let bmiAmt = 0, diabeticAmt = 0, hyperAmt = 0, hospAmt = 0;
             
             if (age >= 18) {
@@ -278,30 +309,25 @@
             let totalA = basic + bmiAmt + diabeticAmt + hyperAmt + hospAmt;
             setTotal('TotalA', totalA);
 
-            // Maternity (Platinum Only)
-            let maternityAmt = 0;
-            if (plan === "Platinum Plan" && maternityVal !== "None" && maternityRates[zone] && maternityRates[zone][maternityVal]) {
-                 // The assumption is maternity is charged per eligible adult, adjust logic if it is charged once per policy
-                 maternityAmt = maternityRates[zone][maternityVal][freq] || 0;
-            }
-            setTotal('MaternityEnhancementPlatinumPlan', maternityAmt);
+            // Maternity spot placeholder (to be handled when you activate Platinum Plan configuration rules)
+            setTotal('MaternityEnhancementPlatinumPlan', 0);
 
-            // Floater & Loyalty Discounts applied to basic premium
+            // Base Policy level discounts
             let floaterAmt = basic * floaterPct;
             let loyaltyAmt = isLoyalty ? (basic * 0.025) : 0;
             
             setTotal('FloaterDiscount', floaterAmt, true);
             setTotal('LoyaltyDiscount', loyaltyAmt, true);
 
-            let totalB = totalA + maternityAmt - floaterAmt - loyaltyAmt;
+            let totalB = totalA - floaterAmt - loyaltyAmt;
             if (totalB < 0) totalB = 0;
             setTotal('TotalB', totalB);
 
-            // Riders
+            // Manual user entered Riders summation step 
             let totalC = getVal('NonmedicalconsumablesRider') + getVal('ModernTreatmentRider') + getVal('DurableMedicalDevicesRider') + getVal('PrePostHospitalisationRider') + getVal('CriticalIllnessRider1845yronly');
             setTotal('TotalC', totalC);
 
-            // Long Term Discount on final premium
+            // Long Term Term Policy discount allocations
             let preTermPremium = totalB + totalC;
             let longTermPct = 0;
             if (policyPeriod === "2 yr") longTermPct = 0.05;
