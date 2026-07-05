@@ -249,7 +249,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Loyalty Discount</label>
+                <label style="margin-bottom: 2px;">Loyalty Discount</label>
+                <span style="font-size: 11px; color: #888; margin-top: -4px; margin-bottom: 4px;">(Min Premium 5,000 with NIA)</span>
                 <select id="loyaltyDiscount">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
@@ -819,8 +820,18 @@
             const globalLoyalty = document.getElementById('loyaltyDiscount').value;
             const maternitySelect = document.getElementById('maternityCover');
             
-            // Handle Platinum Plan only condition for Maternity Cover
-            if (planType !== "Platinum Plan") {
+            let totalPayable = 0;
+            let activeMembersCount = 0;
+
+            // Count rows containing active member definitions to apply exact floater discount rates and check maternity eligibility
+            for (let i = 1; i <= rowCount; i++) {
+                const age = document.getElementById(`age_${i}`).value;
+                const sumInsured = document.getElementById(`sumInsured_${i}`).value;
+                if (age !== "" && sumInsured !== "") activeMembersCount++;
+            }
+
+            // Handle Platinum Plan only AND min 2 members condition for Maternity Cover
+            if (planType !== "Platinum Plan" || activeMembersCount < 2) {
                 maternitySelect.value = "None";
                 maternitySelect.disabled = true;
             } else {
@@ -834,16 +845,6 @@
             
             // To ensure the heavy maternity cost isn't repeatedly added per member in a family floater
             let matApplied = false;
-
-            let totalPayable = 0;
-            let activeMembersCount = 0;
-
-            // Count rows containing active member definitions to apply exact floater discount rates
-            for (let i = 1; i <= rowCount; i++) {
-                const age = document.getElementById(`age_${i}`).value;
-                const sumInsured = document.getElementById(`sumInsured_${i}`).value;
-                if (age !== "" && sumInsured !== "") activeMembersCount++;
-            }
 
             // Determine accurate floater discount rate
             let floaterRate = 0;
@@ -945,7 +946,8 @@
                 let floatDisc = -Math.round(totalA * floaterRate);
                 cellFloat.innerText = floatDisc;
 
-                let loyalDisc = (globalLoyalty === "Yes") ? -Math.round(totalA * 0.05) : 0;
+                let loyaltyBaseAmount = totalA + matAmt + floatDisc; // floatDisc is already negative, adding it subtracts the amount
+                let loyalDisc = (globalLoyalty === "Yes") ? -Math.round(loyaltyBaseAmount * 0.025) : 0;
                 cellLoyal.innerText = loyalDisc;
 
                 let totalB = totalA + matAmt + floatDisc + loyalDisc;
@@ -968,7 +970,7 @@
                 let riderSI = Math.min(numericSI * 0.10, 250000);
                 let dmdAmt = (riderDMD === "Yes") ? Math.round(riderSI * 0.01) : 0; 
                 
-                let pphAmt = (riderPPH === "Yes") ? 180 : 0;
+                let pphAmt = (riderPPH === "Yes") ? Math.round(basePremium * 0.05) : 0;
                 
                 let ciAmt = 0;
                 if (riderCI === "Yes") {
@@ -992,8 +994,8 @@
 
                 // Long term premium rules mapping configuration parameters
                 let ltdAmt = 0;
-                if (policyPeriod === "2 yr") ltdAmt = -Math.round(totalB * 0.075);
-                if (policyPeriod === "3 yr") ltdAmt = -Math.round(totalB * 0.10);
+                if (policyPeriod === "2 yr") ltdAmt = -Math.round(totalB * 0.05);
+                if (policyPeriod === "3 yr") ltdAmt = -Math.round(totalB * 0.07);
                 cellLTD.innerText = ltdAmt;
 
                 let finalMemberPremium = totalB + totalC + ltdAmt;
