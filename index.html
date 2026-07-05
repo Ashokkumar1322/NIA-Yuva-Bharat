@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Premium Calculator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .calculator-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 800px;
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        th {
+            font-weight: 600;
+            color: #555;
+            background-color: #fafafa;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+        .btn {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        .btn:hover {
+            background-color: #0052a3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h2>Health Premium Calculator</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Sl No</th>
+                    <th style="width: 40%;">Name</th>
+                    <th style="width: 20%;">Age</th>
+                    <th style="width: 30%;">Relation</th>
+                </tr>
+            </thead>
+            <tbody id="calculator-body">
+                </tbody>
+        </table>
+        <button class="btn" onclick="calculatePremium()">Calculate Premium</button>
+    </div>
+
+    <script>
+        // Number of rows requested
+        const rowCount = 6;
+        const tbody = document.getElementById('calculator-body');
+        const relations = ['Self', 'Spouse', 'Children'];
+
+        // Generate the 6 rows dynamically
+        for (let i = 1; i <= rowCount; i++) {
+            const tr = document.createElement('tr');
+            
+            // Create the dropdown options
+            let optionsHTML = '<option value="">Select...</option>';
+            relations.forEach(rel => {
+                optionsHTML += `<option value="${rel}">${rel}</option>`;
+            });
+
+            tr.innerHTML = `
+                <td>${i}</td>
+                <td><input type="text" id="name_${i}" placeholder="Enter name"></td>
+                <td><input type="number" id="age_${i}" min="0" placeholder="Age"></td>
+                <td>
+                    <select id="relation_${i}">
+                        ${optionsHTML}
+                    </select>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        // Placeholder for your future calculation logic
+        function calculatePremium() {
+            // Example of how to grab the data from the first row when you're ready
+            const firstName = document.getElementById('name_1').value;
+            const firstAge = document.getElementById('age_1').value;
+            
+            alert("Calculation logic will go here! You are ready to start coding the math.");
+        }
+    </script>
+
+</body>
+</html>
