@@ -98,6 +98,9 @@
         .btn:hover { background: #1a252f; }
         .btn-danger { background: #e74c3c; }
         .btn-danger:hover { background: #c0392b; }
+        .btn-export { background: #27ae60; margin-left: 10px; }
+        .btn-export:hover { background: #219653; }
+        
         .bmi-msg {
             font-size: 13px; 
             font-weight: 700; 
@@ -109,6 +112,7 @@
         .table-responsive {
             width: 100%;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border: 1px solid #eee;
             border-radius: 6px;
             margin-bottom: 40px;
@@ -190,6 +194,15 @@
             width: 100px;
             color: #555;
         }
+
+        /* Print CSS for clean PDF Exports */
+        @media print {
+            body { background-color: #fff; padding: 0; }
+            .tools-bar, .policy-details, .export-controls, button { display: none !important; }
+            .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
+            table { min-width: 100%; width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -202,8 +215,17 @@
             <div class="form-group">
                 <label>Zone</label>
                 <select id="zone">
+                    <option value="Zone 2" selected>Zone 2</option>
                     <option value="Zone 1">Zone 1</option>
-                    <option value="Zone 2">Zone 2</option>
+                </select>
+            </div>
+            <!-- Plan Type moved before Maternity -->
+            <div class="form-group">
+                <label>Plan Type</label>
+                <select id="planType">
+                    <option value="Basic Plan">Basic Plan</option>
+                    <option value="Gold Plan">Gold Plan</option>
+                    <option value="Platinum Plan">Platinum Plan</option>
                 </select>
             </div>
             <div class="form-group">
@@ -221,14 +243,6 @@
                 <select id="indFloater">
                     <option value="Individual">Individual</option>
                     <option value="Floater">Floater</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Plan Type</label>
-                <select id="planType">
-                    <option value="Basic Plan">Basic Plan</option>
-                    <option value="Gold Plan">Gold Plan</option>
-                    <option value="Platinum Plan">Platinum Plan</option>
                 </select>
             </div>
             <div class="form-group">
@@ -262,9 +276,9 @@
         <div class="tools-bar">
             <div class="tools-section">
                 <span class="tools-label">BMI Calc:</span>
-                <input type="number" id="calcHeight" placeholder="Ht (cm)">
-                <input type="number" id="calcWeight" placeholder="Wt (kg)">
-                <button class="btn" onclick="calculateBMI()">Calculate</button>
+                <input type="number" id="calcHeight" placeholder="Ht (cm)" step="any" inputmode="decimal">
+                <input type="number" id="calcWeight" placeholder="Wt (kg)" step="any" inputmode="decimal">
+                <button type="button" class="btn" onclick="calculateBMI()">Calculate</button>
                 <span id="bmiResult" class="bmi-msg"></span>
             </div>
             
@@ -278,12 +292,12 @@
                     <option value="5">Sl No 5</option>
                     <option value="6">Sl No 6</option>
                 </select>
-                <button class="btn" onclick="clearRow()">Clear By Row</button>
-                <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+                <button type="button" class="btn" onclick="clearRow()">Clear By Row</button>
+                <button type="button" class="btn btn-danger" onclick="clearAll()">Clear All</button>
             </div>
         </div>
 
-        <!-- First Table: Data Entry -->
+        <!-- First Table: Data Entry (HARDCODED ROWS FOR DEVICE COMPATIBILITY) -->
         <div class="table-responsive">
             <table>
                 <thead>
@@ -312,21 +326,326 @@
                     </tr>
                 </thead>
                 <tbody id="calculator-body">
-                    <!-- Rows injected via JS -->
+                    <!-- ROW 1 -->
+                    <tr>
+                        <td style="text-align: center; color: #777;">1</td>
+                        <td><input type="text" id="name_1" placeholder="Enter name"></td>
+                        <td><input type="number" id="age_1" min="0" placeholder="Age" inputmode="numeric"></td>
+                        <td>
+                            <select id="relation_1">
+                                <option value="">Select...</option><option value="Self">Self</option><option value="Spouse">Spouse</option><option value="Children">Children</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="sumInsured_1">
+                                <option value="">Select...</option><option value="5 Lakh">5 Lakh</option><option value="10 Lakh">10 Lakh</option><option value="15 Lakh">15 Lakh</option><option value="25 Lakh">25 Lakh</option><option value="50 Lakh">50 Lakh</option><option value="75 Lakh">75 Lakh</option><option value="1 Cr">1 Cr</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="bmi_1">
+                                <option value="">Select...</option><option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option><option value="> 32">&gt; 32</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="diabetic_1">
+                                <option value="">Select...</option><option value="<6.4 HbA1c">&lt;6.4 HbA1c</option><option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hypertensive_1">
+                                <option value="">Select...</option><option value="<=120/80">&lt;=120/80</option><option value=">139/89">&gt;139/89</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hospitalisation_1">
+                                <option value="">Select...</option><option value="Not in past 3 yrs">Not in past 3 yrs</option><option value="In past 3 yrs">In past 3 yrs</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="nonMedical_1"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="modernTreatments_1"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="durableDevices_1"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="prePostHosp_1"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="criticalIllness_1"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                    </tr>
+                    <!-- ROW 2 -->
+                    <tr>
+                        <td style="text-align: center; color: #777;">2</td>
+                        <td><input type="text" id="name_2" placeholder="Enter name"></td>
+                        <td><input type="number" id="age_2" min="0" placeholder="Age" inputmode="numeric"></td>
+                        <td>
+                            <select id="relation_2">
+                                <option value="">Select...</option><option value="Self">Self</option><option value="Spouse">Spouse</option><option value="Children">Children</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="sumInsured_2">
+                                <option value="">Select...</option><option value="5 Lakh">5 Lakh</option><option value="10 Lakh">10 Lakh</option><option value="15 Lakh">15 Lakh</option><option value="25 Lakh">25 Lakh</option><option value="50 Lakh">50 Lakh</option><option value="75 Lakh">75 Lakh</option><option value="1 Cr">1 Cr</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="bmi_2">
+                                <option value="">Select...</option><option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option><option value="> 32">&gt; 32</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="diabetic_2">
+                                <option value="">Select...</option><option value="<6.4 HbA1c">&lt;6.4 HbA1c</option><option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hypertensive_2">
+                                <option value="">Select...</option><option value="<=120/80">&lt;=120/80</option><option value=">139/89">&gt;139/89</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hospitalisation_2">
+                                <option value="">Select...</option><option value="Not in past 3 yrs">Not in past 3 yrs</option><option value="In past 3 yrs">In past 3 yrs</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="nonMedical_2"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="modernTreatments_2"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="durableDevices_2"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="prePostHosp_2"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="criticalIllness_2"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                    </tr>
+                    <!-- ROW 3 -->
+                    <tr>
+                        <td style="text-align: center; color: #777;">3</td>
+                        <td><input type="text" id="name_3" placeholder="Enter name"></td>
+                        <td><input type="number" id="age_3" min="0" placeholder="Age" inputmode="numeric"></td>
+                        <td>
+                            <select id="relation_3">
+                                <option value="">Select...</option><option value="Self">Self</option><option value="Spouse">Spouse</option><option value="Children">Children</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="sumInsured_3">
+                                <option value="">Select...</option><option value="5 Lakh">5 Lakh</option><option value="10 Lakh">10 Lakh</option><option value="15 Lakh">15 Lakh</option><option value="25 Lakh">25 Lakh</option><option value="50 Lakh">50 Lakh</option><option value="75 Lakh">75 Lakh</option><option value="1 Cr">1 Cr</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="bmi_3">
+                                <option value="">Select...</option><option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option><option value="> 32">&gt; 32</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="diabetic_3">
+                                <option value="">Select...</option><option value="<6.4 HbA1c">&lt;6.4 HbA1c</option><option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hypertensive_3">
+                                <option value="">Select...</option><option value="<=120/80">&lt;=120/80</option><option value=">139/89">&gt;139/89</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hospitalisation_3">
+                                <option value="">Select...</option><option value="Not in past 3 yrs">Not in past 3 yrs</option><option value="In past 3 yrs">In past 3 yrs</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="nonMedical_3"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="modernTreatments_3"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="durableDevices_3"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="prePostHosp_3"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="criticalIllness_3"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                    </tr>
+                    <!-- ROW 4 -->
+                    <tr>
+                        <td style="text-align: center; color: #777;">4</td>
+                        <td><input type="text" id="name_4" placeholder="Enter name"></td>
+                        <td><input type="number" id="age_4" min="0" placeholder="Age" inputmode="numeric"></td>
+                        <td>
+                            <select id="relation_4">
+                                <option value="">Select...</option><option value="Self">Self</option><option value="Spouse">Spouse</option><option value="Children">Children</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="sumInsured_4">
+                                <option value="">Select...</option><option value="5 Lakh">5 Lakh</option><option value="10 Lakh">10 Lakh</option><option value="15 Lakh">15 Lakh</option><option value="25 Lakh">25 Lakh</option><option value="50 Lakh">50 Lakh</option><option value="75 Lakh">75 Lakh</option><option value="1 Cr">1 Cr</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="bmi_4">
+                                <option value="">Select...</option><option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option><option value="> 32">&gt; 32</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="diabetic_4">
+                                <option value="">Select...</option><option value="<6.4 HbA1c">&lt;6.4 HbA1c</option><option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hypertensive_4">
+                                <option value="">Select...</option><option value="<=120/80">&lt;=120/80</option><option value=">139/89">&gt;139/89</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hospitalisation_4">
+                                <option value="">Select...</option><option value="Not in past 3 yrs">Not in past 3 yrs</option><option value="In past 3 yrs">In past 3 yrs</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="nonMedical_4"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="modernTreatments_4"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="durableDevices_4"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="prePostHosp_4"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="criticalIllness_4"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                    </tr>
+                    <!-- ROW 5 -->
+                    <tr>
+                        <td style="text-align: center; color: #777;">5</td>
+                        <td><input type="text" id="name_5" placeholder="Enter name"></td>
+                        <td><input type="number" id="age_5" min="0" placeholder="Age" inputmode="numeric"></td>
+                        <td>
+                            <select id="relation_5">
+                                <option value="">Select...</option><option value="Self">Self</option><option value="Spouse">Spouse</option><option value="Children">Children</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="sumInsured_5">
+                                <option value="">Select...</option><option value="5 Lakh">5 Lakh</option><option value="10 Lakh">10 Lakh</option><option value="15 Lakh">15 Lakh</option><option value="25 Lakh">25 Lakh</option><option value="50 Lakh">50 Lakh</option><option value="75 Lakh">75 Lakh</option><option value="1 Cr">1 Cr</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="bmi_5">
+                                <option value="">Select...</option><option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option><option value="> 32">&gt; 32</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="diabetic_5">
+                                <option value="">Select...</option><option value="<6.4 HbA1c">&lt;6.4 HbA1c</option><option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hypertensive_5">
+                                <option value="">Select...</option><option value="<=120/80">&lt;=120/80</option><option value=">139/89">&gt;139/89</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hospitalisation_5">
+                                <option value="">Select...</option><option value="Not in past 3 yrs">Not in past 3 yrs</option><option value="In past 3 yrs">In past 3 yrs</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="nonMedical_5"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="modernTreatments_5"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="durableDevices_5"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="prePostHosp_5"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="criticalIllness_5"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                    </tr>
+                    <!-- ROW 6 -->
+                    <tr>
+                        <td style="text-align: center; color: #777;">6</td>
+                        <td><input type="text" id="name_6" placeholder="Enter name"></td>
+                        <td><input type="number" id="age_6" min="0" placeholder="Age" inputmode="numeric"></td>
+                        <td>
+                            <select id="relation_6">
+                                <option value="">Select...</option><option value="Self">Self</option><option value="Spouse">Spouse</option><option value="Children">Children</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="sumInsured_6">
+                                <option value="">Select...</option><option value="5 Lakh">5 Lakh</option><option value="10 Lakh">10 Lakh</option><option value="15 Lakh">15 Lakh</option><option value="25 Lakh">25 Lakh</option><option value="50 Lakh">50 Lakh</option><option value="75 Lakh">75 Lakh</option><option value="1 Cr">1 Cr</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="bmi_6">
+                                <option value="">Select...</option><option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option><option value="> 32">&gt; 32</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="diabetic_6">
+                                <option value="">Select...</option><option value="<6.4 HbA1c">&lt;6.4 HbA1c</option><option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hypertensive_6">
+                                <option value="">Select...</option><option value="<=120/80">&lt;=120/80</option><option value=">139/89">&gt;139/89</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="hospitalisation_6">
+                                <option value="">Select...</option><option value="Not in past 3 yrs">Not in past 3 yrs</option><option value="In past 3 yrs">In past 3 yrs</option>
+                            </select>
+                        </td>
+                        <td class="divider-left">
+                            <select id="nonMedical_6"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="modernTreatments_6"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="durableDevices_6"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="prePostHosp_6"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                        <td>
+                            <select id="criticalIllness_6"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
 
         <!-- Second Table: Premium Working Breakdown -->
         <div class="table-responsive">
-            <table class="premium-working-table">
+            <table class="premium-working-table" id="exportTable">
                 <thead>
                     <tr>
                         <th colspan="8" class="main-title">PREMIUM WORKING</th>
                     </tr>
                     <tr>
                         <th style="width: 25%;"></th>
-                        <th class="action-col">Name's</th>
+                        <th class="action-col"></th>
                         <th class="col-member" id="name_lbl_1">1</th>
                         <th class="col-member" id="name_lbl_2">2</th>
                         <th class="col-member" id="name_lbl_3">3</th>
@@ -379,6 +698,9 @@
                     </tr>
                     
                     <!-- ENHANCEMENTS & DISCOUNTS -->
+                    <tr>
+                        <td colspan="8" class="sub-header">ENHANCEMENTS & DISCOUNTS</td>
+                    </tr>
                     <tr>
                         <td>Maternity Enhancement (Platinum Plan)</td>
                         <td class="action-col">add</td>
@@ -471,79 +793,17 @@
             </table>
         </div>
         
+        <!-- Export Controls -->
+        <div class="export-controls" style="text-align: right; padding-bottom: 20px;">
+            <button type="button" class="btn btn-export" onclick="exportToCSV()">Download in Excel (CSV)</button>
+            <button type="button" class="btn btn-export" onclick="window.print()">Download in PDF</button>
+        </div>
+        
     </div>
 
     <script>
         const rowCount = 6;
-        const tbody = document.getElementById('calculator-body');
         
-        const relations = ['Self', 'Spouse', 'Children'];
-        const sumInsuredOptions = ['5 Lakh', '10 Lakh', '15 Lakh', '25 Lakh', '50 Lakh', '75 Lakh', '1 Cr'];
-        
-        const bmiOptions = `
-            <option value="">Select...</option>
-            <option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option>
-            <option value="> 32">&gt; 32</option>
-        `;
-        
-        const diabeticOptions = `
-            <option value="">Select...</option>
-            <option value="<6.4 HbA1c">&lt;6.4 HbA1c</option>
-            <option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
-        `;
-
-        const hypertensiveOptions = `
-            <option value="">Select...</option>
-            <option value="<=120/80">&lt;=120/80</option>
-            <option value=">139/89">&gt;139/89</option>
-        `;
-
-        const hospitalisationOptions = `
-            <option value="">Select...</option>
-            <option value="Not in past 3 yrs">Not in past 3 yrs</option>
-            <option value="In past 3 yrs">In past 3 yrs</option>
-        `;
-
-        const yesNoOptions = `
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-        `;
-
-        // Generate Data Entry Rows
-        for (let i = 1; i <= rowCount; i++) {
-            const tr = document.createElement('tr');
-            
-            let relationHTML = '<option value="">Select...</option>';
-            relations.forEach(rel => {
-                relationHTML += `<option value="${rel}">${rel}</option>`;
-            });
-
-            let sumInsuredHTML = '<option value="">Select...</option>';
-            sumInsuredOptions.forEach(amount => {
-                sumInsuredHTML += `<option value="${amount}">${amount}</option>`;
-            });
-
-            tr.innerHTML = `
-                <td style="text-align: center; color: #777;">${i}</td>
-                <td><input type="text" id="name_${i}" placeholder="Enter name"></td>
-                <td><input type="number" id="age_${i}" min="0" placeholder="Age"></td>
-                <td><select id="relation_${i}">${relationHTML}</select></td>
-                <td><select id="sumInsured_${i}">${sumInsuredHTML}</select></td>
-
-                <td class="divider-left"><select id="bmi_${i}">${bmiOptions}</select></td>
-                <td><select id="diabetic_${i}">${diabeticOptions}</select></td>
-                <td><select id="hypertensive_${i}">${hypertensiveOptions}</select></td>
-                <td><select id="hospitalisation_${i}">${hospitalisationOptions}</select></td>
-
-                <td class="divider-left"><select id="nonMedical_${i}">${yesNoOptions}</select></td>
-                <td><select id="modernTreatments_${i}">${yesNoOptions}</select></td>
-                <td><select id="durableDevices_${i}">${yesNoOptions}</select></td>
-                <td><select id="prePostHosp_${i}">${yesNoOptions}</select></td>
-                <td><select id="criticalIllness_${i}">${yesNoOptions}</select></td>
-            `;
-            tbody.appendChild(tr);
-        }
-
         // FULLY ACCURATE RATE ENGINE FROM JPG CHARTS
         const ratesEngine = {
             "Basic Plan": {
@@ -943,10 +1203,12 @@
                 }
                 cellMat.innerText = matAmt;
 
-                let floatDisc = -Math.round(totalA * floaterRate);
+                let floatDiscAmt = Math.round(totalA * floaterRate);
+                let floatDisc = -floatDiscAmt;
                 cellFloat.innerText = floatDisc;
 
-                let loyaltyBaseAmount = totalA + matAmt + floatDisc; // floatDisc is already negative, adding it subtracts the amount
+                // Loyalty discount explicitly set to (Total A + Mat Enh - Floater Disc Absolute Amt) * 2.5%
+                let loyaltyBaseAmount = totalA + matAmt - floatDiscAmt; 
                 let loyalDisc = (globalLoyalty === "Yes") ? -Math.round(loyaltyBaseAmount * 0.025) : 0;
                 cellLoyal.innerText = loyalDisc;
 
@@ -992,7 +1254,7 @@
                 let totalC = nmAmt + mtAmt + dmdAmt + pphAmt + ciAmt;
                 cellTotC.innerText = totalC;
 
-                // Long term premium rules mapping configuration parameters
+                // Long term premium rules mapping configuration parameters (5% and 7%)
                 let ltdAmt = 0;
                 if (policyPeriod === "2 yr") ltdAmt = -Math.round(totalB * 0.05);
                 if (policyPeriod === "3 yr") ltdAmt = -Math.round(totalB * 0.07);
@@ -1094,10 +1356,10 @@
                     });
                 }
                 
-                document.getElementById('zone').selectedIndex = 0;
+                document.getElementById('zone').selectedIndex = 0; // Zone 2 is index 0 now
+                document.getElementById('planType').selectedIndex = 0;
                 document.getElementById('maternityCover').selectedIndex = 0;
                 document.getElementById('indFloater').selectedIndex = 0;
-                document.getElementById('planType').selectedIndex = 0;
                 document.getElementById('policyPeriod').selectedIndex = 0;
                 document.getElementById('frequency').selectedIndex = 0;
                 document.getElementById('loyaltyDiscount').selectedIndex = 0;
@@ -1108,6 +1370,34 @@
                 
                 runPremiumCalculation();
             }
+        }
+
+        // Export to CSV Function
+        function exportToCSV() {
+            let csv = [];
+            // Target the premium working table for export
+            let rows = document.querySelectorAll("#exportTable tr");
+            
+            for (let i = 0; i < rows.length; i++) {
+                let row = [], cols = rows[i].querySelectorAll("td, th");
+                
+                for (let j = 0; j < cols.length; j++) {
+                    // Clean text to avoid CSV breakages
+                    let text = cols[j].innerText.replace(/"/g, '""');
+                    row.push('"' + text + '"');
+                }
+                csv.push(row.join(","));
+            }
+            
+            // Create download link
+            let csvFile = new Blob([csv.join("\n")], {type: "text/csv"});
+            let downloadLink = document.createElement("a");
+            downloadLink.download = "Premium_Quote_Export.csv";
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         }
     </script>
 </body>
