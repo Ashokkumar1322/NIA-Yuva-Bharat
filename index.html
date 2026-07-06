@@ -209,6 +209,7 @@
         @media print {
             body { background-color: #fff; padding: 0; }
             .tools-bar, .policy-details, .export-controls, button { display: none !important; }
+            .hide-on-print { display: none !important; }
             .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
             .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
             table { min-width: 100%; width: 100%; }
@@ -302,7 +303,7 @@
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive hide-on-print">
             <table>
                 <thead>
                     <tr>
@@ -413,6 +414,12 @@
                         <td></td>
                         <td id="bp_1"></td><td id="bp_2"></td><td id="bp_3"></td>
                         <td id="bp_4"></td><td id="bp_5"></td><td id="bp_6"></td>
+                    </tr>
+                    <tr>
+                        <td>Sum Insured</td>
+                        <td></td>
+                        <td id="si_1"></td><td id="si_2"></td><td id="si_3"></td>
+                        <td id="si_4"></td><td id="si_5"></td><td id="si_6"></td>
                     </tr>
                     
                     <tr>
@@ -700,6 +707,7 @@
 
                 const nameLbl = document.getElementById(`name_lbl_${i}`);
                 const cellBP = document.getElementById(`bp_${i}`);
+                const cellSI = document.getElementById(`si_${i}`);
                 const cellBMI = document.getElementById(`bmi_amt_${i}`);
                 const cellDia = document.getElementById(`dia_amt_${i}`);
                 const cellHyp = document.getElementById(`hyp_amt_${i}`);
@@ -720,11 +728,12 @@
 
                 if (age === "" || sumInsured === "") {
                     if(nameLbl) nameLbl.innerText = i;
-                    [cellBP, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellPPH, cellCI, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
+                    [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellPPH, cellCI, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
                     continue;
                 }
 
                 if(nameLbl) nameLbl.innerText = name;
+                if(cellSI) cellSI.innerText = sumInsured;
                 const ageBand = getAgeBand(age);
 
                 let basePremium = 0;
@@ -779,7 +788,9 @@
                 cellTotB.innerText = totalB;
 
                 let nmAmt = (riderNM === "Yes") ? 1500 : 0;
-                let mtAmt = (riderMT === "Yes") ? 350 : 0;
+                
+                // Modern Treatments Rider: 15% of basic premium
+                let mtAmt = (riderMT === "Yes") ? Math.round(basePremium * 0.15) : 0;
                 
                 let numericSI = 0;
                 if (sumInsured === '5 Lakh') numericSI = 500000;
@@ -795,14 +806,15 @@
                 
                 let pphAmt = (riderPPH === "Yes") ? Math.round(basePremium * 0.05) : 0;
                 
-                // Critical Illness Logic from the JPG provided
+                // Critical Illness Rider: 25% of Base Sum Insured
                 let ciAmt = 0;
                 if (riderCI === "Yes") {
                     let ciBand = getCIAgeBand(age);
                     if (ciBand) {
                         let rate = ciRates[policyPeriod][ciBand];
                         if (rate && rate !== "NA") {
-                            ciAmt = Math.round((numericSI / 1000) * rate);
+                            let ciSumInsured = numericSI * 0.25;
+                            ciAmt = Math.round((ciSumInsured / 1000) * rate);
                         } else {
                             alert(`Critical illness is not available for age ${age} at a ${policyPeriod} tenure.`);
                             document.getElementById(`criticalIllness_${i}`).value = "No";
