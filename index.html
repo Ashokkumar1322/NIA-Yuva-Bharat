@@ -704,7 +704,6 @@
             
             let totalPayable = 0;
             let activeMembersCount = 0;
-            let eligibleMaternityMembers = 0;
 
             // Frequency and Period multipliers
             let periodMultiplier = parseInt(policyPeriod); // 1, 2, or 3
@@ -717,11 +716,7 @@
             for (let i = 1; i <= rowCount; i++) {
                 const age = document.getElementById(`age_${i}`).value;
                 const sumInsured = document.getElementById(`sumInsured_${i}`).value;
-                const relation = document.getElementById(`relation_${i}`).value;
                 if (age !== "" && sumInsured !== "") activeMembersCount++;
-                if ((relation === "Self" || relation === "Spouse") && age !== "" && sumInsured !== "") {
-                    eligibleMaternityMembers++;
-                }
             }
 
             // Handle Platinum Plan only AND min 2 members condition for Maternity Cover
@@ -738,13 +733,9 @@
             else if (maternitySelect.value === "1,00,000") annualMatAmt = 16522;
             
             let termMatAmt = annualMatAmt * periodMultiplier;
-            let totalMatAmt = Math.round(termMatAmt / freqDivisor);
+            let matAmtPerMember = Math.round(termMatAmt / freqDivisor);
             
-            // Distribute Maternity cost among mandatory eligible members (Self & Spouse)
-            let matPerEligibleMember = 0;
-            if (totalMatAmt > 0 && eligibleMaternityMembers > 0) {
-                matPerEligibleMember = totalMatAmt / eligibleMaternityMembers;
-            }
+            let maternityAppliedCount = 0;
 
             let floaterRate = 0;
             if (indFloater === "Floater") {
@@ -836,10 +827,11 @@
                 let totalA = basePremium + bmiAmt + diaAmt + hypAmt + hospAmt;
                 cellTotA.innerText = totalA;
 
-                // Enforce Maternity split exactly on Self & Spouse
+                // Maternity Premium logic - apply full to first two active members
                 let matAmt = 0;
-                if (totalMatAmt > 0 && (relation === "Self" || relation === "Spouse")) {
-                    matAmt = Math.round(matPerEligibleMember);
+                if (matAmtPerMember > 0 && maternityAppliedCount < 2) {
+                    matAmt = matAmtPerMember;
+                    maternityAppliedCount++;
                 }
                 cellMat.innerText = matAmt;
 
