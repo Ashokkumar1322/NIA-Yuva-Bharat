@@ -13,7 +13,8 @@
             background-color: #f4f7f6;
             color: #333;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             padding: 40px 20px;
         }
         .calculator-container {
@@ -90,8 +91,8 @@
             color: #555;
         }
         .tools-section input {
-            width: 80px;
-            min-width: 70px;
+            width: 110px;
+            min-width: 90px;
             flex-grow: 1;
         }
         .tools-section select {
@@ -217,10 +218,77 @@
             padding: 10px;
         }
 
+        /* Policy Document Styles */
+        .policy-container {
+            margin-top: 30px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .policy-search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .policy-search-box input {
+            max-width: 400px;
+            padding: 8px 12px;
+        }
+        .policy-scrollable {
+            height: 450px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #fdfdfd;
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+        .policy-scrollable h3 {
+            color: #2c3e50;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-top: 20px;
+        }
+        .policy-scrollable h4 {
+            color: #34495e;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+        .policy-scrollable p {
+            margin: 0 0 10px 0;
+        }
+        .policy-scrollable ul {
+            margin: 0 0 15px 0;
+            padding-left: 20px;
+        }
+        .policy-table {
+            width: 100%;
+            min-width: 100%;
+            margin: 15px 0;
+        }
+        .policy-table th {
+            background-color: #f1f5f9;
+        }
+        .policy-table td, .policy-table th {
+            padding: 6px 10px;
+            font-size: 12.5px;
+        }
+        mark {
+            background-color: #fef08a;
+            color: #000000;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+
         /* Print CSS */
         @media print {
             body { background-color: #fff; padding: 0; }
-            .tools-bar, .policy-details, .export-controls, button { display: none !important; }
+            .tools-bar, .policy-details, .export-controls, .policy-container, button { display: none !important; }
             .hide-on-print { display: none !important; }
             .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
             .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
@@ -249,7 +317,7 @@
         
         <div class="policy-details hide-on-print">
             <div class="form-group">
-                <label>Input Mode</label>
+                <label>Choose Method - Age / DOB</label>
                 <select id="inputMode" onchange="toggleInputMode()">
                     <option value="Age" selected>Age Mode</option>
                     <option value="DOB">DOB Mode</option>
@@ -315,8 +383,8 @@
         <div class="tools-bar hide-on-print">
             <div class="tools-section">
                 <span class="tools-label">BMI Calc:</span>
-                <input type="number" id="calcHeight" placeholder="Ht (cm)" step="any" inputmode="decimal">
-                <input type="number" id="calcWeight" placeholder="Wt (kg)" step="any" inputmode="decimal">
+                <input type="number" id="calcHeight" placeholder="Height in cm" step="any" inputmode="decimal">
+                <input type="number" id="calcWeight" placeholder="Weight in Kg" step="any" inputmode="decimal">
                 <button type="button" class="btn" onclick="calculateBMI()">Calculate</button>
                 <span id="bmiResult" class="bmi-msg"></span>
             </div>
@@ -384,7 +452,7 @@
                                     <select id="bmi_${i}">
                                         <option value="">Select...</option><option value=">=18.5 <=32">&gt;=18.5 &lt;=32</option><option value="> 32">&gt; 32</option>
                                     </select>
-                                </td>
+                                end
                                 <td>
                                     <select id="diabetic_${i}">
                                         <option value="">Select...</option><option value="<6.4 HbA1c">&lt;6.4 HbA1c</option><option value="HbA1c > 6.4">HbA1c &gt; 6.4</option>
@@ -586,11 +654,74 @@
             <button type="button" class="btn btn-export" onclick="exportToCSV()">Download as Excel (CSV)</button>
             <button type="button" class="btn btn-export" onclick="exportToPDF()">Download as PDF</button>
         </div>
+
+        <div class="policy-container hide-on-print">
+            <h3>Yuva Bharat Health Policy - Clauses & Terms</h3>
+            <div class="policy-search-box">
+                <span class="tools-label">Search Document:</span>
+                <input type="text" id="policySearchInput" placeholder="Type keyword to look up..." oninput="searchPolicyDocument()">
+            </div>
+            <div class="policy-scrollable" id="policyContentText">
+                <h4>1. PREAMBLE</h4>
+                <p>This is Your "YUVA BHARAT HEALTH POLICY", issued relying on the information disclosed by You in Your Proposal. The terms and conditions set out in this Policy and Schedule will be the basis for any claim and benefit.</p>
+                
+                <h4>Coverage Plans Summary</h4>
+                <ul>
+                    <li><strong>Base Plan:</strong> Clauses 3.1 to 3.17 applicable. Includes Hospitalisation, Organ Transplant, Hospital Cash, Road Ambulance, Cataract, Hazardous Sports, Shared Accommodation Benefit, and Modern Treatments.</li>
+                    <li><strong>Gold Plan:</strong> Clauses 3.1 to 3.25 applicable. Covers Base Plan items plus Critical Care Benefit, Personal Accident Benefit, Auto TOP-UP, Double Reinstatement, and Guaranteed Cumulative Bonus.</li>
+                    <li><strong>Platinum Plan:</strong> Clauses 3.1 to 3.30 applicable. Covers Gold Plan items plus Maternity Coverage, Infertility Treatment, Well Baby Cover, and Birth Right Benefit.</li>
+                </ul>
+
+                <h4>2. KEY DEFINITIONS</h4>
+                <p><strong>ACCIDENT:</strong> A sudden, unforeseen, and involuntary event caused by external, visible, and violent means.</p>
+                <p><strong>ANY ONE ILLNESS:</strong> Continuous Period of Illness including relapse within 45 days from last consultation.</p>
+                <p><strong>CASHLESS FACILITY:</strong> Facility where payments for costs of treatment are directly made to the Network provider by Us.</p>
+                <p><strong>PRE-EXISTING CONDITION/DISEASE:</strong> Any condition diagnosed or for which medical advice/treatment was recommended or received up to 24 months prior to policy commencement.</p>
+
+                <h4>3. BENEFIT SUMMARY LIMITS</h4>
+                <p><strong>Room Rent Limits:</strong> Single AC Room for Sum Insured bands of 5L/10L/15L. Deluxe AC Room for Sum Insured bands of 25L/50L/75L/1Cr.</p>
+                
+                <table class="policy-table">
+                    <thead>
+                        <tr>
+                            <th>Sum Insured Bands</th>
+                            <th>Hospital Cash (Max 5 Days)</th>
+                            <th>Ambulance Charges Limit</th>
+                            <th>Cataract Cap (per eye)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>5 Lakhs, 10 Lakhs & 15 Lakhs</td><td>Rs. 500 / day</td><td>Up to Rs. 5,000</td><td>Up to Rs. 50,000</td></tr>
+                        <tr><td>25 Lakhs</td><td>Rs. 750 / day</td><td>Up to Rs. 7,500</td><td>Up to Rs. 75,000</td></tr>
+                        <tr><td>50 Lakhs</td><td>Rs. 1,000 / day</td><td>Up to Rs. 10,000</td><td>Up to Rs. 1,00,000</td></tr>
+                        <tr><td>75 Lakhs</td><td>Rs. 1,500 / day</td><td>Up to Rs. 15,000</td><td>Up to Rs. 1,25,000</td></tr>
+                        <tr><td>1 Crore</td><td>Rs. 2,000 / day</td><td>Up to Rs. 20,000</td><td>Up to Rs. 1,50,000</td></tr>
+                    </tbody>
+                </table>
+
+                <h4>4. EXCLUSIONS & WAITING PERIODS</h4>
+                <p><strong>Pre-Existing Diseases:</strong> 24 Months waiting period from policy inception.</p>
+                <p><strong>Specific Waiting Period (90 Days):</strong> Diabetes Mellitus, Hypertension, and Cardiac Conditions.</p>
+                <p><strong>Specific Waiting Period (12 Months):</strong> Benign tumors/cysts, Cataract, ENT disorders, Hernia, Hydrocele, Piles/Fistula, Sinusitis, Spinal diseases, Stones, Renal failure, Puberty/Menopause disorders, and Internal Congenital Diseases.</p>
+                <p><strong>Specific Waiting Period (24 Months):</strong> External Congenital Disease, Joint Replacement, Mental Illness, Age-Related Macular Degeneration (ARMD), Genetic disorders, Infertility, and Maternity Coverage.</p>
+                <p><strong>Permanent Exclusions:</strong> Obesity control for cosmetic reasons, Change-of-gender treatments, Plastic surgery (unless trauma/burn reconstructive), Custodial bed rest, and Intentional self-inflicted injuries.</p>
+
+                <h4>5. GENERAL TERMS & CONDITIONS</h4>
+                <p><strong>Cancellation:</strong> Policyholder can cancel via 7 days written notice. Premium refunds are applicable lineally if no claims exist. Insurer can cancel with 15 days notice on grounds of fraud or misrepresentation.</p>
+                <p><strong>Free Look Period:</strong> 30 Days from date of policy receipt to review terms and seek refund if unsatisfied.</p>
+                <p><strong>Claim Settlement Window:</strong> Claims will be settled or rejected within 15 days from receiving the last necessary document. Penal interest of 2% above bank rate is applicable for delayed payments.</p>
+            </div>
+        </div>
         
     </div>
 
     <script>
         const rowCount = 6;
+        let originalPolicyHtml = ""; // Will preserve clear copy for text search queries
+
+        window.addEventListener('DOMContentLoaded', () => {
+            originalPolicyHtml = document.getElementById('policyContentText').innerHTML;
+        });
         
         const ciRates = {
             "1 yr": { "18-25": 1.05, "26-30": 1.55, "31-35": 2.2, "36-40": 3.05, "41-45": 5.01, "46-50": 9.57, "51-55": 15.77, "56-60": 26.7, "61-65": 39.64, "66-70": 67.62, "71-75": 135.23, "76-80": 246.79, "81+": 438.13 },
@@ -1152,7 +1283,7 @@
                 let ltdAmt = 0;
                 if (policyPeriod === "2 yr") ltdAmt = -Math.round(totalC * 0.05);
                 if (policyPeriod === "3 yr") ltdAmt = -Math.round(totalC * 0.07);
-                cellLTD.innerText = ltdAmt;
+                options: cellLTD.innerText = ltdAmt;
 
                 let finalMemberPremium = totalC + ltdAmt;
                 cellFinalMember.innerText = finalMemberPremium;
@@ -1290,25 +1421,75 @@
         }
 
         function exportToPDF() {
-            const wrapper = document.getElementById('pdf-wrapper');
-            const originalOverflowX = wrapper.style.overflowX;
-            wrapper.style.overflowX = 'visible';
+            const wrapper = document.getElementById('exportTable');
             
+            // Generate a clone with custom responsive print attributes to bypass empty canvas renders on mobile
             const opt = {
-                margin:       [0.2, 0.2, 0.2, 0.2],
+                margin:       [0.4, 0.3, 0.4, 0.3],
                 filename:     'Yuva_Bharat_Premium_Quote.pdf',
-                image:        { type: 'jpeg', quality: 1 },
+                image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
                     scale: 2, 
                     useCORS: true,
-                    windowWidth: 1200 
+                    letterRendering: true,
+                    scrollY: 0,
+                    scrollX: 0
                 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
             };
             
-            html2pdf().set(opt).from(wrapper).save().then(() => {
-                wrapper.style.overflowX = originalOverflowX;
-            });
+            html2pdf().set(opt).from(wrapper).save();
+        }
+
+        function searchPolicyDocument() {
+            const query = document.getElementById('policySearchInput').value.toLowerCase().trim();
+            const container = document.getElementById('policyContentText');
+            
+            // Re-render baseline text block
+            container.innerHTML = originalPolicyHtml;
+            if (!query) return;
+
+            const textNodes = [];
+            function walk(node) {
+                if (node.nodeType === 3) {
+                    textNodes.push(node);
+                } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        walk(node.childNodes[i]);
+                    }
+                }
+            }
+            walk(container);
+
+            // Execute highlight injection over safe structural text runs
+            for (let i = textNodes.length - 1; i >= 0; i--) {
+                const node = textNodes[i];
+                const val = node.nodeValue;
+                const lowerVal = val.toLowerCase();
+                
+                if (lowerVal.includes(query)) {
+                    const parent = node.parentNode;
+                    let lastIdx = 0;
+                    const frag = document.createDocumentFragment();
+                    
+                    let idx = lowerVal.indexOf(query, lastIdx);
+                    while (idx !== -1) {
+                        // Text run prefix matching word segment
+                        frag.appendChild(document.createTextNode(val.substring(lastIdx, idx)));
+                        
+                        // Highlighted markup match
+                        const matchText = val.substring(idx, idx + query.length);
+                        const mark = document.createElement('mark');
+                        mark.appendChild(document.createTextNode(matchText));
+                        frag.appendChild(mark);
+                        
+                        lastIdx = idx + query.length;
+                        idx = lowerVal.indexOf(query, lastIdx);
+                    }
+                    frag.appendChild(document.createTextNode(val.substring(lastIdx)));
+                    parent.replaceChild(frag, node);
+                }
+            }
         }
     </script>
 </body>
