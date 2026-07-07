@@ -135,7 +135,7 @@
         }
         table {
             width: 100%;
-            min-width: 1700px; 
+            min-width: 1500px; 
             border-collapse: collapse;
         }
         th, td {
@@ -162,7 +162,7 @@
             border-left: 2px solid #94a3b8;
         }
         
-        input[type="text"], input[type="number"], select {
+        input[type="text"], input[type="number"], input[type="date"], select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -248,6 +248,13 @@
         <h2>New India Yuva Bharat Premium Calc</h2>
         
         <div class="policy-details hide-on-print">
+            <div class="form-group">
+                <label>Input Mode</label>
+                <select id="inputMode" onchange="toggleInputMode()">
+                    <option value="Age" selected>Age Mode</option>
+                    <option value="DOB">DOB Mode</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label>Zone</label>
                 <select id="zone">
@@ -335,12 +342,12 @@
                     <tr>
                         <th colspan="5" class="group-head">Basic Details</th>
                         <th colspan="4" class="group-head divider-left">Health Discounts/Loadings</th>
-                        <th colspan="5" class="group-head divider-left">Riders</th>
+                        <th colspan="4" class="group-head divider-left">Riders</th>
                     </tr>
                     <tr>
                         <th style="width: 40px;">Sl No</th>
                         <th style="width: 150px;">Name</th>
-                        <th style="width: 70px;">Age</th>
+                        <th id="ageColumnHeader" style="width: 130px;">Age</th>
                         <th style="width: 100px;">Relation</th>
                         <th style="width: 110px;">Sum Insured</th>
                         
@@ -352,7 +359,6 @@
                         <th class="divider-left" style="width: 110px;">Non-Medical</th>
                         <th style="width: 140px;">Modern Treatments</th>
                         <th style="width: 130px;">Durable Devices</th>
-                        <th style="width: 170px;">Pre/Post Hospitalisation</th>
                         <th style="width: 120px;">Critical Illness</th>
                     </tr>
                 </thead>
@@ -402,9 +408,6 @@
                                 </td>
                                 <td>
                                     <select id="durableDevices_${i}"><option value="No">No</option><option value="Yes">Yes</option></select>
-                                </td>
-                                <td>
-                                    <select id="prePostHosp_${i}"><option value="No">No</option><option value="Yes">Yes</option></select>
                                 </td>
                                 <td>
                                     <select id="criticalIllness_${i}"><option value="No">No</option><option value="Yes">Yes</option></select>
@@ -532,12 +535,6 @@
                         <td id="dmd_amt_4"></td><td id="dmd_amt_5"></td><td id="dmd_amt_6"></td>
                     </tr>
                     <tr>
-                        <td>Pre & Post Hospitalisation Rider</td>
-                        <td class="action-col">add</td>
-                        <td id="pph_amt_1"></td><td id="pph_amt_2"></td><td id="pph_amt_3"></td>
-                        <td id="pph_amt_4"></td><td id="pph_amt_5"></td><td id="pph_amt_6"></td>
-                    </tr>
-                    <tr>
                         <td>Critical Illness Rider (25% SI)</td>
                         <td class="action-col">add</td>
                         <td id="ci_amt_1"></td><td id="ci_amt_2"></td><td id="ci_amt_3"></td>
@@ -632,6 +629,44 @@
             if (a <= 60) return "56-60";
             if (a <= 65) return "61-65";
             return ">65";
+        }
+
+        function calculateAgeFromDOB(dobString) {
+            if (!dobString) return "";
+            const today = new Date();
+            const birthDate = new Date(dobString);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age >= 0 ? age : "";
+        }
+
+        function toggleInputMode() {
+            const mode = document.getElementById('inputMode').value;
+            const header = document.getElementById('ageColumnHeader');
+            
+            if (mode === 'Age') {
+                header.innerText = "Age";
+            } else {
+                header.innerText = "Date of Birth";
+            }
+
+            for (let i = 1; i <= rowCount; i++) {
+                const input = document.getElementById(`age_${i}`);
+                if (input) {
+                    input.value = ""; 
+                    if (mode === 'Age') {
+                        input.type = 'number';
+                        input.placeholder = 'Age';
+                    } else {
+                        input.type = 'date';
+                        input.placeholder = '';
+                    }
+                }
+            }
+            runPremiumCalculation();
         }
 
         const ageBandsRef = ["0-17", "18-30", "31-35", "36-40", "41-45", "46-50", "51-55", "56-60", "61-65", ">65"];
@@ -913,6 +948,7 @@
             const policyPeriod = document.getElementById('policyPeriod').value;
             const globalLoyalty = document.getElementById('loyaltyDiscount').value;
             const maternitySelect = document.getElementById('maternityCover');
+            const inputMode = document.getElementById('inputMode').value;
             
             let totalPayable = 0;
             let activeMembersCount = 0;
@@ -924,9 +960,12 @@
             else if (frequency === 'Monthly') freqDivisor = 12;
 
             for (let i = 1; i <= rowCount; i++) {
-                const age = document.getElementById(`age_${i}`).value;
+                let ageVal = document.getElementById(`age_${i}`).value;
+                if (inputMode === 'DOB' && ageVal) {
+                    ageVal = calculateAgeFromDOB(ageVal);
+                }
                 const sumInsured = document.getElementById(`sumInsured_${i}`).value;
-                if (age !== "" && sumInsured !== "") activeMembersCount++;
+                if (ageVal !== "" && sumInsured !== "") activeMembersCount++;
             }
 
             if (planType !== "Platinum Plan" || activeMembersCount < 2) {
@@ -953,7 +992,11 @@
 
             for (let i = 1; i <= rowCount; i++) {
                 const name = document.getElementById(`name_${i}`).value || `Member ${i}`;
-                const age = document.getElementById(`age_${i}`).value;
+                let ageInput = document.getElementById(`age_${i}`).value;
+                let age = ageInput;
+                if (inputMode === 'DOB' && ageInput) {
+                    age = calculateAgeFromDOB(ageInput);
+                }
                 const relation = document.getElementById(`relation_${i}`).value;
                 const sumInsured = document.getElementById(`sumInsured_${i}`).value;
                 
@@ -965,7 +1008,6 @@
                 const riderNM = document.getElementById(`nonMedical_${i}`).value;
                 const riderMT = document.getElementById(`modernTreatments_${i}`).value;
                 const riderDMD = document.getElementById(`durableDevices_${i}`).value;
-                const riderPPH = document.getElementById(`prePostHosp_${i}`).value;
                 const riderCI = document.getElementById(`criticalIllness_${i}`).value;
 
                 const nameLbl = document.getElementById(`name_lbl_${i}`);
@@ -983,7 +1025,6 @@
                 const cellNM = document.getElementById(`nm_amt_${i}`);
                 const cellMT = document.getElementById(`mt_amt_${i}`);
                 const cellDmdReal = document.getElementById(`dmd_amt_${i}`);
-                const cellPPH = document.getElementById(`pph_amt_${i}`);
                 const cellCI = document.getElementById(`ci_amt_${i}`);
                 const cellTotC = document.getElementById(`total_c_${i}`);
                 const cellLTD = document.getElementById(`ltd_amt_${i}`);
@@ -991,7 +1032,7 @@
 
                 if (age === "" || sumInsured === "") {
                     if(nameLbl) nameLbl.innerText = i;
-                    [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellPPH, cellCI, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
+                    [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellCI, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
                     continue;
                 }
 
@@ -1076,8 +1117,6 @@
                 let termDmdAmt = riderSI * 0.01 * periodMultiplier;
                 let dmdAmt = (riderDMD === "Yes") ? Math.round(termDmdAmt / freqDivisor) : 0; 
                 
-                let pphAmt = (riderPPH === "Yes") ? Math.round(basePremium * 0.05) : 0;
-                
                 let ciAmt = 0;
                 if (riderCI === "Yes") {
                     let ageInt = parseInt(age);
@@ -1105,10 +1144,9 @@
                 cellNM.innerText = nmAmt;
                 cellMT.innerText = mtAmt;
                 if(cellDmdReal) cellDmdReal.innerText = dmdAmt;
-                cellPPH.innerText = pphAmt;
                 cellCI.innerText = ciAmt;
 
-                let totalC = totalB + nmAmt + mtAmt + dmdAmt + pphAmt + ciAmt;
+                let totalC = totalB + nmAmt + mtAmt + dmdAmt + ciAmt;
                 cellTotC.innerText = totalC;
 
                 let ltdAmt = 0;
@@ -1132,7 +1170,7 @@
             });
 
             for (let i = 1; i <= rowCount; i++) {
-                const elementsRow = [`name_${i}`, `age_${i}`, `relation_${i}`, `sumInsured_${i}`, `bmi_${i}`, `diabetic_${i}`, `hypertensive_${i}`, `hospitalisation_${i}`, `nonMedical_${i}`, `modernTreatments_${i}`, `durableDevices_${i}`, `prePostHosp_${i}`, `criticalIllness_${i}`];
+                const elementsRow = [`name_${i}`, `age_${i}`, `relation_${i}`, `sumInsured_${i}`, `bmi_${i}`, `diabetic_${i}`, `hypertensive_${i}`, `hospitalisation_${i}`, `nonMedical_${i}`, `modernTreatments_${i}`, `durableDevices_${i}`, `criticalIllness_${i}`];
                 elementsRow.forEach(id => {
                     const targetInput = document.getElementById(id);
                     if(targetInput) {
@@ -1176,12 +1214,12 @@
                 return;
             }
             
-            const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'];
+            const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'];
             
             fields.forEach(field => {
                 const element = document.getElementById(`${field}_${rowNo}`);
                 if (element) {
-                    if (['nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'].includes(field)) {
+                    if (['nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'].includes(field)) {
                         element.value = "No"; 
                     } else {
                         element.value = ""; 
@@ -1196,12 +1234,12 @@
         function clearAll() {
             if(confirm("Are you sure you want to clear all data in the calculator?")) {
                 for (let i = 1; i <= rowCount; i++) {
-                    const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'];
+                    const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'];
                     
                     fields.forEach(field => {
                         const element = document.getElementById(`${field}_${i}`);
                         if (element) {
-                            if (['nonMedical', 'modernTreatments', 'durableDevices', 'prePostHosp', 'criticalIllness'].includes(field)) {
+                            if (['nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'].includes(field)) {
                                 element.value = "No"; 
                             } else {
                                 element.value = ""; 
@@ -1210,6 +1248,8 @@
                     });
                 }
                 
+                document.getElementById('inputMode').selectedIndex = 0;
+                toggleInputMode();
                 document.getElementById('zone').selectedIndex = 0;
                 document.getElementById('planType').selectedIndex = 0;
                 document.getElementById('maternityCover').selectedIndex = 0;
@@ -1251,8 +1291,6 @@
 
         function exportToPDF() {
             const wrapper = document.getElementById('pdf-wrapper');
-            
-            // Temporarily bypass html2canvas mobile overflow cutting bug
             const originalOverflowX = wrapper.style.overflowX;
             wrapper.style.overflowX = 'visible';
             
@@ -1263,7 +1301,7 @@
                 html2canvas:  { 
                     scale: 2, 
                     useCORS: true,
-                    windowWidth: 1200 // Forces a desktop-like viewport specifically for PDF rendering
+                    windowWidth: 1200 
                 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
             };
