@@ -13,7 +13,8 @@
             background-color: #f4f7f6;
             color: #333;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             padding: 40px 20px;
         }
         .calculator-container {
@@ -22,7 +23,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             width: 100%;
-            max-width: 1450px; 
+            max-width: 1550px; 
         }
         h2 {
             margin-top: 0;
@@ -90,8 +91,8 @@
             color: #555;
         }
         .tools-section input {
-            width: 80px;
-            min-width: 70px;
+            width: 120px;
+            min-width: 100px;
             flex-grow: 1;
         }
         .tools-section select {
@@ -135,7 +136,7 @@
         }
         table {
             width: 100%;
-            min-width: 1500px; 
+            min-width: 1650px; 
             border-collapse: collapse;
         }
         th, td {
@@ -217,10 +218,82 @@
             padding: 10px;
         }
 
+        /* Policy View Wrapper Styles */
+        .policy-container {
+            margin-top: 30px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .policy-search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .policy-search-box input {
+            max-width: 400px;
+            padding: 8px 12px;
+        }
+        .policy-scrollable {
+            height: 500px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 6px;
+            background-color: #fdfdfd;
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+        .policy-scrollable h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 6px;
+            margin-top: 25px;
+        }
+        .policy-scrollable h4 {
+            color: #34495e;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 4px;
+        }
+        .policy-scrollable p {
+            margin: 0 0 10px 0;
+        }
+        .policy-scrollable ul {
+            margin: 0 0 15px 0;
+            padding-left: 20px;
+        }
+        .policy-table {
+            width: 100%;
+            min-width: 100%;
+            margin: 15px 0;
+            border-collapse: collapse;
+        }
+        .policy-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+        }
+        .policy-table td, .policy-table th {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            font-size: 12.5px;
+        }
+        mark {
+            background-color: #fef08a;
+            color: #000000;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+
         /* Print CSS */
         @media print {
             body { background-color: #fff; padding: 0; }
-            .tools-bar, .policy-details, .export-controls, button { display: none !important; }
+            .tools-bar, .policy-details, .export-controls, .policy-container, button { display: none !important; }
             .hide-on-print { display: none !important; }
             .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
             .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
@@ -289,9 +362,9 @@
             <div class="form-group">
                 <label>Policy Period</label>
                 <select id="policyPeriod">
-                    <option value="1 yr">1 yr</option>
-                    <option value="2 yr">2 yr</option>
-                    <option value="3 yr">3 yr</option>
+                    <option value="1 yr" selected>1 yr</option>
+                    <option value="2 yr" disabled>2 yr</option>
+                    <option value="3 yr" disabled>3 yr</option>
                 </select>
             </div>
             <div class="form-group">
@@ -315,8 +388,8 @@
         <div class="tools-bar hide-on-print">
             <div class="tools-section">
                 <span class="tools-label">BMI Calc:</span>
-                <input type="number" id="calcHeight" placeholder="Ht (cm)" step="any" inputmode="decimal">
-                <input type="number" id="calcWeight" placeholder="Wt (kg)" step="any" inputmode="decimal">
+                <input type="number" id="calcHeight" placeholder="Height in cm" step="any" inputmode="decimal">
+                <input type="number" id="calcWeight" placeholder="Weight in kg" step="any" inputmode="decimal">
                 <button type="button" class="btn" onclick="calculateBMI()">Calculate</button>
                 <span id="bmiResult" class="bmi-msg"></span>
             </div>
@@ -342,7 +415,7 @@
                     <tr>
                         <th colspan="5" class="group-head">Basic Details</th>
                         <th colspan="4" class="group-head divider-left">Health Discounts/Loadings</th>
-                        <th colspan="4" class="group-head divider-left">Riders</th>
+                        <th colspan="5" class="group-head divider-left">Riders</th>
                     </tr>
                     <tr>
                         <th style="width: 40px;">Sl No</th>
@@ -360,6 +433,7 @@
                         <th style="width: 140px;">Modern Treatments</th>
                         <th style="width: 130px;">Durable Devices</th>
                         <th style="width: 120px;">Critical Illness</th>
+                        <th style="width: 140px;">Pre & Post Hosp</th>
                     </tr>
                 </thead>
                 <tbody id="calculator-body">
@@ -411,6 +485,9 @@
                                 </td>
                                 <td>
                                     <select id="criticalIllness_${i}"><option value="No">No</option><option value="Yes">Yes</option></select>
+                                </td>
+                                <td>
+                                    <select id="prePostHosp_${i}"><option value="No">No</option><option value="Yes">Yes</option></select>
                                 </td>
                             </tr>
                             `);
@@ -540,6 +617,12 @@
                         <td id="ci_amt_1"></td><td id="ci_amt_2"></td><td id="ci_amt_3"></td>
                         <td id="ci_amt_4"></td><td id="ci_amt_5"></td><td id="ci_amt_6"></td>
                     </tr>
+                    <tr>
+                        <td>Pre & Post Hospitalisation Rider (5% BP)</td>
+                        <td class="action-col">add</td>
+                        <td id="pph_amt_1"></td><td id="pph_amt_2"></td><td id="pph_amt_3"></td>
+                        <td id="pph_amt_4"></td><td id="pph_amt_5"></td><td id="pph_amt_6"></td>
+                    </tr>
                     <tr class="total-row">
                         <td>TOTAL C</td>
                         <td></td>
@@ -586,11 +669,101 @@
             <button type="button" class="btn btn-export" onclick="exportToCSV()">Download as Excel (CSV)</button>
             <button type="button" class="btn btn-export" onclick="exportToPDF()">Download as PDF</button>
         </div>
+
+        <div class="policy-container hide-on-print">
+            <h3>Yuva Bharat Health Policy - Clauses & Terms</h3>
+            <div class="policy-search-box">
+                <span class="tools-label">Search Document:</span>
+                <input type="text" id="policySearchInput" placeholder="Type keyword to look up..." oninput="searchPolicyDocument()">
+            </div>
+            <div class="policy-scrollable" id="policyContentText">
+                <h4>1. PREAMBLE & PLAN COVERS</h4>
+                <p>This is Your "YUVA BHARAT HEALTH POLICY", issued by Us (The New India Assurance Co. Ltd.) relying on information disclosed in Your Proposal. The terms and conditions set out in this Policy and its Schedule will be the basis for any claim and/or benefit. If during the Period of Insurance, You or any Insured Person incurs Hospitalisation Expenses which are Reasonable and Customary, and Medically Necessary for treatment of any Illness or Injury, we will reimburse such expense through the Third-Party Administrator.</p>
+                <ul>
+                    <li><strong>Base Plan (Clauses 3.1 to 3.17):</strong> Covers Hospitalisation Expenses, Organ Transplant, Hospital Cash, Road Ambulance Charges, Treatment for Congenital Diseases, Coverage for Cataract, Coverage for Hazardous Sports, Shared Accommodation Benefit, Specific Coverages, Modern Treatments/Procedures, Cost of Health Check-Up, Medical Second Opinion, Reinstatement of Sum Insured, AYUSH Treatment, New Born Baby Coverage.</li>
+                    <li><strong>Gold Plan (Clauses 3.1 to 3.25):</strong> Covers Base Plan benefits + Critical Care Benefit, Personal Accident Benefit, Auto TOP-UP, Air Ambulance Charges, Double Reinstatement of Sum Insured, and Guaranteed Cumulative Bonus.</li>
+                    <li><strong>Platinum Plan (Clauses 3.1 to 3.30):</strong> Covers Gold Plan benefits + Maternity Coverage, Infertility Treatment, Well Baby Cover, and Birth Right Benefit.</li>
+                </ul>
+
+                <h4>2. KEY DEFINITIONS</h4>
+                <p><strong>ACCIDENT:</strong> A sudden, unforeseen and involuntary event caused by external, visible and violent means.</p>
+                <p><strong>ANY ONE ILLNESS:</strong> Continuous Period of Illness including relapse within 45 days from date of last consultation with the Hospital where treatment was taken.</p>
+                <p><strong>AYUSH HOSPITAL:</strong> A healthcare facility registered with local authorities, under the round-the-clock supervision of a qualified registered AYUSH Medical Practitioner, equipped with at least 5 in-patient beds, dedicated therapy sections/OT, and maintaining proper daily records.</p>
+                <p><strong>CASHLESS FACILITY:</strong> Facility extended by Us to You where payments of costs of treatment undergone in accordance with policy terms are directly made to the Network provider by Us to the extent of pre-authorization approved.</p>
+                <p><strong>PRE-EXISTING CONDITION/DISEASE:</strong> Any condition, ailment, Injury or Illness diagnosed by a physician or for which medical advice/treatment was recommended or received up to 24 months prior to date of commencement of policy.</p>
+                <p><strong>CRITICAL ILLNESSES (Clause 2.9):</strong> Includes Cancer of Specified Severity (with key structural exclusions like Carcinoma in situ, low-malignant thyroid, or presence of HIV), Myocardial Infarction (First Heart Attack), Open Chest CABG, Open Heart Valve Repair/Replacement, Coma of Specified Severity (lasting at least 96 hours on life support with subsequent permanent neurological deficits), Kidney Failure requiring regular dialysis, Stroke resulting in permanent symptoms, Major Organ/Bone Marrow Transplant, Permanent Paralysis of Limbs, Motor Neurone Disease, Multiple Sclerosis, Third Degree Burns (covering min 20% body surface area), Major Head Trauma, End Stage Lung Failure, and End Stage Liver Failure.</p>
+
+                <h4>3. REIMBURSEMENT DETAILS & SUB-LIMITS</h4>
+                <p><strong>Room Rent Limits:</strong> Single AC Room for Sum Insured bands of 5L/10L/15L. Deluxe AC Room for Sum Insured bands of 25L/50L/75L/1Cr. Includes associated boarding, nursing, DMO/RMO charges. Proportionate Deduction applies to Associate Medical Expenses if higher room category is chosen.</p>
+                <p><strong>Hospital Cash:</strong> Max 5 days for Any One Illness (requires >24 hours stay). Limits: 5L/10L/15L (Rs. 500/day), 25L (Rs. 750/day), 50L (Rs. 1,00,000/day), 75L (Rs. 1,500/day), 1Cr (Rs. 2,000/day). Reduces Sum Insured.</p>
+                <p><strong>Road Ambulance Charges:</strong> Per Any One Illness: 5L/10L/15L (Up to Rs. 5,000), 25L (Up to Rs. 7,500), 50L (Up to Rs. 10,000), 75L (Up to Rs. 15,000), 1Cr (Up to Rs. 20,000).</p>
+                <p><strong>Shared Accommodation Cash Benefit:</strong> Opting for shared accommodation provides an additional daily cash benefit: 5L/10L/15L (Rs. 750/day), 25L (Rs. 1,000/day), 50L (Rs. 1,250/day), 75L (Rs. 1,500/day), 1Cr (Rs. 1,750/day).</p>
+                <p><strong>Cataract Coverage:</strong> Caps per eye per insured: 5L/10L/15L (Rs. 50,000), 25L (Rs. 75,000), 50L (Rs. 1,00,000), 75L (Rs. 1,25,000), 1Cr (Rs. 1,50,000).</p>
+                <p><strong>Specific Coverages:</strong> Artificial life maintenance (up to 25% SI, max 15 days in certified vegetative state); Puberty/Menopause disorders (up to 25% SI sub-limit); ARMD for intravitreal injections (up to 20% SI sub-limit); Genetic diseases/disorders (25% SI sub-limit); Mental Illness treatment at specialized mental health establishments (25% SI sub-limit after 24 months continuous coverage). Psychological counseling and behavioral/family therapies are permanently excluded.</p>
+
+                <table class="policy-table">
+                    <thead>
+                        <tr>
+                            <th>Modern Treatments Cap (Per Policy Period)</th>
+                            <th>5L/10L/15L</th>
+                            <th>25L</th>
+                            <th>50L</th>
+                            <th>75L</th>
+                            <th>1 Crore</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Uterine Artery Embolization & HIFU</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.25 L</td><td>Rs. 2.5 L</td></tr>
+                        <tr><td>Balloon Sinuplasty</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.25 L</td><td>Rs. 2.5 L</td></tr>
+                        <tr><td>Deep Brain Stimulation</td><td>Rs. 2 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td><td>Rs. 6 L</td><td>Rs. 7.5 L</td></tr>
+                        <tr><td>Oral Chemotherapy</td><td>Rs. 50 K</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td></tr>
+                        <tr><td>Immunotherapy (Monoclonal Antibody Injection)</td><td>Rs. 1 L</td><td>Rs. 2 L</td><td>Rs. 3 L</td><td>Rs. 4 L</td><td>Rs. 5 L</td></tr>
+                        <tr><td>Intravitreal Injections</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td></tr>
+                        <tr><td>Robotic Surgeries</td><td>Rs. 2 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td><td>Rs. 6 L</td><td>Rs. 7.5 L</td></tr>
+                        <tr><td>Stereotactic Radiosurgeries</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td><td>Rs. 4 L</td><td>Rs. 5 L</td></tr>
+                        <tr><td>Bronchial Thermoplasty</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td></tr>
+                        <tr><td>Vaporisation of the Prostate (Laser Treatment)</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td></tr>
+                        <tr><td>IONM (Intra Operative Neuro Monitoring)</td><td>Rs. 30 K</td><td>Rs. 50 K</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td></tr>
+                        <tr><td>Stem Cell Therapy (Bone Marrow Transplant)</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td></tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Maternity Coverage (Platinum Plan):</strong> Covered after 24 months continuous coverage. Normal/Caesarean limit: 5L to 50L (Rs. 25,000 single, Rs. 37,500 twins); 75L (Rs. 37,500 single, Rs. 50,000 twins); 1Cr (Rs. 50,000 single, Rs. 62,500 twins). Limited to 2 claims per policy lifetime. Fresh waiting periods apply for second child events.</p>
+                <p><strong>Infertility Treatment:</strong> Lifetime limit up to Rs. 50,000 (5L/10L/15L) to Rs. 2,00,000 (1Cr), accessible after 24 months continuous coverage under Platinum plan.</p>
+                <p><strong>Birth Right Benefit:</strong> Lump sum amount paid upon certified lifetime diagnosis of covered child disorders (Autism spectrum, Cerebral Palsy, Down's syndrome) from Rs. 30,000 to Rs. 1,00,000 based on sum insured band.</p>
+
+                <h4>4. EXCLUSIONS & WAITING PERIODS</h4>
+                <p><strong>PED Waiting Period (Code-Excl01):</strong> Expenses related to treatment of pre-existing diseases and complications are excluded until 24 months of continuous coverage expire.</p>
+                <p><strong>First 30 Days Waiting Period (Code-Excl03):</strong> Treatment of any illness within 30 days from initial policy inception is excluded except accident-related claims.</p>
+                <p><strong>90 Days Specific Waiting Period:</strong> Diabetes Mellitus, Hypertension, and Cardiac Conditions.</p>
+                <p><strong>12 Months Specific Waiting Period:</strong> Benign tumors/cysts/polyps, benign ENT disorders, benign prostate hypertrophy, Cataract, Gastric/Duodenal ulcers, Gout/Rheumatism, Hernia, Hydrocele, Piles/Fissures/Fistula, Pilonidal sinus/Sinusitis, Prolapse Intervertebral Disc/Spinal diseases (unless accident), Skin disorders, Gall bladder/Bile duct stones, Urinary system stones, Renal failure, and Internal Congenital Diseases.</p>
+                <p><strong>24 Months Specific Waiting Period:</strong> Congenital External Disease, Joint Replacement due to degenerative conditions, age-related Osteoarthritis/Osteoporosis, Mental Illness, ARMD, Genetic disorders, Infertility treatments, and Maternity Coverage.</p>
+                <p><strong>Permanent Exclusions:</strong> Obesity/weight control surgical treatments (unless therapeutic protocols match specified strict criteria such as BMI >=40); Change-of-gender treatments; Cosmetic or plastic surgery (unless post-accident/burn/cancer reconstruction); Breach of law with criminal intent; Excluded explicit health providers; Alcoholism/Drug substance abuse; Dietary supplements without standard script; Refractive error corrections under 7.5 diopters; Domiciliary hospitalization expenses; War and nuclear radiation exposures.</p>
+
+                <h4>5. GENERAL TERMS & CLAUSES</h4>
+                <p><strong>Free Look Period:</strong> 30 days window from date of policy document receipt to review terms and request termination/refund if unsatisfied.</p>
+                <p><strong>Claim Settlement Window:</strong> Company must settle or reject a claim within 15 days from receiving the last necessary document. Delays make the insurer liable to pay interest to the policyholder at a rate 2% above the bank rate.</p>
+                <p><strong>Zone Co-Pay:</strong> Zone 1 premium covers treatment anywhere in India with zero co-payment. If a baseline Zone 2 policyholder accepts planned treatment within a Zone 1 territory, a mandatory 10% co-payment applies on the final admissible claim total.</p>
+                <p><strong>Long-Term Policy Rules:</strong> When multi-year selections apply, Sum Insured, waiting periods, sub-limits, and bonuses act independently per year and cannot be carried over, advanced, or stacked cumulatively.</p>
+
+                <h4>ANNEXURE I: SELECTION OF DAY CARE TREATMENTS (1-280)</h4>
+                <p>Covers a comprehensive schedule of 280 technical procedures spanning ENT (Stapedotomy, Myringoplasty), Ophthalmology (Cataract, Retinal Lesions), Oncology (Chemotherapy, Radiotherapy, SRS), Urology (AV Fistula, URSL, Haemodialysis), Gynaecology (D&C, Hysteroscopy, Myomectomy), Orthopaedics (Arthroscopic Repair, Tendon Transfer), and Paediatric surgery (Orchidopexy, Vaginoplasty).</p>
+
+                <h4>ANNEXURE II: EXCLUDED & SUBSUMED DASHBOARD ITEMS</h4>
+                <p><strong>List I (Non-Payable):</strong> Baby food, utilities, cold/hot packs, internet charges, telephone, laundry, mineral water, diapers, sanitizers, braces, and specialized external equipment (CPAP, BIPAP, infusion pumps unless used inside network settings).</p>
+                <p><strong>List II, III, & IV (Subsumed Items):</strong> Subsumed under Room Charges (Admission kit, visitors passes, daily charts, house-keeping, AC costs). Subsumed under Procedure Charges (Razors, surgical blades, aprons, boyles apparatus, drapes). Subsumed under Treatment costs (Urine containers, antiseptic mouthwash, swabs, gloves, urometer).</p>
+            </div>
+        </div>
         
     </div>
 
     <script>
         const rowCount = 6;
+        let originalPolicyHtml = "";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            originalPolicyHtml = document.getElementById('policyContentText').innerHTML;
+        });
         
         const ciRates = {
             "1 yr": { "18-25": 1.05, "26-30": 1.55, "31-35": 2.2, "36-40": 3.05, "41-45": 5.01, "46-50": 9.57, "51-55": 15.77, "56-60": 26.7, "61-65": 39.64, "66-70": 67.62, "71-75": 135.23, "76-80": 246.79, "81+": 438.13 },
@@ -786,7 +959,7 @@
                     },
                     "Zone 2": {
                         "5 Lakh": [2183, 3940, 4488, 5323, 6936, 7804, 9643, 10394, 13677, 15311],
-                        "10 Lakh": [2579, 4556, 5237, 6267, 8149, 9259, 11532, 12532, 16586, 18603],
+                        "10 Lakh": [1317, 2324, 2671, 3196, 4155, 4720, 5878, 6388, 8454, 9482],
                         "15 Lakh": [3143, 5486, 6333, 7627, 9904, 11327, 14169, 15470, 20547, 23075],
                         "25 Lakh": [4269, 7337, 8482, 10226, 13360, 15285, 19132, 20897, 27761, 31179],
                         "50 Lakh": [5974, 10191, 11790, 14220, 18671, 21349, 26719, 29174, 38765, 43540],
@@ -850,72 +1023,10 @@
                         "5 Lakh": [1115, 2010, 2290, 2715, 3537, 3979, 4916, 5299, 6971, 7804],
                         "10 Lakh": [1317, 2324, 2671, 3196, 4155, 4720, 5878, 6388, 8454, 9482],
                         "15 Lakh": [1604, 2798, 3229, 3889, 5049, 5774, 7222, 7885, 10472, 11760],
-                        "25 Lakh": [2178, 3741, 4325, 5213, 6810, 7791, 9751, 10651, 14148, 15890],
-                        "50 Lakh": [3046, 5195, 6010, 7248, 9516, 10881, 13617, 14869, 19756, 22189],
-                        "75 Lakh": [3444, 5876, 6799, 8202, 10769, 12316, 15415, 16833, 22368, 25124],
-                        "1 Cr": [3726, 6360, 7360, 8878, 11660, 13334, 16690, 18227, 24220, 27207]
-                    }
-                }
-            },
-            "Monthly": {
-                "Basic Plan": {
-                    "Zone 1": {
-                        "5 Lakh": [391, 553, 667, 839, 1100, 1315, 1693, 1909, 2582, 2919],
-                        "10 Lakh": [478, 677, 818, 1031, 1354, 1619, 2086, 2353, 3185, 3601],
-                        "15 Lakh": [592, 842, 1018, 1285, 1689, 2022, 2606, 2940, 3982, 4503],
-                        "25 Lakh": [792, 1130, 1369, 1729, 2276, 2727, 3517, 3970, 5378, 6083],
-                        "50 Lakh": [1096, 1569, 1903, 2406, 3172, 3801, 4905, 5538, 7507, 8492],
-                        "75 Lakh": [1239, 1774, 2152, 2722, 3589, 4301, 5551, 6269, 8499, 9614],
-                        "1 Cr": [1339, 1919, 2329, 2946, 3885, 4656, 6011, 6787, 9202, 10410]
-                    },
-                    "Zone 2": {
-                        "5 Lakh": [322, 454, 547, 687, 901, 1077, 1385, 1562, 2112, 2387],
-                        "10 Lakh": [392, 555, 670, 844, 1108, 1325, 1707, 1925, 2604, 2944],
-                        "15 Lakh": [485, 690, 834, 1052, 1382, 1654, 2131, 2405, 3256, 3682],
-                        "25 Lakh": [649, 926, 1121, 1415, 1862, 2230, 2876, 3246, 4397, 4973],
-                        "50 Lakh": [898, 1284, 1557, 1968, 2594, 3108, 4011, 4528, 6137, 6942],
-                        "75 Lakh": [1014, 1452, 1761, 2226, 2935, 3517, 4539, 5125, 6947, 7859],
-                        "1 Cr": [1096, 1570, 1905, 2409, 3177, 3807, 4914, 5549, 7523, 8510]
-                    }
-                },
-                "Gold Plan": {
-                    "Zone 1": {
-                        "5 Lakh": [459, 648, 764, 941, 1280, 1485, 1872, 2065, 2756, 3099],
-                        "10 Lakh": [543, 791, 935, 1153, 1550, 1804, 2282, 2525, 3378, 3802],
-                        "15 Lakh": [661, 984, 1164, 1437, 1917, 2236, 2835, 3142, 4209, 4740],
-                        "25 Lakh": [895, 1355, 1597, 1965, 2626, 3054, 3863, 4271, 5714, 6433],
-                        "50 Lakh": [1252, 1946, 2284, 2797, 3734, 4321, 5451, 6006, 8022, 9026],
-                        "75 Lakh": [1414, 2200, 2583, 3164, 4225, 4890, 6169, 6798, 9082, 10219],
-                        "1 Cr": [1529, 2380, 2795, 3424, 4574, 5294, 6680, 7361, 9834, 11066]
-                    },
-                    "Zone 2": {
-                        "5 Lakh": [377, 532, 627, 771, 1049, 1216, 1533, 1692, 2257, 2538],
-                        "10 Lakh": [446, 649, 767, 945, 1270, 1477, 1869, 2068, 2765, 3112],
-                        "15 Lakh": [543, 807, 954, 1177, 1570, 1832, 2321, 2572, 3446, 3880],
-                        "25 Lakh": [734, 1110, 1309, 1610, 2150, 2500, 3162, 3496, 4677, 5265],
-                        "50 Lakh": [1026, 1594, 1871, 2290, 3057, 3538, 4462, 4916, 6566, 7387],
-                        "75 Lakh": [1159, 1802, 2115, 2591, 3459, 4003, 5050, 5564, 7432, 8363],
-                        "1 Cr": [1253, 1949, 2289, 2803, 3744, 4333, 5467, 6024, 8047, 9055]
-                    }
-                },
-                "Platinum Plan": {
-                    "Zone 1": {
-                        "5 Lakh": [468, 837, 952, 1128, 1467, 1649, 2036, 2194, 2884, 3227],
-                        "10 Lakh": [551, 967, 1110, 1326, 1722, 1955, 2433, 2643, 3495, 3919],
-                        "15 Lakh": [670, 1162, 1340, 1612, 2091, 2390, 2987, 3261, 4328, 4859],
-                        "25 Lakh": [906, 1551, 1792, 2158, 2817, 3222, 4030, 4401, 5844, 6562],
-                        "50 Lakh": [1265, 2151, 2487, 2998, 3933, 4496, 5625, 6141, 8157, 9161],
-                        "75 Lakh": [1429, 2432, 2813, 3391, 4450, 5088, 6366, 6952, 9235, 10372],
-                        "1 Cr": [1545, 2631, 3044, 3670, 4818, 5508, 6893, 7526, 9999, 11231]
-                    },
-                    "Zone 2": {
-                        "5 Lakh": [379, 682, 776, 920, 1197, 1346, 1663, 1792, 2356, 2637],
-                        "10 Lakh": [448, 788, 905, 1082, 1406, 1596, 1987, 2159, 2857, 3203],
-                        "15 Lakh": [545, 948, 1093, 1316, 1707, 1952, 2441, 2665, 3538, 3972],
-                        "25 Lakh": [738, 1266, 1463, 1763, 2302, 2633, 3294, 3598, 4778, 5366],
-                        "50 Lakh": [1031, 1757, 2032, 2450, 3215, 3676, 4599, 5021, 6671, 7492],
-                        "75 Lakh": [1166, 1986, 2298, 2772, 3638, 4160, 5206, 5684, 7552, 8483],
-                        "1 Cr": [1261, 2150, 2487, 3000, 3939, 4504, 5636, 6155, 8178, 9186]
+                        "25 Lakh": [4269, 7337, 8482, 10226, 13360, 15285, 19132, 20897, 27761, 31179],
+                        "50 Lakh": [5974, 10191, 11790, 14220, 18671, 21349, 26719, 29174, 38765, 43540],
+                        "75 Lakh": [6755, 11527, 13339, 16092, 21130, 24166, 30246, 33030, 43892, 49301],
+                        "1 Cr": [7307, 12476, 14439, 17419, 22879, 26164, 32750, 35765, 47527, 53388]
                     }
                 }
             }
@@ -1009,6 +1120,7 @@
                 const riderMT = document.getElementById(`modernTreatments_${i}`).value;
                 const riderDMD = document.getElementById(`durableDevices_${i}`).value;
                 const riderCI = document.getElementById(`criticalIllness_${i}`).value;
+                const riderPPH = document.getElementById(`prePostHosp_${i}`).value;
 
                 const nameLbl = document.getElementById(`name_lbl_${i}`);
                 const cellBP = document.getElementById(`bp_${i}`);
@@ -1026,13 +1138,14 @@
                 const cellMT = document.getElementById(`mt_amt_${i}`);
                 const cellDmdReal = document.getElementById(`dmd_amt_${i}`);
                 const cellCI = document.getElementById(`ci_amt_${i}`);
+                const cellPPH = document.getElementById(`pph_amt_${i}`);
                 const cellTotC = document.getElementById(`total_c_${i}`);
                 const cellLTD = document.getElementById(`ltd_amt_${i}`);
                 const cellFinalMember = document.getElementById(`member_prem_${i}`);
 
                 if (age === "" || sumInsured === "") {
                     if(nameLbl) nameLbl.innerText = i;
-                    [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellCI, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
+                    [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellCI, cellPPH, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
                     continue;
                 }
 
@@ -1058,7 +1171,7 @@
                 
                 cellBP.innerText = basePremium;
 
-                // Adjustments
+                // Loadings & Discounts
                 let bmiAmt = 0;
                 if (bmi === ">=18.5 <=32") bmiAmt = -Math.round(basePremium * 0.025);
                 if (bmi === "> 32") bmiAmt = Math.round(basePremium * 0.025);
@@ -1141,12 +1254,16 @@
                     }
                 }
 
+                // Pre & Post Hospitalisation Rider calculated at 5% of Basic Premium
+                let pphAmt = (riderPPH === "Yes") ? Math.round(basePremium * 0.05) : 0;
+
                 cellNM.innerText = nmAmt;
                 cellMT.innerText = mtAmt;
                 if(cellDmdReal) cellDmdReal.innerText = dmdAmt;
                 cellCI.innerText = ciAmt;
+                if(cellPPH) cellPPH.innerText = pphAmt;
 
-                let totalC = totalB + nmAmt + mtAmt + dmdAmt + ciAmt;
+                let totalC = totalB + nmAmt + mtAmt + dmdAmt + ciAmt + pphAmt;
                 cellTotC.innerText = totalC;
 
                 let ltdAmt = 0;
@@ -1170,7 +1287,7 @@
             });
 
             for (let i = 1; i <= rowCount; i++) {
-                const elementsRow = [`name_${i}`, `age_${i}`, `relation_${i}`, `sumInsured_${i}`, `bmi_${i}`, `diabetic_${i}`, `hypertensive_${i}`, `hospitalisation_${i}`, `nonMedical_${i}`, `modernTreatments_${i}`, `durableDevices_${i}`, `criticalIllness_${i}`];
+                const elementsRow = [`name_${i}`, `age_${i}`, `relation_${i}`, `sumInsured_${i}`, `bmi_${i}`, `diabetic_${i}`, `hypertensive_${i}`, `hospitalisation_${i}`, `nonMedical_${i}`, `modernTreatments_${i}`, `durableDevices_${i}`, `criticalIllness_${i}`, `prePostHosp_${i}`];
                 elementsRow.forEach(id => {
                     const targetInput = document.getElementById(id);
                     if(targetInput) {
@@ -1214,12 +1331,12 @@
                 return;
             }
             
-            const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'];
+            const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness', 'prePostHosp'];
             
             fields.forEach(field => {
                 const element = document.getElementById(`${field}_${rowNo}`);
                 if (element) {
-                    if (['nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'].includes(field)) {
+                    if (['nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness', 'prePostHosp'].includes(field)) {
                         element.value = "No"; 
                     } else {
                         element.value = ""; 
@@ -1234,12 +1351,12 @@
         function clearAll() {
             if(confirm("Are you sure you want to clear all data in the calculator?")) {
                 for (let i = 1; i <= rowCount; i++) {
-                    const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'];
+                    const fields = ['name', 'age', 'relation', 'sumInsured', 'bmi', 'diabetic', 'hypertensive', 'hospitalisation', 'nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness', 'prePostHosp'];
                     
                     fields.forEach(field => {
                         const element = document.getElementById(`${field}_${i}`);
                         if (element) {
-                            if (['nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness'].includes(field)) {
+                            if (['nonMedical', 'modernTreatments', 'durableDevices', 'criticalIllness', 'prePostHosp'].includes(field)) {
                                 element.value = "No"; 
                             } else {
                                 element.value = ""; 
@@ -1290,25 +1407,70 @@
         }
 
         function exportToPDF() {
-            const wrapper = document.getElementById('pdf-wrapper');
-            const originalOverflowX = wrapper.style.overflowX;
-            wrapper.style.overflowX = 'visible';
+            const wrapper = document.getElementById('exportTable');
             
             const opt = {
-                margin:       [0.2, 0.2, 0.2, 0.2],
+                margin:       [0.4, 0.3, 0.4, 0.3],
                 filename:     'Yuva_Bharat_Premium_Quote.pdf',
-                image:        { type: 'jpeg', quality: 1 },
+                image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
                     scale: 2, 
                     useCORS: true,
-                    windowWidth: 1200 
+                    letterRendering: true,
+                    scrollY: 0,
+                    scrollX: 0
                 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
             };
             
-            html2pdf().set(opt).from(wrapper).save().then(() => {
-                wrapper.style.overflowX = originalOverflowX;
-            });
+            html2pdf().set(opt).from(wrapper).save();
+        }
+
+        function searchPolicyDocument() {
+            const query = document.getElementById('policySearchInput').value.toLowerCase().trim();
+            const container = document.getElementById('policyContentText');
+            
+            container.innerHTML = originalPolicyHtml;
+            if (!query) return;
+
+            const textNodes = [];
+            function walk(node) {
+                if (node.nodeType === 3) {
+                    textNodes.push(node);
+                } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        walk(node.childNodes[i]);
+                    }
+                }
+            }
+            walk(container);
+
+            for (let i = textNodes.length - 1; i >= 0; i--) {
+                const node = textNodes[i];
+                const val = node.nodeValue;
+                const lowerVal = val.toLowerCase();
+                
+                if (lowerVal.includes(query)) {
+                    const parent = node.parentNode;
+                    let lastIdx = 0;
+                    const frag = document.createDocumentFragment();
+                    
+                    let idx = lowerVal.indexOf(query, lastIdx);
+                    while (idx !== -1) {
+                        frag.appendChild(document.createTextNode(val.substring(lastIdx, idx)));
+                        
+                        const matchText = val.substring(idx, idx + query.length);
+                        const mark = document.createElement('mark');
+                        mark.appendChild(document.createTextNode(matchText));
+                        frag.appendChild(mark);
+                        
+                        lastIdx = idx + query.length;
+                        idx = lowerVal.indexOf(query, lastIdx);
+                    }
+                    frag.appendChild(document.createTextNode(val.substring(lastIdx)));
+                    parent.replaceChild(frag, node);
+                }
+            }
         }
     </script>
 </body>
