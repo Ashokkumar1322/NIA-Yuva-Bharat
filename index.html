@@ -179,6 +179,7 @@
         /* Specific Styles for Premium Working Table */
         .premium-working-table {
             min-width: 1000px; 
+            background-color: #ffffff; /* Ensures PDF background is white */
         }
         .premium-working-table th.main-title {
             text-align: center;
@@ -935,7 +936,6 @@
             else if (maternitySelect.value === "75,000") annualMatAmt = 12390;
             else if (maternitySelect.value === "1,00,000") annualMatAmt = 16522;
             
-            // Fix 1: Properly isolate 1-year installment rate and multiply by term period
             let matAmtPerMember = Math.round(annualMatAmt / freqDivisor) * periodMultiplier;
             let maternityAppliedCount = 0;
 
@@ -999,7 +999,6 @@
                     const ageIndex = ageBandsRef.indexOf(ageBand);
                     let chartRate = ratesEngine[frequency][planType][zone][sumInsured][ageIndex];
                     
-                    // Fix 2: Age > 66 extra premium calculation
                     let ageInt = parseInt(age);
                     if (ageInt > 66) {
                         let extraYears = ageInt - 66;
@@ -1074,19 +1073,27 @@
                 
                 let pphAmt = (riderPPH === "Yes") ? Math.round(basePremium * 0.05) : 0;
                 
+                // CRITICAL ILLNESS RIDER CALCULATION WITH AGE RESTRICTION
                 let ciAmt = 0;
                 if (riderCI === "Yes") {
-                    let ciBand = getCIAgeBand(age);
-                    if (ciBand) {
-                        let rate = ciRates[policyPeriod][ciBand];
-                        if (rate && rate !== "NA") {
-                            let ciSumInsured = numericSI * 0.25;
-                            let termCiAmt = (ciSumInsured / 1000) * rate; 
-                            ciAmt = Math.round(termCiAmt / freqDivisor);
-                        } else {
-                            alert(`Critical illness is not available for age ${age} at a ${policyPeriod} tenure.`);
-                            document.getElementById(`criticalIllness_${i}`).value = "No";
-                            ciAmt = 0;
+                    let ageInt = parseInt(age);
+                    if (ageInt < 18) {
+                        alert(`Critical illness rider is only available for members 18 years and above.`);
+                        document.getElementById(`criticalIllness_${i}`).value = "No";
+                        ciAmt = 0;
+                    } else {
+                        let ciBand = getCIAgeBand(age);
+                        if (ciBand) {
+                            let rate = ciRates[policyPeriod][ciBand];
+                            if (rate && rate !== "NA") {
+                                let ciSumInsured = numericSI * 0.25;
+                                let termCiAmt = (ciSumInsured / 1000) * rate; 
+                                ciAmt = Math.round(termCiAmt / freqDivisor);
+                            } else {
+                                alert(`Critical illness is not available for age ${age} at a ${policyPeriod} tenure.`);
+                                document.getElementById(`criticalIllness_${i}`).value = "No";
+                                ciAmt = 0;
+                            }
                         }
                     }
                 }
@@ -1097,7 +1104,6 @@
                 cellPPH.innerText = pphAmt;
                 cellCI.innerText = ciAmt;
 
-                // Fix 3: Total C combines Total B + Riders to restore clear logic
                 let totalC = totalB + nmAmt + mtAmt + dmdAmt + pphAmt + ciAmt;
                 cellTotC.innerText = totalC;
 
@@ -1240,22 +1246,22 @@
         }
 
         function exportToPDF() {
-            const element = document.getElementById('capture-area');
-            const noExportElements = document.querySelectorAll('.no-export');
-            
-            noExportElements.forEach(el => el.style.display = 'none');
+            // Target ONLY the premium working table for export to fix blank pages and sizing
+            const element = document.getElementById('exportTable');
             
             const opt = {
-                margin:       0.3,
+                margin:       [0.2, 0.2, 0.2, 0.2],
                 filename:     'Yuva_Bharat_Premium_Quote.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true,
+                    windowWidth: 1200 // Forces a desktop-like viewport specifically for PDF rendering
+                },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
             };
             
-            html2pdf().set(opt).from(element).save().then(() => {
-                noExportElements.forEach(el => el.style.display = '');
-            });
+            html2pdf().set(opt).from(element).save();
         }
     </script>
 </body>
