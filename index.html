@@ -82,7 +82,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap; /* Allows internal wrapping on mobile */
+            flex-wrap: wrap;
         }
         .tools-label {
             font-size: 13px; 
@@ -92,7 +92,7 @@
         .tools-section input {
             width: 80px;
             min-width: 70px;
-            flex-grow: 1; /* Helps fill space evenly on small screens */
+            flex-grow: 1;
         }
         .tools-section select {
             width: auto;
@@ -628,7 +628,6 @@
             return ">65";
         }
 
-        // FULLY DIGITIZED CHART RATE ENGINE
         const ageBandsRef = ["0-17", "18-30", "31-35", "36-40", "41-45", "46-50", "51-55", "56-60", "61-65", ">65"];
         const ratesEngine = {
             "Annual": {
@@ -936,8 +935,8 @@
             else if (maternitySelect.value === "75,000") annualMatAmt = 12390;
             else if (maternitySelect.value === "1,00,000") annualMatAmt = 16522;
             
-            let termMatAmt = annualMatAmt * periodMultiplier;
-            let matAmtPerMember = Math.round(termMatAmt / freqDivisor);
+            // Fix 1: Properly isolate 1-year installment rate and multiply by term period
+            let matAmtPerMember = Math.round(annualMatAmt / freqDivisor) * periodMultiplier;
             let maternityAppliedCount = 0;
 
             let floaterRate = 0;
@@ -995,14 +994,21 @@
                 if(cellSI) cellSI.innerText = sumInsured;
                 const ageBand = getAgeBand(age);
 
-                // EXACT CHART FETCHING FOR BASE PREMIUM - SCALED BY PERIOD MULTIPLIER
                 let basePremium = 0;
                 try {
                     const ageIndex = ageBandsRef.indexOf(ageBand);
                     let chartRate = ratesEngine[frequency][planType][zone][sumInsured][ageIndex];
-                    basePremium = chartRate * periodMultiplier;
+                    
+                    // Fix 2: Age > 66 extra premium calculation
+                    let ageInt = parseInt(age);
+                    if (ageInt > 66) {
+                        let extraYears = ageInt - 66;
+                        chartRate = chartRate + (chartRate * 0.025 * extraYears);
+                    }
+                    
+                    basePremium = Math.round(chartRate) * periodMultiplier;
                 } catch(e) {
-                    basePremium = 3500 * periodMultiplier; // generic fallback
+                    basePremium = 3500 * periodMultiplier; 
                 }
                 
                 cellBP.innerText = basePremium;
@@ -1091,15 +1097,16 @@
                 cellPPH.innerText = pphAmt;
                 cellCI.innerText = ciAmt;
 
-                let totalC = nmAmt + mtAmt + dmdAmt + pphAmt + ciAmt;
+                // Fix 3: Total C combines Total B + Riders to restore clear logic
+                let totalC = totalB + nmAmt + mtAmt + dmdAmt + pphAmt + ciAmt;
                 cellTotC.innerText = totalC;
 
                 let ltdAmt = 0;
-                if (policyPeriod === "2 yr") ltdAmt = -Math.round((totalB + totalC) * 0.05);
-                if (policyPeriod === "3 yr") ltdAmt = -Math.round((totalB + totalC) * 0.07);
+                if (policyPeriod === "2 yr") ltdAmt = -Math.round(totalC * 0.05);
+                if (policyPeriod === "3 yr") ltdAmt = -Math.round(totalC * 0.07);
                 cellLTD.innerText = ltdAmt;
 
-                let finalMemberPremium = totalB + totalC + ltdAmt;
+                let finalMemberPremium = totalC + ltdAmt;
                 cellFinalMember.innerText = finalMemberPremium;
 
                 totalPayable += finalMemberPremium;
