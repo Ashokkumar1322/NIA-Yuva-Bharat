@@ -179,7 +179,7 @@
         /* Specific Styles for Premium Working Table */
         .premium-working-table {
             min-width: 1000px; 
-            background-color: #ffffff; /* Ensures PDF background is white */
+            background-color: #ffffff;
         }
         .premium-working-table th.main-title {
             text-align: center;
@@ -212,6 +212,11 @@
             color: #555;
         }
 
+        #pdf-wrapper {
+            background-color: #ffffff; 
+            padding: 10px;
+        }
+
         /* Print CSS */
         @media print {
             body { background-color: #fff; padding: 0; }
@@ -242,7 +247,7 @@
     <div class="calculator-container" id="capture-area">
         <h2>New India Yuva Bharat Premium Calc</h2>
         
-        <div class="policy-details no-export">
+        <div class="policy-details hide-on-print">
             <div class="form-group">
                 <label>Zone</label>
                 <select id="zone">
@@ -300,7 +305,7 @@
             </div>
         </div>
 
-        <div class="tools-bar no-export">
+        <div class="tools-bar hide-on-print">
             <div class="tools-section">
                 <span class="tools-label">BMI Calc:</span>
                 <input type="number" id="calcHeight" placeholder="Ht (cm)" step="any" inputmode="decimal">
@@ -324,7 +329,7 @@
             </div>
         </div>
 
-        <div class="table-responsive hide-on-print no-export">
+        <div class="table-responsive hide-on-print">
             <table>
                 <thead>
                     <tr>
@@ -412,7 +417,7 @@
             </table>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive" id="pdf-wrapper">
             <table class="premium-working-table" id="exportTable">
                 <thead>
                     <tr>
@@ -580,7 +585,7 @@
             </table>
         </div>
         
-        <div class="export-controls" style="text-align: right; padding-bottom: 20px;">
+        <div class="export-controls hide-on-print" style="text-align: right; padding-bottom: 20px;">
             <button type="button" class="btn btn-export" onclick="exportToCSV()">Download as Excel (CSV)</button>
             <button type="button" class="btn btn-export" onclick="exportToPDF()">Download as PDF</button>
         </div>
@@ -1073,7 +1078,6 @@
                 
                 let pphAmt = (riderPPH === "Yes") ? Math.round(basePremium * 0.05) : 0;
                 
-                // CRITICAL ILLNESS RIDER CALCULATION WITH AGE RESTRICTION
                 let ciAmt = 0;
                 if (riderCI === "Yes") {
                     let ageInt = parseInt(age);
@@ -1246,8 +1250,11 @@
         }
 
         function exportToPDF() {
-            // Target ONLY the premium working table for export to fix blank pages and sizing
-            const element = document.getElementById('exportTable');
+            const wrapper = document.getElementById('pdf-wrapper');
+            
+            // Temporarily bypass html2canvas mobile overflow cutting bug
+            const originalOverflowX = wrapper.style.overflowX;
+            wrapper.style.overflowX = 'visible';
             
             const opt = {
                 margin:       [0.2, 0.2, 0.2, 0.2],
@@ -1261,7 +1268,9 @@
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
             };
             
-            html2pdf().set(opt).from(element).save();
+            html2pdf().set(opt).from(wrapper).save().then(() => {
+                wrapper.style.overflowX = originalOverflowX;
+            });
         }
     </script>
 </body>
