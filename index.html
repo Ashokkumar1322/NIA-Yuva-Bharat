@@ -184,12 +184,10 @@
         }
         .premium-working-table th.main-title {
             text-align: center;
-            font-size: 18px;
-            font-weight: 800 !important;
+            font-size: 16px;
             letter-spacing: 1px;
             background-color: #ffffff;
             border-top: none;
-            color: #111;
         }
         .premium-working-table .col-member {
             width: 10%;
@@ -214,20 +212,10 @@
             width: 100px;
             color: #555;
         }
-        .bold-row td {
-            font-weight: 800 !important;
-            color: #000000 !important;
-        }
-        
-        /* Force Page Break Configuration for html2pdf rendering */
-        .premium-working-table tr {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-        }
 
         #pdf-wrapper {
             background-color: #ffffff; 
-            padding: 15px;
+            padding: 10px;
         }
 
         /* Policy View Wrapper Styles */
@@ -251,13 +239,13 @@
             padding: 8px 12px;
         }
         .policy-scrollable {
-            height: 600px;
+            height: 500px;
             overflow-y: auto;
             border: 1px solid #e2e8f0;
             padding: 20px;
             border-radius: 6px;
             background-color: #fdfdfd;
-            font-size: 13px;
+            font-size: 13.5px;
             line-height: 1.6;
         }
         .policy-scrollable h3 {
@@ -272,7 +260,6 @@
             margin-bottom: 8px;
             border-bottom: 1px dashed #cbd5e1;
             padding-bottom: 4px;
-            font-weight: 700;
         }
         .policy-scrollable p {
             margin: 0 0 10px 0;
@@ -292,9 +279,9 @@
             font-weight: 600;
         }
         .policy-table td, .policy-table th {
-            padding: 6px 10px;
+            padding: 8px 12px;
             border: 1px solid #cbd5e1;
-            font-size: 12px;
+            font-size: 12.5px;
         }
         mark {
             background-color: #fef08a;
@@ -311,7 +298,6 @@
             .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
             .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
             table { min-width: 100%; width: 100%; }
-            tr { page-break-inside: avoid !important; break-inside: avoid !important; }
         }
         
         /* Mobile specific adjustments */
@@ -529,13 +515,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bold-row">
+                    <tr>
                         <td>Basic Premium</td>
                         <td></td>
                         <td id="bp_1"></td><td id="bp_2"></td><td id="bp_3"></td>
                         <td id="bp_4"></td><td id="bp_5"></td><td id="bp_6"></td>
                     </tr>
-                    <tr class="bold-row">
+                    <tr>
                         <td>Sum Insured</td>
                         <td></td>
                         <td id="si_1"></td><td id="si_2"></td><td id="si_3"></td>
@@ -650,9 +636,9 @@
                         <td id="ltd_amt_4"></td><td id="ltd_amt_5"></td><td id="ltd_amt_6"></td>
                     </tr>
                     
-                    <tr class="total-row">
-                        <td>MEMBER WISE PREMIUM</td>
-                        <td></td>
+                    <tr>
+                        <td class="total-row">MEMBER WISE PREMIUM</td>
+                        <td class="total-row"></td>
                         <td class="bg-yellow" id="member_prem_1"></td>
                         <td class="bg-yellow" id="member_prem_2"></td>
                         <td class="bg-yellow" id="member_prem_3"></td>
@@ -670,8 +656,8 @@
                         <td class="col-member">5</td>
                         <td class="col-member">6</td>
                     </tr>
-                    <tr class="total-row">
-                        <td>FINAL TOTAL PREMIUM PAYABLE</td>
+                    <tr>
+                        <td class="total-row">FINAL TOTAL PREMIUM PAYABLE</td>
                         <td class="bg-yellow" id="final_total_premium"></td>
                         <td colspan="6"></td>
                     </tr>
@@ -691,66 +677,34 @@
                 <input type="text" id="policySearchInput" placeholder="Type keyword to look up..." oninput="searchPolicyDocument()">
             </div>
             <div class="policy-scrollable" id="policyContentText">
-                <h4>1. PREAMBLE & GENERAL PLANS SUMMARY</h4>
-                <p>This is Your "YUVA BHARAT HEALTH POLICY", which has been issued by Us (The New India Assurance Co. Ltd.), relying on the information disclosed by You in Your Proposal for this Policy or its preceding Policy/Policies of which this is a renewal. The terms and conditions set out in this Policy and its Schedule will be the basis for any claim and/or benefit under this Policy. If during the Period of Insurance, You or any Insured Person incurs Hospitalisation Expenses which are Reasonable and Customary, and Medically Necessary for treatment of any Illness or Injury, we will reimburse such expense through the Third-Party Administrator incurred by You in the manner stated herein.</p>
+                <h4>1. PREAMBLE & PLAN COVERS</h4>
+                <p>This is Your "YUVA BHARAT HEALTH POLICY", issued by Us (The New India Assurance Co. Ltd.) relying on information disclosed in Your Proposal. The terms and conditions set out in this Policy and its Schedule will be the basis for any claim and/or benefit. If during the Period of Insurance, You or any Insured Person incurs Hospitalisation Expenses which are Reasonable and Customary, and Medically Necessary for treatment of any Illness or Injury, we will reimburse such expense through the Third-Party Administrator.</p>
                 <ul>
-                    <li><strong>Base Plan (Clauses 3.1 to 3.17):</strong> Covers Hospitalisation Expenses, Specific Coverages, Medical Expenses For Organ Transplant, Coverage For Modern Treatments Or Procedures, Hospital Cash, Cost Of Health Check-Up, Road Ambulance Charges, Medical Second Opinion, Treatment For Congenital Diseases, Reinstatement of Sum Insured, Coverage For Cataract, Treatments Under Ayurvedic / Yoga and Naturopathy / Homeopathic / Siddha / Unani Systems, Coverage For Hazardous Sports, New Born Baby Coverage, and Shared Accommodation Benefit.</li>
-                    <li><strong>Gold Plan (Clauses 3.1 to 3.25):</strong> Covers all benefits under Base Plan plus Critical Care Benefit, Personal Accident Benefit, Auto TOP-UP, Air Ambulance Charges, Double Reinstatement of Sum Insured, and Guaranteed Cumulative Bonus.</li>
-                    <li><strong>Platinum Plan (Clauses 3.1 to 3.30):</strong> Covers all benefits under Gold Plan plus Maternity Coverage, Infertility Treatment, Well baby Cover, and Birth Right Benefit.</li>
+                    <li><strong>Base Plan (Clauses 3.1 to 3.17):</strong> Covers Hospitalisation Expenses, Organ Transplant, Hospital Cash, Road Ambulance Charges, Treatment for Congenital Diseases, Coverage for Cataract, Coverage for Hazardous Sports, Shared Accommodation Benefit, Specific Coverages, Modern Treatments/Procedures, Cost of Health Check-Up, Medical Second Opinion, Reinstatement of Sum Insured, AYUSH Treatment, New Born Baby Coverage.</li>
+                    <li><strong>Gold Plan (Clauses 3.1 to 3.25):</strong> Covers Base Plan benefits + Critical Care Benefit, Personal Accident Benefit, Auto TOP-UP, Air Ambulance Charges, Double Reinstatement of Sum Insured, and Guaranteed Cumulative Bonus.</li>
+                    <li><strong>Platinum Plan (Clauses 3.1 to 3.30):</strong> Covers Gold Plan benefits + Maternity Coverage, Infertility Treatment, Well Baby Cover, and Birth Right Benefit.</li>
                 </ul>
 
-                <h4>2. STANDARD AND SPECIFIC DEFINITIONS</h4>
-                <p><strong>2.1 ACCIDENT:</strong> A sudden, unforeseen and involuntary event caused by external, visible and violent means.</p>
-                <p><strong>2.2 ANY ONE ILLNESS:</strong> Continuous Period of Illness and it includes relapse within 45 days from the date of last consultation with the Hospital where treatment may have been taken.</p>
-                <p><strong>2.3 AYUSH HOSPITAL:</strong> A Healthcare facility wherein medical / surgical / para-surgical treatment procedures and interventions are carried out by AYUSH Medical Practitioner(s) comprising Central or State Government AYUSH Hospital, Teaching hospital attached to recognized AYUSH colleges, or registered standalone/co-located facilities with at least 5 in-patient beds, qualified AYUSH Medical Practitioner round the clock, dedicated therapy sections, and structured daily records.</p>
-                <p><strong>2.4 AYUSH DAY CARE CENTRE:</strong> Includes Community Health Centre (CHC), Primary Health Centre (PHC), Dispensary, Clinic, Polyclinic or health centre registered with local authorities for day care medical or surgical treatments without in-patient services.</p>
-                <p><strong>2.5 BANK RATE:</strong> Bank rate fixed by the Reserve Bank of India (RBI) prevalent as on 1st day of the financial year in which the claim falls due.</p>
-                <p><strong>2.6 CASHLESS FACILITY:</strong> A facility extended by Us to You where the payments, of the costs of treatment undergone by You in accordance with the policy terms and conditions, are directly made to the Network provider by Us to the extent of pre-authorization approved.</p>
-                <p><strong>2.7 CONDITION PRECEDENT:</strong> A Policy term or condition upon which Our liability under the Policy is conditional upon.</p>
-                <p><strong>2.8 CONGENITAL ANOMALY:</strong> Refers to a condition(s) present since birth, which is abnormal with reference to form, structure or position. Internal anomalies are hidden; external are visible.</p>
-                <p><strong>2.9 CRITICAL ILLNESS DETAILS:</strong>
-                    <br>• <strong>Cancer of Specified Severity:</strong> Malignant tumor characterized by uncontrolled growth and spread of malignant cells with tissue invasion. Histological evidence required. Excludes Carcinoma in situ, cervical dysplasia (CIN-1 to CIN-3), non-melanoma skin cancers without lymph node metastasis, prostate tumors under Gleason score 6, thyroid cancers T1N0M0 or below, chronic lymphocytic leukaemia under RAI stage 3, and all tumors in presence of HIV.
-                    <br>• <strong>Myocardial Infarction:</strong> First occurrence of heart attack or death of portion of heart muscle due to inadequate blood supply. Evidenced by typical chest pain symptoms, new characteristic ECG changes, and elevation of Troponins/cardiac biomarkers. Excludes other acute coronary syndromes or angina.
-                    <br>• <strong>Open Chest CABG:</strong> Actual undergoing of heart surgery via sternotomy or keyhole access to correct coronary artery blockage. Supported by angiography and confirmed by cardiologist. Excludes angioplasty.
-                    <br>• <strong>Open Heart Valve Repair/Replacement:</strong> Open-heart surgery to replace or repair one or more heart valves due to defects. Confirmed by echocardiography. Excludes catheter-based techniques.
-                    <br>• <strong>Coma of Specified Severity:</strong> Continuous state of unconsciousness with no response to external stimuli for at least 96 hours, requiring life support, resulting in permanent neurological deficit assessed after 30 days. Excludes drug/alcohol abuse.
-                    <br>• <strong>Kidney Failure:</strong> End stage renal disease presenting as chronic irreversible failure of both kidneys requiring regular dialysis or renal transplantation.
-                    <br>• <strong>Stroke with Permanent Symptoms:</strong> Cerebrovascular incident producing permanent neurological sequelae lasting at least 3 months, confirmed by CT/MRI. Excludes TIA and traumatic injuries.
-                    <br>• <strong>Major Organ/Bone Marrow Transplant:</strong> Actual undergoing of human transplant of heart, lung, liver, kidney, pancreas or haematopoietic stem cells.
-                    <br>• <strong>Permanent Paralysis of Limbs:</strong> Total and irreversible loss of use of two or more limbs lasting more than 3 months.
-                    <br>• <strong>Motor Neurone Disease:</strong> Spinal muscular atrophy, progressive bulbar palsy, ALS, or PLS with motor dysfunction persisting for at least 3 months.
-                    <br>• <strong>Multiple Sclerosis:</strong> Definite diagnosis supported by MRI and CSF findings with persisting clinical impairments for 6 months.
-                    <br>• <strong>Third Degree Burns:</strong> Covering at least 20% of the body's surface area with scarring, verified by standard charts.
-                    <br>• <strong>Major Head Trauma:</strong> Accidental head injury resulting in permanent deficit to perform at least 3 Activities of Daily Living (washing, dressing, transferring, mobility, toileting, feeding), assessed at 3 months. Excludes spinal cord injury.
-                    <br>• <strong>End Stage Lung Failure:</strong> Chronic respiratory failure where FEV1 test is consistently under 1 litre, requiring permanent supplementary oxygen with PaO2 < 55mmHg.
-                    <br>• <strong>End Stage Liver Failure:</strong> Permanent failure resulting in ascites, permanent jaundice, and hepatic encephalopathy. Excludes drug/alcohol secondary failure.</p>
-                <p><strong>2.10 CO-PAYMENT:</strong> Cost-sharing percentage borne by the Insured. Does not reduce Sum Insured.</p>
-                <p><strong>2.11 CUMULATIVE BONUS:</strong> Increase in Sum Insured granted without an associated premium increase.</p>
-                <p><strong>2.16 DOMICILIARY HOSPITALIZATION:</strong> Home treatment for conditions normally requiring hospital stay due to inability to remove the patient or non-availability of hospital rooms.</p>
-                <p><strong>2.18 GRACE PERIOD:</strong> 15 days for monthly modes, 30 days for quarterly/half-yearly/annual modes, to maintain continuity benefits.</p>
-                <p><strong>2.38 PRE-HOSPITALISATION EXPENSES:</strong> Admissible medical costs incurred up to 60 days prior to the date of hospital admission.</p>
-                <p><strong>2.39 POST-HOSPITALISATION EXPENSES:</strong> Admissible medical costs incurred up to 90 days after the date of discharge.</p>
-                <p><strong>2.66 POLICY TERM:</strong> The tenure of the policy, which can be 1 Year or 2 Years or 3 Years.</p>
+                <h4>2. KEY DEFINITIONS</h4>
+                <p><strong>ACCIDENT:</strong> A sudden, unforeseen and involuntary event caused by external, visible and violent means.</p>
+                <p><strong>ANY ONE ILLNESS:</strong> Continuous Period of Illness including relapse within 45 days from date of last consultation with the Hospital where treatment was taken.</p>
+                <p><strong>AYUSH HOSPITAL:</strong> A healthcare facility registered with local authorities, under the round-the-clock supervision of a qualified registered AYUSH Medical Practitioner, equipped with at least 5 in-patient beds, dedicated therapy sections/OT, and maintaining proper daily records.</p>
+                <p><strong>CASHLESS FACILITY:</strong> Facility extended by Us to You where payments of costs of treatment undergone in accordance with policy terms are directly made to the Network provider by Us to the extent of pre-authorization approved.</p>
+                <p><strong>PRE-EXISTING CONDITION/DISEASE:</strong> Any condition, ailment, Injury or Illness diagnosed by a physician or for which medical advice/treatment was recommended or received up to 24 months prior to date of commencement of policy.</p>
+                <p><strong>CRITICAL ILLNESSES (Clause 2.9):</strong> Includes Cancer of Specified Severity (with key structural exclusions like Carcinoma in situ, low-malignant thyroid, or presence of HIV), Myocardial Infarction (First Heart Attack), Open Chest CABG, Open Heart Valve Repair/Replacement, Coma of Specified Severity (lasting at least 96 hours on life support with subsequent permanent neurological deficits), Kidney Failure requiring regular dialysis, Stroke resulting in permanent symptoms, Major Organ/Bone Marrow Transplant, Permanent Paralysis of Limbs, Motor Neurone Disease, Multiple Sclerosis, Third Degree Burns (covering min 20% body surface area), Major Head Trauma, End Stage Lung Failure, and End Stage Liver Failure.</p>
 
-                <h4>3. BENEFIT SUMMARY, LIMITS & SUB-LIMITS</h4>
-                <p><strong>Room Rent (Clause 3.1a):</strong> Single AC Room up to 15L SI. Deluxe AC Room for 25L, 50L, 75L, and 1Cr SI. Includes boarding, nursing, and resident doctor fees. Proportionate deduction applies to associate medical expenses if a higher room category is selected.</p>
-                <p><strong>Hospital Cash (Clause 3.5):</strong> Paid up to a maximum of 5 days per Any One Illness if hospitalisation exceeds 24 hours. Limits: 5L/10L/15L (Rs. 500/day), 25L (Rs. 750/day), 50L (Rs. 1,000/day), 75L (Rs. 1,500/day), 1Cr (Rs. 2,000/day). Reduces the overall Sum Insured.</p>
-                <p><strong>Road Ambulance Charges (Clause 3.6):</strong> Cap per Any One Illness: 5L/10L/15L (Max Rs. 5,000), 25L (Max Rs. 7,500), 50L (Max Rs. 10,000), 75L (Max Rs. 15,000), 1Cr (Max Rs. 20,000). Also applies to home transfer upon discharge if medically certified.</p>
-                <p><strong>Shared Accommodation Cash Benefit (Clause 3.7):</strong> Paid per 24 hours of shared room occupancy: 5L/10L/15L (Rs. 750/day), 25L (Rs. 1,000/day), 50L (Rs. 1,250/day), 75L (Rs. 1,500/day), 1Cr (Rs. 1,750/day).</p>
-                <p><strong>Treatment for Congenital Diseases (Clause 3.8):</strong> Internal congenital anomalies covered after 12 months. External congenital anomalies covered after 24 months, capped at 10% of the average Sum Insured of the preceding 24 months.</p>
-                <p><strong>Cataract Coverage Limits (Clause 3.9):</strong> Per eye limits: 5L/10L/15L (Rs. 50,000), 25L (Rs. 75,000), 50L (Rs. 1,00,000), 75L (Rs. 1,25,000), 1Cr (Rs. 1,50,000).</p>
-                <p><strong>Hazardous Sports Caps (Clause 3.10):</strong> Recreational coverage limits: 5L/10L/15L (10% of SI max 1L), 25L (Rs. 1.5L), 50L (Rs. 2L), 75L (Rs. 2.5L), 1Cr (Rs. 3L).</p>
-                <p><strong>Specific Sub-Limits (Clause 3.11):</strong>
-                    <br>• Artificial Life Maintenance: Max 15 days, up to 25% of SI for patients in certified vegetative states.
-                    <br>• Puberty & Menopause Disorders: 25% SI sub-limit per policy period (12-month waiting period).
-                    <br>• Age-Related Macular Degeneration (ARMD): 20% SI sub-limit for injections/anti-VEGF (24-month waiting period).
-                    <br>• Genetic Diseases: 25% SI sub-limit (24-month waiting period).
-                    <br>• Mental Illness: 25% SI sub-limit for treatments at valid establishments after 24 months (ICD Codes F01-F09, F10-F19, F20-F29, F60-F69, F70-F79).</p>
+                <h4>3. REIMBURSEMENT DETAILS & SUB-LIMITS</h4>
+                <p><strong>Room Rent Limits:</strong> Single AC Room for Sum Insured bands of 5L/10L/15L. Deluxe AC Room for Sum Insured bands of 25L/50L/75L/1Cr. Includes associated boarding, nursing, DMO/RMO charges. Proportionate Deduction applies to Associate Medical Expenses if higher room category is chosen.</p>
+                <p><strong>Hospital Cash:</strong> Max 5 days for Any One Illness (requires >24 hours stay). Limits: 5L/10L/15L (Rs. 500/day), 25L (Rs. 750/day), 50L (Rs. 1,00,000/day), 75L (Rs. 1,500/day), 1Cr (Rs. 2,000/day). Reduces Sum Insured.</p>
+                <p><strong>Road Ambulance Charges:</strong> Per Any One Illness: 5L/10L/15L (Up to Rs. 5,000), 25L (Up to Rs. 7,500), 50L (Up to Rs. 10,000), 75L (Up to Rs. 15,000), 1Cr (Up to Rs. 20,000).</p>
+                <p><strong>Shared Accommodation Cash Benefit:</strong> Opting for shared accommodation provides an additional daily cash benefit: 5L/10L/15L (Rs. 750/day), 25L (Rs. 1,000/day), 50L (Rs. 1,250/day), 75L (Rs. 1,500/day), 1Cr (Rs. 1,750/day).</p>
+                <p><strong>Cataract Coverage:</strong> Caps per eye per insured: 5L/10L/15L (Rs. 50,000), 25L (Rs. 75,000), 50L (Rs. 1,00,000), 75L (Rs. 1,25,000), 1Cr (Rs. 1,50,000).</p>
+                <p><strong>Specific Coverages:</strong> Artificial life maintenance (up to 25% SI, max 15 days in certified vegetative state); Puberty/Menopause disorders (up to 25% SI sub-limit); ARMD for intravitreal injections (up to 20% SI sub-limit); Genetic diseases/disorders (25% SI sub-limit); Mental Illness treatment at specialized mental health establishments (25% SI sub-limit after 24 months continuous coverage). Psychological counseling and behavioral/family therapies are permanently excluded.</p>
 
                 <table class="policy-table">
                     <thead>
                         <tr>
-                            <th>3.12 Modern Treatments Cap (Per Policy Period)</th>
+                            <th>Modern Treatments Cap (Per Policy Period)</th>
                             <th>5L/10L/15L</th>
                             <th>25L</th>
                             <th>50L</th>
@@ -766,48 +720,38 @@
                         <tr><td>Immunotherapy (Monoclonal Antibody Injection)</td><td>Rs. 1 L</td><td>Rs. 2 L</td><td>Rs. 3 L</td><td>Rs. 4 L</td><td>Rs. 5 L</td></tr>
                         <tr><td>Intravitreal Injections</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td></tr>
                         <tr><td>Robotic Surgeries</td><td>Rs. 2 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td><td>Rs. 6 L</td><td>Rs. 7.5 L</td></tr>
-                        <tr><td>Stereotactic Radio Surgeries</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td><td>Rs. 4 L</td><td>Rs. 5 L</td></tr>
+                        <tr><td>Stereotactic Radiosurgeries</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td><td>Rs. 4 L</td><td>Rs. 5 L</td></tr>
                         <tr><td>Bronchial Thermoplasty</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td></tr>
-                        <tr><td>Vaporisation of the Prostate (Laser)</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td></tr>
+                        <tr><td>Vaporisation of the Prostate (Laser Treatment)</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td></tr>
                         <tr><td>IONM (Intra Operative Neuro Monitoring)</td><td>Rs. 30 K</td><td>Rs. 50 K</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td></tr>
                         <tr><td>Stem Cell Therapy (Bone Marrow Transplant)</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td></tr>
                     </tbody>
                 </table>
 
-                <p><strong>Cost of Health Check-Up (Clause 3.13):</strong> Reimbursed after every block of two Claim Free Years: 5L/10L/15L (Rs. 3,500), 25L (Rs. 5,000), 50L (Rs. 7,000), 75L (Rs. 8,000), 1Cr (Rs. 10,000).</p>
-                <p><strong>Medical Second Opinion (Clause 3.14):</strong> Reimbursement caps for surgical opinion for covered critical illnesses: 5L/10L/15L (Rs. 5,000), 25L (Rs. 7,450), 50L (Rs. 10,000), 75L (Rs. 15,000), 1Cr (Rs. 20,000).</p>
-                <p><strong>New Born Baby Coverage (Clause 3.17):</strong> Covered under the mother's sum insured from birth to policy expiry after 24 months continuous coverage of the mother. Excludes basic post-natal or standard pre-term care unless under Platinum plan specifications.</p>
-                <p><strong>Critical Care Benefit (Gold/Platinum - Clause 3.18):</strong> First-time diagnosis lump sum payout after 12 months continuous coverage under the plan: 5L/10L/15L (Rs. 1 Lakh), 25L (Rs. 1.5 Lakh), 50L (Rs. 2.5 Lakh), 75L (Rs. 5 Lakh), 1Cr (Rs. 10 Lakh). Paid once in a lifetime.</p>
-                <p><strong>Personal Accident Benefit (Gold/Platinum - Clause 3.19):</strong> Equal to Sum Insured. Pays 100% for Death, Permanent Total Disablement, or loss of two limbs/eyes. Pays 50% for loss of one limb/eye. Valid for ages 18-70.</p>
-                <p><strong>Air Ambulance Charges (Gold/Platinum - Clause 3.20):</strong> Caps per Any One Illness: 5L/10L/15L (Rs. 50,000), 25L (Rs. 75,000), 50L (Rs. 1,00,000), 75L (Rs. 1,50,000), 1Cr (Rs. 2,00,000).</p>
-                <p><strong>Auto Top-Up & Double Reinstatement (Gold/Platinum):</strong> Reinstates up to 10% of SI for the same illness (Auto Top-Up). Reinstates full SI for separate illnesses sequentially twice per year (Double Reinstatement).</p>
-                <p><strong>Maternity Limits & Options (Platinum - Clause 3.24):</strong> Allowed after 24 months. Normal/Caesarean limits: 5L to 50L (Rs. 25,000 single / Rs. 37,500 twins); 75L (Rs. 37,500 / Rs. 50,000); 1Cr (Rs. 50,000 / Rs. 62,500). Lifetime max 2 claims. Optional covers expand limits by Rs. 50K, Rs. 75K, or Rs. 100K via add-on premium.</p>
-                <p><strong>Infertility & Well Baby Treatment (Platinum):</strong> Infertility treatment capped from Rs. 50,000 to Rs. 2,00,000 (Lifetime limit, 24-month waiting period). Pre-mature baby neonatal hospitalisation covered from Rs. 30,000 to Rs. 1,00,000 based on SI tier. Child vaccinations covered up to 0.1% of SI per period up to 2 years of age.</p>
+                <p><strong>Maternity Coverage (Platinum Plan):</strong> Covered after 24 months continuous coverage. Normal/Caesarean limit: 5L to 50L (Rs. 25,000 single, Rs. 37,500 twins); 75L (Rs. 37,500 single, Rs. 50,000 twins); 1Cr (Rs. 50,000 single, Rs. 62,500 twins). Limited to 2 claims per policy lifetime. Fresh waiting periods apply for second child events.</p>
+                <p><strong>Infertility Treatment:</strong> Lifetime limit up to Rs. 50,000 (5L/10L/15L) to Rs. 2,00,000 (1Cr), accessible after 24 months continuous coverage under Platinum plan.</p>
+                <p><strong>Birth Right Benefit:</strong> Lump sum amount paid upon certified lifetime diagnosis of covered child disorders (Autism spectrum, Cerebral Palsy, Down's syndrome) from Rs. 30,000 to Rs. 1,00,000 based on sum insured band.</p>
 
                 <h4>4. EXCLUSIONS & WAITING PERIODS</h4>
-                <p><strong>Pre-Existing Diseases (PED - 4.1):</strong> Excluded for the first 24 months of continuous coverage.</p>
-                <p><strong>First 30 Days Waiting Period (4.3):</strong> Excludes all illness claims during the first 30 days from inception, except accident-related hospitalisation.</p>
-                <p><strong>90 Days Waiting Period:</strong> Diabetes Mellitus, Hypertension, and Cardiac Conditions.</p>
-                <p><strong>12 Months Waiting Period:</strong> Benign tumors/cysts/polyps, benign ENT disorders, benign prostate hypertrophy, Cataract, Gastric/Duodenal ulcers, Gout/Rheumatism, Hernia, Hydrocele, Piles/Fissures/Fistula, Pilonidal sinus/Sinusitis, Prolapse Intervertebral Disc/Spinal diseases (unless accident), Skin disorders, Gall bladder/Bile duct stones, Urinary system stones, Renal failure, and Internal Congenital Diseases.</p>
-                <p><strong>24 Months Waiting Period:</strong> Congenital External Disease, Joint Replacement due to degenerative conditions, age-related Osteoarthritis/Osteoporosis, Mental Illness treatments, Age-Related Macular Degeneration (ARMD), Genetic disorders, Infertility treatments, and Maternity Coverage.</p>
-                <p><strong>Permanent Exclusions (4.4):</strong> Diagnostic evaluation admissions without active illness; rest cures/rehabilitation; cosmetic or plastic surgery (unless reconstructive via accident/burn/cancer); bariatric obesity surgery (unless meeting explicit diagnostic lines like BMI >=40); sex-change procedures; intent breach of criminal law; substance/alcohol addiction treatments; non-prescribed dietary supplements; laser eye corrections under 7.5 diopters; domiciliary hospitalization; nuclear/biological/chemical warfare; international treatments.</p>
+                <p><strong>PED Waiting Period (Code-Excl01):</strong> Expenses related to treatment of pre-existing diseases and complications are excluded until 24 months of continuous coverage expire.</p>
+                <p><strong>First 30 Days Waiting Period (Code-Excl03):</strong> Treatment of any illness within 30 days from initial policy inception is excluded except accident-related claims.</p>
+                <p><strong>90 Days Specific Waiting Period:</strong> Diabetes Mellitus, Hypertension, and Cardiac Conditions.</p>
+                <p><strong>12 Months Specific Waiting Period:</strong> Benign tumors/cysts/polyps, benign ENT disorders, benign prostate hypertrophy, Cataract, Gastric/Duodenal ulcers, Gout/Rheumatism, Hernia, Hydrocele, Piles/Fissures/Fistula, Pilonidal sinus/Sinusitis, Prolapse Intervertebral Disc/Spinal diseases (unless accident), Skin disorders, Gall bladder/Bile duct stones, Urinary system stones, Renal failure, and Internal Congenital Diseases.</p>
+                <p><strong>24 Months Specific Waiting Period:</strong> Congenital External Disease, Joint Replacement due to degenerative conditions, age-related Osteoarthritis/Osteoporosis, Mental Illness, ARMD, Genetic disorders, Infertility treatments, and Maternity Coverage.</p>
+                <p><strong>Permanent Exclusions:</strong> Obesity/weight control surgical treatments (unless therapeutic protocols match specified strict criteria such as BMI >=40); Change-of-gender treatments; Cosmetic or plastic surgery (unless post-accident/burn/cancer reconstruction); Breach of law with criminal intent; Excluded explicit health providers; Alcoholism/Drug substance abuse; Dietary supplements without standard script; Refractive error corrections under 7.5 diopters; Domiciliary hospitalization expenses; War and nuclear radiation exposures.</p>
 
                 <h4>5. GENERAL TERMS & CLAUSES</h4>
-                <p><strong>Cancellation (5.1):</strong> Policyholder can cancel via 7 days written notice. Short-period lineal refunds apply if zero claims exist. Insurer can cancel with 15 days notice exclusively on proven grounds of fraud, misrepresentation, or intentional non-disclosure.</p>
-                <p><strong>Free Look Period (5.6):</strong> 30 days from document receipt to review terms and seek refund of premium (minus medical exam and stamp costs) if no claims have run.</p>
-                <p><strong>Moratorium Period (5.8):</strong> After 60 months of continuous coverage, no policy or claim can be contested except on proven grounds of established fraud.</p>
-                <p><strong>Claim Settlement Window & Penal Interest (5.10 / 5.21):</strong> Insurer must settle or reject claims within 15 days from the last necessary document verification. Delayed payments create an automatic insurer liability to pay interest to the policyholder at 2% above the prevailing RBI bank rate.</p>
-                <p><strong>Zone Copayments (5.27):</strong> Zone 1 covers treatment anywhere in India at 100%. Zone 2 policyholders taking planned (non-accidental) treatment inside a Zone 1 region face a mandatory 10% co-payment on the final admissible claim total.</p>
-                <p><strong>Long Term Policy Tenure (5.29):</strong> Policies spanning multiple years treat Sum Insured, waiting boundaries, sub-limits, and accrued bonuses independently per calendar year; benefits are non-cumulative and cannot be stacked or advanced.</p>
+                <p><strong>Free Look Period:</strong> 30 days window from date of policy document receipt to review terms and request termination/refund if unsatisfied.</p>
+                <p><strong>Claim Settlement Window:</strong> Company must settle or reject a claim within 15 days from receiving the last necessary document. Delays make the insurer liable to pay interest to the policyholder at a rate 2% above the bank rate.</p>
+                <p><strong>Zone Co-Pay:</strong> Zone 1 premium covers treatment anywhere in India with zero co-payment. If a baseline Zone 2 policyholder accepts planned treatment within a Zone 1 territory, a mandatory 10% co-payment applies on the final admissible claim total.</p>
+                <p><strong>Long-Term Policy Rules:</strong> When multi-year selections apply, Sum Insured, waiting periods, sub-limits, and bonuses act independently per year and cannot be carried over, advanced, or stacked cumulatively.</p>
 
-                <h4>ANNEXURE I: Day Care Schedule Run (Summary)</h4>
-                <p>Covers 280 specific technological medical operations lasting under 24 hours under local/general anesthesia. This schedule lists clear procedures across ENT (1-51), Ophthalmology (52-68), Oncology (69-85), Urology (86-112), Gynaecology (113-147), General Surgery (148-196), Paediatric surgery (263-277), and minor operative interventions (278-280).</p>
+                <h4>ANNEXURE I: SELECTION OF DAY CARE TREATMENTS (1-280)</h4>
+                <p>Covers a comprehensive schedule of 280 technical procedures spanning ENT (Stapedotomy, Myringoplasty), Ophthalmology (Cataract, Retinal Lesions), Oncology (Chemotherapy, Radiotherapy, SRS), Urology (AV Fistula, URSL, Haemodialysis), Gynaecology (D&C, Hysteroscopy, Myomectomy), Orthopaedics (Arthroscopic Repair, Tendon Transfer), and Paediatric surgery (Orchidopexy, Vaginoplasty).</p>
 
-                <h4>ANNEXURE II: Non-Payable vs Subsumed Elements</h4>
-                <p>• <strong>List I (Permanently Excluded):</strong> Baby foods, utilities, internet/email costs, laundry charges, mineral water, sanitary pads, attendant charges, birth certificate fees, nebulizer kits, LS belts, air beds, and abdominal binders.
-                <br>• <strong>List II (Subsumed into Room Charges):</strong> Gowns, shoe covers, caps, slippers, tissue papers, toothpaste, daily chart tracking, and admission kits.
-                <br>• <strong>List III (Subsumed into Procedure Charges):</strong> Hair removal creams, disposable razors, drapes, daggers, surgical blades, and x-ray films.
-                <br>• <strong>List IV (Subsumed into Costs of Treatment):</strong> Admission registration fees, urine containers, antiseptic mouthwashes, and alcohol swabs.</p>
+                <h4>ANNEXURE II: EXCLUDED & SUBSUMED DASHBOARD ITEMS</h4>
+                <p><strong>List I (Non-Payable):</strong> Baby food, utilities, cold/hot packs, internet charges, telephone, laundry, mineral water, diapers, sanitizers, braces, and specialized external equipment (CPAP, BIPAP, infusion pumps unless used inside network settings).</p>
+                <p><strong>List II, III, & IV (Subsumed Items):</strong> Subsumed under Room Charges (Admission kit, visitors passes, daily charts, house-keeping, AC costs). Subsumed under Procedure Charges (Razors, surgical blades, aprons, boyles apparatus, drapes). Subsumed under Treatment costs (Urine containers, antiseptic mouthwash, swabs, gloves, urometer).</p>
             </div>
         </div>
         
@@ -1014,13 +958,13 @@
                         "1 Cr": [8930, 15247, 17647, 21284, 27962, 31977, 40027, 43711, 58087, 65251]
                     },
                     "Zone 2": {
-                        "5 Lakh": [1115, 2010, 2290, 2715, 3537, 3979, 4916, 5299, 6971, 7804],
+                        "5 Lakh": [2183, 3940, 4488, 5323, 6936, 7804, 9643, 10394, 13677, 15311],
                         "10 Lakh": [1317, 2324, 2671, 3196, 4155, 4720, 5878, 6388, 8454, 9482],
-                        "15 Lakh": [1604, 2798, 3229, 3889, 5049, 5774, 7222, 7885, 10472, 11760],
+                        "15 Lakh": [3143, 5486, 6333, 7627, 9904, 11327, 14169, 15470, 20547, 23075],
                         "25 Lakh": [4269, 7337, 8482, 10226, 13360, 15285, 19132, 20897, 27761, 31179],
-                        "50 Lakh": [3046, 5195, 6010, 7248, 9516, 10881, 13617, 14869, 19756, 22189],
-                        "75 Lakh": [3444, 5876, 6799, 8202, 10769, 12316, 15415, 16833, 22368, 25124],
-                        "1 Cr": [3726, 6360, 7360, 8878, 11660, 13334, 16690, 18227, 24220, 27207]
+                        "50 Lakh": [5974, 10191, 11790, 14220, 18671, 21349, 26719, 29174, 38765, 43540],
+                        "75 Lakh": [6755, 11527, 13339, 16092, 21130, 24166, 30246, 33030, 43892, 49301],
+                        "1 Cr": [7307, 12476, 14439, 17419, 22879, 26164, 32750, 35765, 47527, 53388]
                     }
                 }
             },
@@ -1073,16 +1017,16 @@
                         "25 Lakh": [2661, 4572, 5284, 6371, 8322, 9521, 11917, 13017, 17291, 19420],
                         "50 Lakh": [3722, 6349, 7345, 8858, 11630, 13298, 16642, 18171, 24145, 27118],
                         "75 Lakh": [4209, 7181, 8309, 10026, 13162, 15052, 18839, 20572, 27337, 30706],
-                        "1 Cr": [4553, 7772, 8944, 10850, 14251, 16296, 20398, 22274, 29601, 33251]
+                        "1 Cr": [4553, 7772, 8994, 10850, 14251, 16296, 20398, 22274, 29601, 33251]
                     },
                     "Zone 2": {
                         "5 Lakh": [1115, 2010, 2290, 2715, 3537, 3979, 4916, 5299, 6971, 7804],
                         "10 Lakh": [1317, 2324, 2671, 3196, 4155, 4720, 5878, 6388, 8454, 9482],
                         "15 Lakh": [1604, 2798, 3229, 3889, 5049, 5774, 7222, 7885, 10472, 11760],
                         "25 Lakh": [4269, 7337, 8482, 10226, 13360, 15285, 19132, 20897, 27761, 31179],
-                        "50 Lakh": [3046, 5195, 6010, 7248, 9516, 10881, 13617, 14869, 19756, 22189],
-                        "75 Lakh": [3444, 5876, 6799, 8202, 10769, 12316, 15415, 16833, 22368, 25124],
-                        "1 Cr": [3726, 6360, 7360, 8878, 11660, 13334, 16690, 18227, 24220, 27207]
+                        "50 Lakh": [5974, 10191, 11790, 14220, 18671, 21349, 26719, 29174, 38765, 43540],
+                        "75 Lakh": [6755, 11527, 13339, 16092, 21130, 24166, 30246, 33030, 43892, 49301],
+                        "1 Cr": [7307, 12476, 14439, 17419, 22879, 26164, 32750, 35765, 47527, 53388]
                     }
                 }
             }
@@ -1466,7 +1410,7 @@
             const wrapper = document.getElementById('exportTable');
             
             const opt = {
-                margin:       [0.4, 0.4, 0.4, 0.4],
+                margin:       [0.4, 0.3, 0.4, 0.3],
                 filename:     'Yuva_Bharat_Premium_Quote.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
@@ -1476,8 +1420,7 @@
                     scrollY: 0,
                     scrollX: 0
                 },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' },
-                pagebreak:    { mode: ['avoid-all', 'css'] }
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
             };
             
             html2pdf().set(opt).from(wrapper).save();
