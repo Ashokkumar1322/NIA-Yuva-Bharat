@@ -82,6 +82,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap; /* Allows internal wrapping on mobile */
         }
         .tools-label {
             font-size: 13px; 
@@ -89,7 +90,9 @@
             color: #555;
         }
         .tools-section input {
-            width: 90px;
+            width: 80px;
+            min-width: 70px;
+            flex-grow: 1; /* Helps fill space evenly on small screens */
         }
         .tools-section select {
             width: auto;
@@ -216,6 +219,20 @@
             .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
             .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
             table { min-width: 100%; width: 100%; }
+        }
+        
+        /* Mobile specific adjustments */
+        @media (max-width: 768px) {
+            .btn-export {
+                margin-left: 0;
+                margin-top: 10px;
+                display: block;
+                width: 100%;
+            }
+            .tools-section {
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
     </style>
 </head>
@@ -612,8 +629,6 @@
         }
 
         // FULLY DIGITIZED CHART RATE ENGINE
-        // Access via: ratesEngine[frequency][planType][zone][sumInsured][ageIndex]
-        // Index maps to ["0-17", "18-30", "31-35", "36-40", "41-45", "46-50", "51-55", "56-60", "61-65", ">65"]
         const ageBandsRef = ["0-17", "18-30", "31-35", "36-40", "41-45", "46-50", "51-55", "56-60", "61-65", ">65"];
         const ratesEngine = {
             "Annual": {
@@ -866,7 +881,6 @@
             }
         };
 
-        // Feature: Auto-sync Sum Insured for Floater Policies
         function syncFloaterSumInsured() {
             const indFloater = document.getElementById('indFloater').value;
             if (indFloater === 'Floater') {
@@ -899,8 +913,6 @@
             let activeMembersCount = 0;
             let periodMultiplier = parseInt(policyPeriod);
             
-            // Note: Base Premium doesn't use freqDivisor anymore (chart dictates price), 
-            // but it is still needed to correctly slice flat-rate riders (e.g. Maternity, CI flat terms) per installment.
             let freqDivisor = 1;
             if (frequency === 'Half Yearly') freqDivisor = 2;
             else if (frequency === 'Quarterly') freqDivisor = 4;
@@ -983,18 +995,14 @@
                 if(cellSI) cellSI.innerText = sumInsured;
                 const ageBand = getAgeBand(age);
 
-                // EXACT CHART FETCHING FOR BASE PREMIUM
+                // EXACT CHART FETCHING FOR BASE PREMIUM - SCALED BY PERIOD MULTIPLIER
                 let basePremium = 0;
                 try {
                     const ageIndex = ageBandsRef.indexOf(ageBand);
-                    basePremium = ratesEngine[frequency][planType][zone][sumInsured][ageIndex];
-                    
-                    // Multiply the chart rate (which is essentially the installment rate) by the period multiplier
-                    // Since a multi-year policy requires the buyer to pay that frequency rate multiple times over the tenure
-                    // Wait: BasePremium is always displayed purely as the *installment amount* in such engines.
-                    // If Policy is 2 years, LTD is applied at the very end to discount the installment.
+                    let chartRate = ratesEngine[frequency][planType][zone][sumInsured][ageIndex];
+                    basePremium = chartRate * periodMultiplier;
                 } catch(e) {
-                    basePremium = 3500; // Generic safe fallback if data breaks
+                    basePremium = 3500 * periodMultiplier; // generic fallback
                 }
                 
                 cellBP.innerText = basePremium;
