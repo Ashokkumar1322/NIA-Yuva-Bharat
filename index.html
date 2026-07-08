@@ -218,71 +218,6 @@
             padding: 10px;
         }
 
-        /* Policy View Wrapper Styles */
-        .policy-container {
-            margin-top: 30px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            background-color: #ffffff;
-            padding: 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .policy-search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .policy-search-box input {
-            max-width: 400px;
-            padding: 8px 12px;
-        }
-        .policy-scrollable {
-            height: 500px;
-            overflow-y: auto;
-            border: 1px solid #e2e8f0;
-            padding: 20px;
-            border-radius: 6px;
-            background-color: #fdfdfd;
-            font-size: 13.5px;
-            line-height: 1.6;
-        }
-        .policy-scrollable h3 {
-            color: #2c3e50;
-            border-bottom: 2px solid #2c3e50;
-            padding-bottom: 6px;
-            margin-top: 25px;
-        }
-        .policy-scrollable h4 {
-            color: #34495e;
-            margin-top: 18px;
-            margin-bottom: 8px;
-            border-bottom: 1px dashed #cbd5e1;
-            padding-bottom: 4px;
-        }
-        .policy-scrollable p {
-            margin: 0 0 10px 0;
-        }
-        .policy-scrollable ul {
-            margin: 0 0 15px 0;
-            padding-left: 20px;
-        }
-        .policy-table {
-            width: 100%;
-            min-width: 100%;
-            margin: 15px 0;
-            border-collapse: collapse;
-        }
-        .policy-table th {
-            background-color: #f1f5f9;
-            font-weight: 600;
-        }
-        .policy-table td, .policy-table th {
-            padding: 8px 12px;
-            border: 1px solid #cbd5e1;
-            font-size: 12.5px;
-        }
         mark {
             background-color: #fef08a;
             color: #000000;
@@ -293,7 +228,7 @@
         /* Print CSS */
         @media print {
             body { background-color: #fff; padding: 0; }
-            .tools-bar, .policy-details, .export-controls, .policy-container, button { display: none !important; }
+            .tools-bar, .policy-details, .export-controls, button { display: none !important; }
             .hide-on-print { display: none !important; }
             .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
             .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
@@ -669,101 +604,11 @@
             <button type="button" class="btn btn-export" onclick="exportToCSV()">Download as Excel (CSV)</button>
             <button type="button" class="btn btn-export" onclick="exportToPDF()">Download as PDF</button>
         </div>
-
-        <div class="policy-container hide-on-print">
-            <h3>Yuva Bharat Health Policy - Clauses & Terms</h3>
-            <div class="policy-search-box">
-                <span class="tools-label">Search Document:</span>
-                <input type="text" id="policySearchInput" placeholder="Type keyword to look up..." oninput="searchPolicyDocument()">
-            </div>
-            <div class="policy-scrollable" id="policyContentText">
-                <h4>1. PREAMBLE & PLAN COVERS</h4>
-                <p>This is Your "YUVA BHARAT HEALTH POLICY", issued by Us (The New India Assurance Co. Ltd.) relying on information disclosed in Your Proposal. The terms and conditions set out in this Policy and its Schedule will be the basis for any claim and/or benefit. If during the Period of Insurance, You or any Insured Person incurs Hospitalisation Expenses which are Reasonable and Customary, and Medically Necessary for treatment of any Illness or Injury, we will reimburse such expense through the Third-Party Administrator.</p>
-                <ul>
-                    <li><strong>Base Plan (Clauses 3.1 to 3.17):</strong> Covers Hospitalisation Expenses, Organ Transplant, Hospital Cash, Road Ambulance Charges, Treatment for Congenital Diseases, Coverage for Cataract, Coverage for Hazardous Sports, Shared Accommodation Benefit, Specific Coverages, Modern Treatments/Procedures, Cost of Health Check-Up, Medical Second Opinion, Reinstatement of Sum Insured, AYUSH Treatment, New Born Baby Coverage.</li>
-                    <li><strong>Gold Plan (Clauses 3.1 to 3.25):</strong> Covers Base Plan benefits + Critical Care Benefit, Personal Accident Benefit, Auto TOP-UP, Air Ambulance Charges, Double Reinstatement of Sum Insured, and Guaranteed Cumulative Bonus.</li>
-                    <li><strong>Platinum Plan (Clauses 3.1 to 3.30):</strong> Covers Gold Plan benefits + Maternity Coverage, Infertility Treatment, Well Baby Cover, and Birth Right Benefit.</li>
-                </ul>
-
-                <h4>2. KEY DEFINITIONS</h4>
-                <p><strong>ACCIDENT:</strong> A sudden, unforeseen and involuntary event caused by external, visible and violent means.</p>
-                <p><strong>ANY ONE ILLNESS:</strong> Continuous Period of Illness including relapse within 45 days from date of last consultation with the Hospital where treatment was taken.</p>
-                <p><strong>AYUSH HOSPITAL:</strong> A healthcare facility registered with local authorities, under the round-the-clock supervision of a qualified registered AYUSH Medical Practitioner, equipped with at least 5 in-patient beds, dedicated therapy sections/OT, and maintaining proper daily records.</p>
-                <p><strong>CASHLESS FACILITY:</strong> Facility extended by Us to You where payments of costs of treatment undergone in accordance with policy terms are directly made to the Network provider by Us to the extent of pre-authorization approved.</p>
-                <p><strong>PRE-EXISTING CONDITION/DISEASE:</strong> Any condition, ailment, Injury or Illness diagnosed by a physician or for which medical advice/treatment was recommended or received up to 24 months prior to date of commencement of policy.</p>
-                <p><strong>CRITICAL ILLNESSES (Clause 2.9):</strong> Includes Cancer of Specified Severity (with key structural exclusions like Carcinoma in situ, low-malignant thyroid, or presence of HIV), Myocardial Infarction (First Heart Attack), Open Chest CABG, Open Heart Valve Repair/Replacement, Coma of Specified Severity (lasting at least 96 hours on life support with subsequent permanent neurological deficits), Kidney Failure requiring regular dialysis, Stroke resulting in permanent symptoms, Major Organ/Bone Marrow Transplant, Permanent Paralysis of Limbs, Motor Neurone Disease, Multiple Sclerosis, Third Degree Burns (covering min 20% body surface area), Major Head Trauma, End Stage Lung Failure, and End Stage Liver Failure.</p>
-
-                <h4>3. REIMBURSEMENT DETAILS & SUB-LIMITS</h4>
-                <p><strong>Room Rent Limits:</strong> Single AC Room for Sum Insured bands of 5L/10L/15L. Deluxe AC Room for Sum Insured bands of 25L/50L/75L/1Cr. Includes associated boarding, nursing, DMO/RMO charges. Proportionate Deduction applies to Associate Medical Expenses if higher room category is chosen.</p>
-                <p><strong>Hospital Cash:</strong> Max 5 days for Any One Illness (requires >24 hours stay). Limits: 5L/10L/15L (Rs. 500/day), 25L (Rs. 750/day), 50L (Rs. 1,00,000/day), 75L (Rs. 1,500/day), 1Cr (Rs. 2,000/day). Reduces Sum Insured.</p>
-                <p><strong>Road Ambulance Charges:</strong> Per Any One Illness: 5L/10L/15L (Up to Rs. 5,000), 25L (Up to Rs. 7,500), 50L (Up to Rs. 10,000), 75L (Up to Rs. 15,000), 1Cr (Up to Rs. 20,000).</p>
-                <p><strong>Shared Accommodation Cash Benefit:</strong> Opting for shared accommodation provides an additional daily cash benefit: 5L/10L/15L (Rs. 750/day), 25L (Rs. 1,000/day), 50L (Rs. 1,250/day), 75L (Rs. 1,500/day), 1Cr (Rs. 1,750/day).</p>
-                <p><strong>Cataract Coverage:</strong> Caps per eye per insured: 5L/10L/15L (Rs. 50,000), 25L (Rs. 75,000), 50L (Rs. 1,00,000), 75L (Rs. 1,25,000), 1Cr (Rs. 1,50,000).</p>
-                <p><strong>Specific Coverages:</strong> Artificial life maintenance (up to 25% SI, max 15 days in certified vegetative state); Puberty/Menopause disorders (up to 25% SI sub-limit); ARMD for intravitreal injections (up to 20% SI sub-limit); Genetic diseases/disorders (25% SI sub-limit); Mental Illness treatment at specialized mental health establishments (25% SI sub-limit after 24 months continuous coverage). Psychological counseling and behavioral/family therapies are permanently excluded.</p>
-
-                <table class="policy-table">
-                    <thead>
-                        <tr>
-                            <th>Modern Treatments Cap (Per Policy Period)</th>
-                            <th>5L/10L/15L</th>
-                            <th>25L</th>
-                            <th>50L</th>
-                            <th>75L</th>
-                            <th>1 Crore</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Uterine Artery Embolization & HIFU</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.25 L</td><td>Rs. 2.5 L</td></tr>
-                        <tr><td>Balloon Sinuplasty</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.25 L</td><td>Rs. 2.5 L</td></tr>
-                        <tr><td>Deep Brain Stimulation</td><td>Rs. 2 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td><td>Rs. 6 L</td><td>Rs. 7.5 L</td></tr>
-                        <tr><td>Oral Chemotherapy</td><td>Rs. 50 K</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td></tr>
-                        <tr><td>Immunotherapy (Monoclonal Antibody Injection)</td><td>Rs. 1 L</td><td>Rs. 2 L</td><td>Rs. 3 L</td><td>Rs. 4 L</td><td>Rs. 5 L</td></tr>
-                        <tr><td>Intravitreal Injections</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td></tr>
-                        <tr><td>Robotic Surgeries</td><td>Rs. 2 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td><td>Rs. 6 L</td><td>Rs. 7.5 L</td></tr>
-                        <tr><td>Stereotactic Radiosurgeries</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td><td>Rs. 4 L</td><td>Rs. 5 L</td></tr>
-                        <tr><td>Bronchial Thermoplasty</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td></tr>
-                        <tr><td>Vaporisation of the Prostate (Laser Treatment)</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3 L</td></tr>
-                        <tr><td>IONM (Intra Operative Neuro Monitoring)</td><td>Rs. 30 K</td><td>Rs. 50 K</td><td>Rs. 75 K</td><td>Rs. 1 L</td><td>Rs. 1.5 L</td></tr>
-                        <tr><td>Stem Cell Therapy (Bone Marrow Transplant)</td><td>Rs. 1.5 L</td><td>Rs. 2 L</td><td>Rs. 2.5 L</td><td>Rs. 3.5 L</td><td>Rs. 5 L</td></tr>
-                    </tbody>
-                </table>
-
-                <p><strong>Maternity Coverage (Platinum Plan):</strong> Covered after 24 months continuous coverage. Normal/Caesarean limit: 5L to 50L (Rs. 25,000 single, Rs. 37,500 twins); 75L (Rs. 37,500 single, Rs. 50,000 twins); 1Cr (Rs. 50,000 single, Rs. 62,500 twins). Limited to 2 claims per policy lifetime. Fresh waiting periods apply for second child events.</p>
-                <p><strong>Infertility Treatment:</strong> Lifetime limit up to Rs. 50,000 (5L/10L/15L) to Rs. 2,00,000 (1Cr), accessible after 24 months continuous coverage under Platinum plan.</p>
-                <p><strong>Birth Right Benefit:</strong> Lump sum amount paid upon certified lifetime diagnosis of covered child disorders (Autism spectrum, Cerebral Palsy, Down's syndrome) from Rs. 30,000 to Rs. 1,00,000 based on sum insured band.</p>
-
-                <h4>4. EXCLUSIONS & WAITING PERIODS</h4>
-                <p><strong>PED Waiting Period (Code-Excl01):</strong> Expenses related to treatment of pre-existing diseases and complications are excluded until 24 months of continuous coverage expire.</p>
-                <p><strong>First 30 Days Waiting Period (Code-Excl03):</strong> Treatment of any illness within 30 days from initial policy inception is excluded except accident-related claims.</p>
-                <p><strong>90 Days Specific Waiting Period:</strong> Diabetes Mellitus, Hypertension, and Cardiac Conditions.</p>
-                <p><strong>12 Months Specific Waiting Period:</strong> Benign tumors/cysts/polyps, benign ENT disorders, benign prostate hypertrophy, Cataract, Gastric/Duodenal ulcers, Gout/Rheumatism, Hernia, Hydrocele, Piles/Fissures/Fistula, Pilonidal sinus/Sinusitis, Prolapse Intervertebral Disc/Spinal diseases (unless accident), Skin disorders, Gall bladder/Bile duct stones, Urinary system stones, Renal failure, and Internal Congenital Diseases.</p>
-                <p><strong>24 Months Specific Waiting Period:</strong> Congenital External Disease, Joint Replacement due to degenerative conditions, age-related Osteoarthritis/Osteoporosis, Mental Illness, ARMD, Genetic disorders, Infertility treatments, and Maternity Coverage.</p>
-                <p><strong>Permanent Exclusions:</strong> Obesity/weight control surgical treatments (unless therapeutic protocols match specified strict criteria such as BMI >=40); Change-of-gender treatments; Cosmetic or plastic surgery (unless post-accident/burn/cancer reconstruction); Breach of law with criminal intent; Excluded explicit health providers; Alcoholism/Drug substance abuse; Dietary supplements without standard script; Refractive error corrections under 7.5 diopters; Domiciliary hospitalization expenses; War and nuclear radiation exposures.</p>
-
-                <h4>5. GENERAL TERMS & CLAUSES</h4>
-                <p><strong>Free Look Period:</strong> 30 days window from date of policy document receipt to review terms and request termination/refund if unsatisfied.</p>
-                <p><strong>Claim Settlement Window:</strong> Company must settle or reject a claim within 15 days from receiving the last necessary document. Delays make the insurer liable to pay interest to the policyholder at a rate 2% above the bank rate.</p>
-                <p><strong>Zone Co-Pay:</strong> Zone 1 premium covers treatment anywhere in India with zero co-payment. If a baseline Zone 2 policyholder accepts planned treatment within a Zone 1 territory, a mandatory 10% co-payment applies on the final admissible claim total.</p>
-                <p><strong>Long-Term Policy Rules:</strong> When multi-year selections apply, Sum Insured, waiting periods, sub-limits, and bonuses act independently per year and cannot be carried over, advanced, or stacked cumulatively.</p>
-
-                <h4>ANNEXURE I: SELECTION OF DAY CARE TREATMENTS (1-280)</h4>
-                <p>Covers a comprehensive schedule of 280 technical procedures spanning ENT (Stapedotomy, Myringoplasty), Ophthalmology (Cataract, Retinal Lesions), Oncology (Chemotherapy, Radiotherapy, SRS), Urology (AV Fistula, URSL, Haemodialysis), Gynaecology (D&C, Hysteroscopy, Myomectomy), Orthopaedics (Arthroscopic Repair, Tendon Transfer), and Paediatric surgery (Orchidopexy, Vaginoplasty).</p>
-
-                <h4>ANNEXURE II: EXCLUDED & SUBSUMED DASHBOARD ITEMS</h4>
-                <p><strong>List I (Non-Payable):</strong> Baby food, utilities, cold/hot packs, internet charges, telephone, laundry, mineral water, diapers, sanitizers, braces, and specialized external equipment (CPAP, BIPAP, infusion pumps unless used inside network settings).</p>
-                <p><strong>List II, III, & IV (Subsumed Items):</strong> Subsumed under Room Charges (Admission kit, visitors passes, daily charts, house-keeping, AC costs). Subsumed under Procedure Charges (Razors, surgical blades, aprons, boyles apparatus, drapes). Subsumed under Treatment costs (Urine containers, antiseptic mouthwash, swabs, gloves, urometer).</p>
-            </div>
-        </div>
         
     </div>
 
     <script>
         const rowCount = 6;
-        let originalPolicyHtml = "";
-
-        window.addEventListener('DOMContentLoaded', () => {
-            originalPolicyHtml = document.getElementById('policyContentText').innerHTML;
-        });
         
         const ciRates = {
             "1 yr": { "18-25": 1.05, "26-30": 1.55, "31-35": 2.2, "36-40": 3.05, "41-45": 5.01, "46-50": 9.57, "51-55": 15.77, "56-60": 26.7, "61-65": 39.64, "66-70": 67.62, "71-75": 135.23, "76-80": 246.79, "81+": 438.13 },
@@ -1201,7 +1046,8 @@
                 }
                 cellMat.innerText = matAmt;
 
-                let floatDiscAmt = Math.round(totalA * floaterRate);
+                // Floater discount calculated dynamically on the sum of TOTAL A and Maternity Enhancement
+                let floatDiscAmt = Math.round((totalA + matAmt) * floaterRate);
                 let floatDisc = -floatDiscAmt;
                 cellFloat.innerText = floatDisc;
 
@@ -1254,7 +1100,6 @@
                     }
                 }
 
-                // Pre & Post Hospitalisation Rider calculated at 5% of Basic Premium
                 let pphAmt = (riderPPH === "Yes") ? Math.round(basePremium * 0.05) : 0;
 
                 cellNM.innerText = nmAmt;
@@ -1424,53 +1269,6 @@
             };
             
             html2pdf().set(opt).from(wrapper).save();
-        }
-
-        function searchPolicyDocument() {
-            const query = document.getElementById('policySearchInput').value.toLowerCase().trim();
-            const container = document.getElementById('policyContentText');
-            
-            container.innerHTML = originalPolicyHtml;
-            if (!query) return;
-
-            const textNodes = [];
-            function walk(node) {
-                if (node.nodeType === 3) {
-                    textNodes.push(node);
-                } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
-                    for (let i = 0; i < node.childNodes.length; i++) {
-                        walk(node.childNodes[i]);
-                    }
-                }
-            }
-            walk(container);
-
-            for (let i = textNodes.length - 1; i >= 0; i--) {
-                const node = textNodes[i];
-                const val = node.nodeValue;
-                const lowerVal = val.toLowerCase();
-                
-                if (lowerVal.includes(query)) {
-                    const parent = node.parentNode;
-                    let lastIdx = 0;
-                    const frag = document.createDocumentFragment();
-                    
-                    let idx = lowerVal.indexOf(query, lastIdx);
-                    while (idx !== -1) {
-                        frag.appendChild(document.createTextNode(val.substring(lastIdx, idx)));
-                        
-                        const matchText = val.substring(idx, idx + query.length);
-                        const mark = document.createElement('mark');
-                        mark.appendChild(document.createTextNode(matchText));
-                        frag.appendChild(mark);
-                        
-                        lastIdx = idx + query.length;
-                        idx = lowerVal.indexOf(query, lastIdx);
-                    }
-                    frag.appendChild(document.createTextNode(val.substring(lastIdx)));
-                    parent.replaceChild(frag, node);
-                }
-            }
         }
     </script>
 </body>
