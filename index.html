@@ -225,16 +225,22 @@
             padding: 0 2px;
         }
 
-        /* Print CSS */
+        /* Print & PDF Alignment CSS */
         @media print {
             body { background-color: #fff; padding: 0; }
             .tools-bar, .policy-details, .export-controls, button { display: none !important; }
             .hide-on-print { display: none !important; }
             .calculator-container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
             .table-responsive { overflow: visible; border: none; margin-bottom: 20px; }
-            table { min-width: 100%; width: 100%; }
+            table { min-width: 100%; width: 100%; page-break-inside: auto; }
+            tr { page-break-inside: avoid !important; break-inside: avoid !important; }
         }
         
+        .premium-working-table tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
         /* Mobile specific adjustments */
         @media (max-width: 768px) {
             .btn-export {
@@ -798,71 +804,9 @@
                         "10 Lakh": [3151, 5567, 6399, 7659, 9958, 11315, 14093, 15312, 20271, 22736],
                         "15 Lakh": [3840, 6704, 7739, 9320, 12104, 13842, 17316, 18902, 25112, 28201],
                         "25 Lakh": [5217, 8967, 10366, 12493, 16327, 18681, 23383, 25543, 33929, 38106],
-                        "50 Lakh": [7300, 12455, 14409, 17375, 22818, 26093, 32655, 35652, 47379, 53215],
+                        "50 Lakh": [3722, 6349, 7345, 8858, 11630, 13298, 16642, 18171, 24145, 27118],
                         "75 Lakh": [8254, 14087, 16302, 19667, 25825, 29535, 36967, 40361, 53645, 60256],
                         "1 Cr": [8930, 15247, 17647, 21284, 27962, 31977, 40027, 43711, 58087, 65251]
-                    },
-                    "Zone 2": {
-                        "5 Lakh": [2183, 3940, 4488, 5323, 6936, 7804, 9643, 10394, 13677, 15311],
-                        "10 Lakh": [1317, 2324, 2671, 3196, 4155, 4720, 5878, 6388, 8454, 9482],
-                        "15 Lakh": [3143, 5486, 6333, 7627, 9904, 11327, 14169, 15470, 20547, 23075],
-                        "25 Lakh": [4269, 7337, 8482, 10226, 13360, 15285, 19132, 20897, 27761, 31179],
-                        "50 Lakh": [5974, 10191, 11790, 14220, 18671, 21349, 26719, 29174, 38765, 43540],
-                        "75 Lakh": [6755, 11527, 13339, 16092, 21130, 24166, 30246, 33030, 43892, 49301],
-                        "1 Cr": [7307, 12476, 14439, 17419, 22879, 26164, 32750, 35765, 47527, 53388]
-                    }
-                }
-            },
-            "Quarterly": {
-                "Basic Plan": {
-                    "Zone 1": {
-                        "5 Lakh": [1135, 1614, 1951, 2460, 3236, 3873, 4991, 5633, 7627, 8624],
-                        "10 Lakh": [1390, 1981, 2399, 3030, 3986, 4773, 6156, 6948, 9411, 10644],
-                        "15 Lakh": [1729, 2469, 2992, 3782, 4980, 5965, 7696, 8688, 11773, 13317],
-                        "25 Lakh": [2321, 3324, 4031, 5099, 6721, 8055, 10396, 11739, 15912, 18000],
-                        "50 Lakh": [3224, 4625, 5614, 7105, 9373, 11238, 14509, 16385, 22219, 25136],
-                        "75 Lakh": [3645, 5232, 6352, 8040, 10609, 12720, 16424, 18550, 25157, 28461],
-                        "1 Cr": [3943, 5662, 6876, 8704, 11486, 13771, 17785, 20086, 27242, 30821]
-                    },
-                    "Zone 2": {
-                        "5 Lakh": [929, 1321, 1597, 2014, 2648, 3170, 4085, 4610, 6241, 7057],
-                        "10 Lakh": [1138, 1622, 1964, 2480, 3262, 3906, 5037, 5686, 7701, 8709],
-                        "15 Lakh": [1415, 2021, 2449, 3095, 4075, 4882, 6298, 7109, 9634, 10897],
-                        "25 Lakh": [1900, 2721, 3299, 4173, 5500, 6591, 8506, 9605, 13020, 14728],
-                        "50 Lakh": [2639, 3785, 4594, 5814, 7670, 9195, 11872, 13407, 18180, 20567],
-                        "75 Lakh": [2983, 4282, 5198, 6579, 8681, 10408, 13439, 15178, 20584, 23287],
-                        "1 Cr": [3227, 4633, 5627, 7122, 9399, 11268, 14552, 16435, 22290, 25218]
-                    }
-                },
-                "Gold Plan": {
-                    "Zone 1": {
-                        "5 Lakh": [1335, 1896, 2240, 2762, 3769, 4374, 5521, 6095, 8141, 9158],
-                        "10 Lakh": [1585, 2319, 2746, 3393, 4567, 5319, 6736, 7458, 9983, 11239],
-                        "15 Lakh": [1935, 2890, 3423, 4232, 5655, 6601, 8374, 9285, 12447, 14021],
-                        "25 Lakh": [2627, 3989, 4708, 5798, 7756, 9023, 11421, 12631, 16906, 19035],
-                        "50 Lakh": [3684, 5740, 6744, 8263, 11040, 12780, 16127, 17773, 23745, 26719],
-                        "75 Lakh": [4166, 6494, 7629, 9350, 12495, 14465, 18255, 20119, 26884, 30255],
-                        "1 Cr": [4506, 7028, 8258, 10121, 13529, 15662, 19767, 21789, 29112, 32762]
-                    },
-                    "Zone 2": {
-                        "5 Lakh": [1093, 1552, 1833, 2261, 3084, 3580, 4518, 4987, 6661, 7494],
-                        "10 Lakh": [1298, 1899, 2248, 2777, 3738, 4353, 5513, 6103, 8169, 9197],
-                        "15 Lakh": [1584, 2366, 2802, 3463, 4628, 5402, 6853, 7598, 10185, 11473],
-                        "25 Lakh": [2151, 3265, 3853, 4745, 6347, 7384, 9345, 10335, 13833, 15575],
-                        "50 Lakh": [3015, 4698, 5519, 6761, 9034, 10457, 13195, 14540, 19429, 21862],
-                        "75 Lakh": [3410, 5314, 6243, 7651, 10224, 11836, 14937, 16461, 21997, 24755],
-                        "1 Cr": [3688, 5751, 6758, 8282, 11070, 12815, 16174, 17825, 23820, 26806]
-                    }
-                },
-                "Platinum Plan": {
-                    "Zone 1": {
-                        "5 Lakh": [1361, 2456, 2797, 3317, 4322, 4862, 6008, 6475, 8520, 9537],
-                        "10 Lakh": [1608, 2839, 3263, 3905, 5077, 5768, 7184, 7807, 10332, 11588],
-                        "15 Lakh": [1959, 3419, 3946, 4752, 6170, 7056, 8826, 9636, 12799, 14373],
-                        "25 Lakh": [2661, 4572, 5284, 6371, 8322, 9521, 11917, 13017, 17291, 19420],
-                        "50 Lakh": [3722, 6349, 7345, 8858, 11630, 13298, 16642, 18171, 24145, 27118],
-                        "75 Lakh": [4209, 7181, 8309, 10026, 13162, 15052, 18839, 20572, 27337, 30706],
-                        "1 Cr": [4553, 7772, 8994, 10850, 14251, 16296, 20398, 22274, 29601, 33251]
                     },
                     "Zone 2": {
                         "5 Lakh": [1115, 2010, 2290, 2715, 3537, 3979, 4916, 5299, 6971, 7804],
@@ -872,6 +816,143 @@
                         "50 Lakh": [5974, 10191, 11790, 14220, 18671, 21349, 26719, 29174, 38765, 43540],
                         "75 Lakh": [6755, 11527, 13339, 16092, 21130, 24166, 30246, 33030, 43892, 49301],
                         "1 Cr": [7307, 12476, 14439, 17419, 22879, 26164, 32750, 35765, 47527, 53388]
+                    }
+                }
+            }
+        };
+
+        function getCIAgeBand(age) {
+            let a = parseInt(age);
+            if (a >= 18 && a <= 25) return "18-25";
+            if (a >= 26 && a <= 30) return "26-30";
+            if (a >= 31 && a <= 35) return "31-35";
+            if (a >= 36 && a <= 40) return "36-40";
+            if (a >= 41 && a <= 45) return "41-45";
+            if (a >= 46 && a <= 50) return "46-50";
+            if (a >= 51 && a <= 55) return "51-55";
+            if (a >= 56 && a <= 60) return "56-60";
+            if (a >= 61 && a <= 65) return "61-65";
+            if (a >= 66 && a <= 70) return "66-70";
+            if (a >= 71 && a <= 75) return "71-75";
+            if (a >= 76 && a <= 80) return "76-80";
+            if (a >= 81) return "81+";
+            return null;
+        }
+
+        function getAgeBand(age) {
+            if (age === "" || age === null || isNaN(age)) return null;
+            let a = parseInt(age);
+            if (a <= 17) return "0-17";
+            if (a <= 30) return "18-30";
+            if (a <= 35) return "31-35";
+            if (a <= 40) return "36-40";
+            if (a <= 45) return "41-45";
+            if (a <= 50) return "46-50";
+            if (a <= 55) return "51-55";
+            if (a <= 60) return "56-60";
+            if (a <= 65) return "61-65";
+            return ">65";
+        }
+
+        function calculateAgeFromDOB(dobString) {
+            if (!dobString) return "";
+            const today = new Date();
+            const birthDate = new Date(dobString);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age >= 0 ? age : "";
+        }
+
+        function toggleInputMode() {
+            const mode = document.getElementById('inputMode').value;
+            const header = document.getElementById('ageColumnHeader');
+            
+            if (mode === 'Age') {
+                header.innerText = "Age";
+            } else {
+                header.innerText = "Date of Birth";
+            }
+
+            for (let i = 1; i <= rowCount; i++) {
+                const input = document.getElementById(`age_${i}`);
+                if (input) {
+                    input.value = ""; 
+                    if (mode === 'Age') {
+                        input.type = 'number';
+                        input.placeholder = 'Age';
+                    } else {
+                        input.type = 'date';
+                        input.placeholder = '';
+                    }
+                }
+            }
+            runPremiumCalculation();
+        }
+
+        const ageBandsRef = ["0-17", "18-30", "31-35", "36-40", "41-45", "46-50", "51-55", "56-60", "61-65", ">65"];
+        const ratesEngine = {
+            "Annual": {
+                "Basic Plan": {
+                    "Zone 1": {
+                        "5 Lakh": [4279, 6094, 7370, 9301, 12238, 14652, 18887, 21318, 28870, 32648],
+                        "10 Lakh": [5247, 7486, 9070, 11457, 15081, 18062, 23298, 26301, 35629, 40299],
+                        "15 Lakh": [6529, 9334, 11314, 14306, 18843, 22578, 29134, 32890, 44578, 50424],
+                        "25 Lakh": [8773, 12573, 15252, 19294, 25438, 30492, 39358, 44446, 60253, 68162],
+                        "50 Lakh": [12194, 17501, 21247, 26895, 35486, 42548, 54940, 62046, 84145, 95194],
+                        "75 Lakh": [13789, 19800, 24041, 30437, 40167, 48164, 62194, 70246, 95271, 107789],
+                        "1 Cr": [14916, 21428, 26026, 32951, 43489, 52146, 67348, 76065, 103169, 116727]
+                    },
+                    "Zone 2": {
+                        "5 Lakh": [3501, 4986, 6030, 7610, 10013, 11988, 15453, 17442, 23621, 26712],
+                        "10 Lakh": [4293, 6125, 7421, 9374, 12339, 14778, 19062, 21519, 29151, 32972],
+                        "15 Lakh": [5342, 7637, 9257, 11705, 15417, 18473, 23837, 26910, 36473, 41256],
+                        "25 Lakh": [7178, 10287, 12479, 15786, 20813, 24948, 32202, 36365, 49298, 55769],
+                        "50 Lakh": [9977, 14319, 17384, 22005, 29034, 34812, 44951, 50765, 68846, 77886],
+                        "75 Lakh": [11282, 16200, 19670, 24903, 32864, 39407, 50886, 57474, 77949, 88191],
+                        "1 Cr": [12204, 17532, 21294, 26960, 35582, 42665, 55103, 62235, 84411, 95504]
+                    }
+                },
+                "Gold Plan": {
+                    "Zone 1": {
+                        "5 Lakh": [5038, 7161, 8465, 10445, 14256, 16550, 20895, 23063, 30817, 34672],
+                        "10 Lakh": [5984, 8767, 10384, 12832, 17282, 20130, 25498, 28231, 37796, 42554],
+                        "15 Lakh": [7310, 10929, 12947, 16011, 21402, 24987, 31702, 35154, 47130, 53092],
+                        "25 Lakh": [9933, 15092, 17815, 21945, 29358, 34161, 43243, 47820, 64020, 72083],
+                        "50 Lakh": [13937, 21725, 25526, 31279, 41800, 48389, 61062, 67295, 89925, 101189],
+                        "75 Lakh": [15763, 24580, 28881, 35398, 47311, 54775, 69130, 76182, 101816, 114582],
+                        "1 Cr": [17050, 26604, 31262, 38319, 51221, 59307, 74855, 82500, 110253, 124080]
+                    },
+                    "Zone 2": {
+                        "5 Lakh": [4122, 5859, 6926, 8546, 11664, 13541, 17096, 18873, 25214, 28368],
+                        "10 Lakh": [4896, 7173, 8496, 10499, 14139, 16470, 20862, 23099, 30924, 34817],
+                        "15 Lakh": [5981, 8942, 10593, 13100, 17510, 20444, 25938, 28760, 38561, 43439],
+                        "25 Lakh": [8127, 12348, 14576, 17955, 24021, 27950, 35379, 39128, 52380, 58977],
+                        "50 Lakh": [11403, 17775, 20885, 25592, 34200, 39591, 49964, 55058, 73575, 82791],
+                        "75 Lakh": [12897, 20111, 23630, 28962, 38709, 44816, 56561, 62334, 83304, 93749],
+                        "1 Cr": [13950, 21767, 25578, 31352, 41913, 48524, 61245, 67500, 90207, 101520]
+                    }
+                },
+                "Platinum Plan": {
+                    "Zone 1": {
+                        "5 Lakh": [5137, 9284, 10577, 12546, 16352, 18398, 22737, 24500, 32252, 36108],
+                        "10 Lakh": [6072, 10736, 12342, 14773, 19212, 21830, 27192, 29550, 39116, 43874],
+                        "15 Lakh": [7403, 12931, 14927, 17980, 23355, 26708, 33413, 36480, 48461, 54423],
+                        "25 Lakh": [10060, 17298, 19998, 24111, 31504, 36047, 45122, 49290, 65478, 73541],
+                        "50 Lakh": [14080, 24030, 27803, 33534, 44033, 50353, 63019, 68810, 91438, 102702],
+                        "75 Lakh": [15925, 27181, 31455, 37956, 49834, 56997, 71341, 77900, 103532, 116292],
+                        "1 Cr": [17226, 29420, 34051, 41080, 53961, 61710, 77248, 84350, 112107, 125934]
+                    },
+                    "Zone 2": {
+                        "5 Lakh": [4203, 7596, 8654, 10265, 13379, 15053, 18603, 20052, 26388, 29543],
+                        "10 Lakh": [4968, 8784, 10098, 12087, 15719, 17861, 22248, 24179, 32004, 35897],
+                        "15 Lakh": [6057, 10580, 12213, 14711, 19107, 21852, 27338, 29849, 39650, 44528],
+                        "25 Lakh": [8231, 14153, 16362, 19728, 25776, 29493, 36918, 40325, 53573, 60170],
+                        "50 Lakh": [11520, 19661, 22748, 27437, 36027, 41198, 51561, 56300, 74813, 84029],
+                        "75 Lakh": [13028, 22239, 25736, 31050, 40775, 46634, 58370, 63743, 84708, 95148],
+                        "1 Cr": [14094, 24071, 27860, 33611, 44150, 50490, 63203, 69021, 91724, 103037]
                     }
                 }
             }
@@ -956,10 +1037,15 @@
                 const relation = document.getElementById(`relation_${i}`).value;
                 const sumInsured = document.getElementById(`sumInsured_${i}`).value;
                 
-                const bmi = document.getElementById(`bmi_${i}`).value;
-                const diabetic = document.getElementById(`diabetic_${i}`).value;
-                const hypertensive = document.getElementById(`hypertensive_${i}`).value;
-                const hospitalisation = document.getElementById(`hospitalisation_${i}`).value;
+                const bmiSelect = document.getElementById(`bmi_${i}`);
+                const diabeticSelect = document.getElementById(`diabetic_${i}`);
+                const hypertensiveSelect = document.getElementById(`hypertensive_${i}`);
+                const hospitalisationSelect = document.getElementById(`hospitalisation_${i}`);
+
+                const bmi = bmiSelect ? bmiSelect.value : "";
+                const diabetic = diabeticSelect ? diabeticSelect.value : "";
+                const hypertensive = hypertensiveSelect ? hypertensiveSelect.value : "";
+                const hospitalisation = hospitalisationSelect ? hospitalisationSelect.value : "";
                 
                 const riderNM = document.getElementById(`nonMedical_${i}`).value;
                 const riderMT = document.getElementById(`modernTreatments_${i}`).value;
@@ -991,6 +1077,10 @@
                 if (age === "" || sumInsured === "") {
                     if(nameLbl) nameLbl.innerText = i;
                     [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellCI, cellPPH, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
+                    if(bmiSelect) bmiSelect.disabled = false;
+                    if(diabeticSelect) diabeticSelect.disabled = false;
+                    if(hypertensiveSelect) hypertensiveSelect.disabled = false;
+                    if(hospitalisationSelect) hospitalisationSelect.disabled = false;
                     continue;
                 }
 
@@ -999,11 +1089,11 @@
                 const ageBand = getAgeBand(age);
 
                 let basePremium = 0;
+                let ageInt = parseInt(age);
                 try {
                     const ageIndex = ageBandsRef.indexOf(ageBand);
                     let chartRate = ratesEngine[frequency][planType][zone][sumInsured][ageIndex];
                     
-                    let ageInt = parseInt(age);
                     if (ageInt > 66) {
                         let extraYears = ageInt - 66;
                         chartRate = chartRate + (chartRate * 0.025 * extraYears);
@@ -1016,24 +1106,38 @@
                 
                 cellBP.innerText = basePremium;
 
-                // Loadings & Discounts
+                // Restrict selection and force clean outputs for members under 18 years
                 let bmiAmt = 0;
-                if (bmi === ">=18.5 <=32") bmiAmt = -Math.round(basePremium * 0.025);
-                if (bmi === "> 32") bmiAmt = Math.round(basePremium * 0.025);
-                cellBMI.innerText = bmiAmt;
-
                 let diaAmt = 0;
-                if (diabetic === "<6.4 HbA1c") diaAmt = -Math.round(basePremium * 0.025);
-                if (diabetic === "HbA1c > 6.4") diaAmt = Math.round(basePremium * 0.025);
-                cellDia.innerText = diaAmt;
-
                 let hypAmt = 0;
-                if (hypertensive === "<=120/80") hypAmt = -Math.round(basePremium * 0.025);
-                if (hypertensive === ">139/89") hypAmt = Math.round(basePremium * 0.025);
-                cellHyp.innerText = hypAmt;
-
                 let hospAmt = 0;
-                if (hospitalisation === "Not in past 3 yrs") hospAmt = -Math.round(basePremium * 0.025);
+
+                if (!isNaN(ageInt) && ageInt < 18) {
+                    if (bmiSelect) { bmiSelect.value = ""; bmiSelect.disabled = true; }
+                    if (diabeticSelect) { diabeticSelect.value = ""; diabeticSelect.disabled = true; }
+                    if (hypertensiveSelect) { hypertensiveSelect.value = ""; hypertensiveSelect.disabled = true; }
+                    if (hospitalisationSelect) { hospitalisationSelect.value = ""; hospitalisationSelect.disabled = true; }
+                } else {
+                    if (bmiSelect) bmiSelect.disabled = false;
+                    if (diabeticSelect) diabeticSelect.disabled = false;
+                    if (hypertensiveSelect) hypertensiveSelect.disabled = false;
+                    if (hospitalisationSelect) hospitalisationSelect.disabled = false;
+
+                    if (bmi === ">=18.5 <=32") bmiAmt = -Math.round(basePremium * 0.025);
+                    if (bmi === "> 32") bmiAmt = Math.round(basePremium * 0.025);
+
+                    if (diabetic === "<6.4 HbA1c") diaAmt = -Math.round(basePremium * 0.025);
+                    if (diabetic === "HbA1c > 6.4") diaAmt = Math.round(basePremium * 0.025);
+
+                    if (hypertensive === "<=120/80") hypAmt = -Math.round(basePremium * 0.025);
+                    if (hypertensive === ">139/89") hypAmt = Math.round(basePremium * 0.025);
+
+                    if (hospitalisation === "Not in past 3 yrs") hospAmt = -Math.round(basePremium * 0.025);
+                }
+                
+                cellBMI.innerText = bmiAmt;
+                cellDia.innerText = diaAmt;
+                cellHyp.innerText = hypAmt;
                 cellHosp.innerText = hospAmt;
 
                 let totalA = basePremium + bmiAmt + diaAmt + hypAmt + hospAmt;
@@ -1046,7 +1150,6 @@
                 }
                 cellMat.innerText = matAmt;
 
-                // Floater discount calculated dynamically on the sum of TOTAL A and Maternity Enhancement
                 let floatDiscAmt = Math.round((totalA + matAmt) * floaterRate);
                 let floatDisc = -floatDiscAmt;
                 cellFloat.innerText = floatDisc;
@@ -1078,7 +1181,6 @@
                 
                 let ciAmt = 0;
                 if (riderCI === "Yes") {
-                    let ageInt = parseInt(age);
                     if (ageInt < 18) {
                         alert(`Critical illness rider is only available for members 18 years and above.`);
                         document.getElementById(`criticalIllness_${i}`).value = "No";
@@ -1261,11 +1363,10 @@
                 html2canvas:  { 
                     scale: 2, 
                     useCORS: true,
-                    letterRendering: true,
-                    scrollY: 0,
-                    scrollX: 0
+                    letterRendering: true
                 },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' },
+                pagebreak:    { mode: ['css', 'legacy'], avoid: ['tr', 'tr.total-row', 'tr.sub-header'] }
             };
             
             html2pdf().set(opt).from(wrapper).save();
