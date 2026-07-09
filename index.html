@@ -899,7 +899,8 @@
                 if (inputMode === 'DOB' && ageInput) {
                     age = calculateAgeFromDOB(ageInput);
                 }
-                
+
+                // Immediate validation for "Self" logic placed before exit shortcuts
                 const relationElement = document.getElementById(`relation_${i}`);
                 if (relationElement && relationElement.value === "Self" && age !== "") {
                     if (parseInt(age) < 18) {
@@ -1208,7 +1209,7 @@
             downloadLink.style.display = "none";
             document.body.appendChild(downloadLink);
             downloadLink.click();
-            downloadLink.removeChild(downloadLink);
+            document.body.removeChild(downloadLink);
         }
 
         function exportToPDF() {
