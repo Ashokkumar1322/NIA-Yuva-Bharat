@@ -285,7 +285,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Maternity Cover S.I<span class="sub-label">(Platinum Plan Only)</span></label>
+                <label>Maternity Cover S.I<span class="sub-label">(Platinum Plan Only) (Minimum 2 Members)</span></label>
                 <select id="maternityCover">
                     <option value="None">None</option>
                     <option value="50,000">50,000</option>
@@ -571,7 +571,7 @@
                         <td id="total_c_4"></td><td id="total_c_5"></td><td id="total_c_6"></td>
                     </tr>
                     <tr>
-                        <td>Long Term Discount</td>
+                        <td style="text-decoration: line-through; color: #e74c3c;">Long Term Discount</td>
                         <td class="action-col">less</td>
                         <td id="ltd_amt_1"></td><td id="ltd_amt_2"></td><td id="ltd_amt_3"></td>
                         <td id="ltd_amt_4"></td><td id="ltd_amt_5"></td><td id="ltd_amt_6"></td>
@@ -868,7 +868,7 @@
                 if (ageVal !== "" && sumInsured !== "") activeMembersCount++;
             }
 
-            if (planType !== "Platinum Plan" || activeMembersCount < 2) {
+            if (planType !== "Platinum Plan") {
                 maternitySelect.value = "None";
                 maternitySelect.disabled = true;
             } else {
@@ -876,9 +876,11 @@
             }
 
             let annualMatAmt = 0;
-            if (maternitySelect.value === "50,000") annualMatAmt = 8260;
-            else if (maternitySelect.value === "75,000") annualMatAmt = 12390;
-            else if (maternitySelect.value === "1,00,000") annualMatAmt = 16522;
+            if (activeMembersCount >= 2) {
+                if (maternitySelect.value === "50,000") annualMatAmt = 8260;
+                else if (maternitySelect.value === "75,000") annualMatAmt = 12390;
+                else if (maternitySelect.value === "1,00,000") annualMatAmt = 16522;
+            }
             
             let matAmtPerMember = Math.round(annualMatAmt / freqDivisor) * periodMultiplier;
             let maternityAppliedCount = 0;
