@@ -324,6 +324,14 @@
                     <option value="Yes">Yes</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label>Business Office</label>
+                <input type="text" id="businessOffice" placeholder="Enter Business Office">
+            </div>
+            <div class="form-group">
+                <label>Business Office Contact</label>
+                <input type="text" id="businessOfficeContact" placeholder="Enter Contact Info">
+            </div>
         </div>
 
         <div class="tools-bar hide-on-print">
@@ -607,7 +615,6 @@
         </div>
         
         <div class="export-controls hide-on-print" style="text-align: right; padding-bottom: 20px;">
-            <button type="button" class="btn btn-export" onclick="exportToCSV()">Download as Excel (CSV)</button>
             <button type="button" class="btn btn-export" onclick="exportToPDF()">Download as PDF</button>
         </div>
         
@@ -1213,24 +1220,129 @@
         }
 
         function exportToPDF() {
-            const wrapper = document.getElementById('exportTable');
-            
+            const busOffice = document.getElementById('businessOffice')?.value || 'N/A';
+            const busContact = document.getElementById('businessOfficeContact')?.value || 'N/A';
+            const todayStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const primaryName = document.getElementById('name_1')?.value || 'Valued Customer';
+            const inputMode = document.getElementById('inputMode')?.value;
+
+            let memberRowsHtml = '';
+            for (let i = 1; i <= rowCount; i++) {
+                let name = document.getElementById(`name_${i}`)?.value || `Member ${i}`;
+                let ageVal = document.getElementById(`age_${i}`)?.value;
+                if (inputMode === 'DOB' && ageVal) {
+                    ageVal = calculateAgeFromDOB(ageVal);
+                }
+                const relation = document.getElementById(`relation_${i}`)?.value || '-';
+                const sumInsured = document.getElementById(`sumInsured_${i}`)?.value || '-';
+
+                if (ageVal !== "" && sumInsured !== "" && sumInsured !== "-") {
+                    let activeRiders = [];
+                    if (document.getElementById(`nonMedical_${i}`)?.value === 'Yes') activeRiders.push('Non-Medical');
+                    if (document.getElementById(`modernTreatments_${i}`)?.value === 'Yes') activeRiders.push('Modern Treatments');
+                    if (document.getElementById(`durableDevices_${i}`)?.value === 'Yes') activeRiders.push('Durable Devices');
+                    if (document.getElementById(`criticalIllness_${i}`)?.value === 'Yes') activeRiders.push('Critical Illness');
+                    if (document.getElementById(`prePostHosp_${i}`)?.value === 'Yes') activeRiders.push('Pre & Post Hosp');
+
+                    let ridersText = activeRiders.length > 0 ? activeRiders.join(', ') : 'None';
+
+                    memberRowsHtml += `
+                        <tr>
+                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${i}</td>
+                            <td style="border: 1px solid #cbd5e1; padding: 6px;">${name}</td>
+                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${ageVal}</td>
+                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${relation}</td>
+                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${sumInsured}</td>
+                            <td style="border: 1px solid #cbd5e1; padding: 6px;">${ridersText}</td>
+                        </tr>
+                    `;
+                }
+            }
+
+            const finalPayable = document.getElementById('final_total_premium')?.innerText || '0';
+            const workingTableClone = document.getElementById('exportTable').cloneNode(true);
+
+            const pdfContainer = document.createElement('div');
+            pdfContainer.style.padding = '20px';
+            pdfContainer.style.fontFamily = 'Arial, sans-serif';
+            pdfContainer.style.fontSize = '12px';
+            pdfContainer.style.color = '#333';
+            pdfContainer.style.backgroundColor = '#fff';
+
+            pdfContainer.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; color: #1a252f; font-size: 18px; font-weight: bold;">THE NEW INDIA ASSURANCE CO. LTD.</h2>
+                    <h3 style="margin: 4px 0; color: #2c3e50; font-size: 14px; font-weight: bold;">PREMIUM QUOTATION</h3>
+                    <h4 style="margin: 4px 0; color: #555; font-size: 13px; font-weight: bold;">NEW INDIA YUVA BHARAT POLICY</h4>
+                </div>
+
+                <div style="margin-bottom: 15px; font-size: 12px; line-height: 1.6;">
+                    <strong>BUSINESS OFFICE:</strong> ${busOffice}<br>
+                    <strong>BUSINESS OFFICE CONTACT:</strong> ${busContact}
+                </div>
+
+                <div style="margin-bottom: 15px; font-size: 12px; line-height: 1.6;">
+                    <strong>DATE:</strong> ${todayStr}<br><br>
+                    <strong>Mr/Ms/M/s:</strong> ${primaryName}
+                </div>
+
+                <p style="line-height: 1.5; margin-bottom: 15px; text-align: justify;">
+                    Greetings from The New India Assurance Co. Ltd., India's Premier Multinational General Insurance Company! We sincerely thank you for choosing us for your insurance needs. Based on the requirements you shared, we are pleased to present our customized quotation for your perusal. The details of your proposed coverage and the estimated premium are outlined below:
+                </p>
+
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px;">
+                    <thead>
+                        <tr style="background-color: #f1f5f9;">
+                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 40px; text-align: center;">Sl No</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align: left;">Name</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 50px; text-align: center;">Age</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 80px; text-align: center;">Relation</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 90px; text-align: center;">Sum Insured</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align: left;">Riders</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${memberRowsHtml || '<tr><td colspan="6" style="text-align:center; padding: 8px;">No member details entered</td></tr>'}
+                    </tbody>
+                </table>
+
+                <div id="workingTablePdfHolder" style="margin-bottom: 20px;"></div>
+
+                <div style="border-top: 2px solid #333; border-bottom: 2px solid #333; padding: 8px 0; margin: 20px 0; font-size: 14px; font-weight: bold;">
+                    FINAL PREMIUM PAYABLE: ₹ ${finalPayable}
+                </div>
+
+                <p style="line-height: 1.5; margin-bottom: 20px;">
+                    Should you require any modifications to this quote or have further queries, please feel free to reach out to us. We look forward to hearing from you.
+                </p>
+
+                <div style="margin-top: 30px; line-height: 1.6;">
+                    <p style="margin: 0;">Thanking you.</p><br>
+                    <p style="margin: 0;">Sincerely,</p><br><br>
+                    <p style="margin: 0;"><strong>Authorized Signatory</strong></p>
+                    <p style="margin: 0;">The New India Assurance Co. Ltd.</p>
+                </div>
+            `;
+
+            pdfContainer.querySelector('#workingTablePdfHolder').appendChild(workingTableClone);
+            document.body.appendChild(pdfContainer);
+
             const opt = {
-                margin:       [0.4, 0.3, 0.4, 0.3],
-                filename:     'Yuva_Bharat_Premium_Quote.pdf',
+                margin:       [0.4, 0.4, 0.4, 0.4],
+                filename:     'Yuva_Bharat_Premium_Quotation.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true,
-                    letterRendering: true,
-                    scrollY: 0,
-                    scrollX: 0
-                },
-                jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true, scrollY: 0, scrollX: 0 },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
                 pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
             };
-            
-            html2pdf().set(opt).from(wrapper).save();
+
+            html2pdf().set(opt).from(pdfContainer).save().then(() => {
+                document.body.removeChild(pdfContainer);
+            }).catch(() => {
+                if (document.body.contains(pdfContainer)) {
+                    document.body.removeChild(pdfContainer);
+                }
+            });
         }
     </script>
 </body>
