@@ -1299,21 +1299,28 @@
                     </tr>
                 </table>
 
-                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px 10px; margin-bottom: 12px;">
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px 12px; margin-bottom: 12px;">
                     <strong style="font-size: 11px; color: #1e293b; display: block; margin-bottom: 6px; text-transform: uppercase;">Policy Details:</strong>
                     <table style="width: 100%; font-size: 10px; border-collapse: collapse; table-layout: fixed;">
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
                         <tr>
-                            <td style="border: none; padding: 2px 0;"><strong>Zone:</strong> ${zone}</td>
-                            <td style="border: none; padding: 2px 0;"><strong>Plan Type:</strong> ${planType}</td>
-                            <td style="border: none; padding: 2px 0;"><strong>Maternity Cover S.I:</strong> ${maternityCover}</td>
+                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Zone:</strong> ${zone}</td>
+                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Policy Period:</strong> ${policyPeriod}</td>
                         </tr>
                         <tr>
-                            <td style="border: none; padding: 2px 0;"><strong>Cover Type:</strong> ${indFloater}</td>
-                            <td style="border: none; padding: 2px 0;"><strong>Policy Period:</strong> ${policyPeriod}</td>
-                            <td style="border: none; padding: 2px 0;"><strong>Premium Freq.:</strong> ${frequency}</td>
+                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Plan Type:</strong> ${planType}</td>
+                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Premium Freq.:</strong> ${frequency}</td>
                         </tr>
                         <tr>
-                            <td style="border: none; padding: 2px 0;" colspan="3"><strong>Loyalty Discount:</strong> ${loyaltyDiscount}</td>
+                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Maternity Cover S.I:</strong> ${maternityCover}</td>
+                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Loyalty Discount:</strong> ${loyaltyDiscount}</td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Cover Type:</strong> ${indFloater}</td>
+                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"></td>
                         </tr>
                     </table>
                 </div>
