@@ -1220,105 +1220,122 @@
         }
 
         function exportToPDF() {
+            // Fetch Office & Recipient Information
             const busOffice = document.getElementById('businessOffice')?.value || 'N/A';
             const busContact = document.getElementById('businessOfficeContact')?.value || 'N/A';
             const todayStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const primaryName = document.getElementById('name_1')?.value || 'Valued Customer';
-            const inputMode = document.getElementById('inputMode')?.value;
 
-            let memberRowsHtml = '';
-            for (let i = 1; i <= rowCount; i++) {
-                let name = document.getElementById(`name_${i}`)?.value || `Member ${i}`;
-                let ageVal = document.getElementById(`age_${i}`)?.value;
-                if (inputMode === 'DOB' && ageVal) {
-                    ageVal = calculateAgeFromDOB(ageVal);
-                }
-                const relation = document.getElementById(`relation_${i}`)?.value || '-';
-                const sumInsured = document.getElementById(`sumInsured_${i}`)?.value || '-';
-
-                if (ageVal !== "" && sumInsured !== "" && sumInsured !== "-") {
-                    let activeRiders = [];
-                    if (document.getElementById(`nonMedical_${i}`)?.value === 'Yes') activeRiders.push('Non-Medical');
-                    if (document.getElementById(`modernTreatments_${i}`)?.value === 'Yes') activeRiders.push('Modern Treatments');
-                    if (document.getElementById(`durableDevices_${i}`)?.value === 'Yes') activeRiders.push('Durable Devices');
-                    if (document.getElementById(`criticalIllness_${i}`)?.value === 'Yes') activeRiders.push('Critical Illness');
-                    if (document.getElementById(`prePostHosp_${i}`)?.value === 'Yes') activeRiders.push('Pre & Post Hosp');
-
-                    let ridersText = activeRiders.length > 0 ? activeRiders.join(', ') : 'None';
-
-                    memberRowsHtml += `
-                        <tr>
-                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${i}</td>
-                            <td style="border: 1px solid #cbd5e1; padding: 6px;">${name}</td>
-                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${ageVal}</td>
-                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${relation}</td>
-                            <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${sumInsured}</td>
-                            <td style="border: 1px solid #cbd5e1; padding: 6px;">${ridersText}</td>
-                        </tr>
-                    `;
-                }
-            }
+            // Fetch Policy Details
+            const zone = document.getElementById('zone')?.value || 'N/A';
+            const planType = document.getElementById('planType')?.value || 'N/A';
+            const maternityCover = document.getElementById('maternityCover')?.value || 'None';
+            const indFloater = document.getElementById('indFloater')?.value || 'N/A';
+            const policyPeriod = document.getElementById('policyPeriod')?.value || 'N/A';
+            const frequency = document.getElementById('frequency')?.value || 'N/A';
+            const loyaltyDiscount = document.getElementById('loyaltyDiscount')?.value || 'No';
 
             const finalPayable = document.getElementById('final_total_premium')?.innerText || '0';
-            const workingTableClone = document.getElementById('exportTable').cloneNode(true);
 
+            // Clone Premium Working Table and override styles to prevent PDF edge overflow
+            const workingTableClone = document.getElementById('exportTable').cloneNode(true);
+            workingTableClone.style.minWidth = '0px';
+            workingTableClone.style.width = '100%';
+            workingTableClone.style.tableLayout = 'fixed';
+            workingTableClone.style.borderCollapse = 'collapse';
+
+            // Set fixed column widths for the 8 columns to perfectly fit page width
+            const colGroup = document.createElement('colgroup');
+            colGroup.innerHTML = `
+                <col style="width: 28%;">
+                <col style="width: 12%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+            `;
+            workingTableClone.insertBefore(colGroup, workingTableClone.firstChild);
+
+            // Apply tight padding, word wrap, and compact font size to all table cells
+            const cells = workingTableClone.querySelectorAll('th, td');
+            cells.forEach(c => {
+                c.style.padding = '3px 2px';
+                c.style.fontSize = '8px';
+                c.style.lineHeight = '1.1';
+                c.style.wordBreak = 'break-word';
+                c.style.overflowWrap = 'break-word';
+                c.style.boxSizing = 'border-box';
+            });
+
+            // Create container element formatted specifically for portrait A4 printing
             const pdfContainer = document.createElement('div');
-            pdfContainer.style.padding = '20px';
+            pdfContainer.style.padding = '15px';
             pdfContainer.style.fontFamily = 'Arial, sans-serif';
-            pdfContainer.style.fontSize = '12px';
-            pdfContainer.style.color = '#333';
+            pdfContainer.style.fontSize = '11px';
+            pdfContainer.style.color = '#111';
             pdfContainer.style.backgroundColor = '#fff';
+            pdfContainer.style.width = '680px'; 
+            pdfContainer.style.boxSizing = 'border-box';
 
             pdfContainer.innerHTML = `
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="margin: 0; color: #1a252f; font-size: 18px; font-weight: bold;">THE NEW INDIA ASSURANCE CO. LTD.</h2>
-                    <h3 style="margin: 4px 0; color: #2c3e50; font-size: 14px; font-weight: bold;">PREMIUM QUOTATION</h3>
-                    <h4 style="margin: 4px 0; color: #555; font-size: 13px; font-weight: bold;">NEW INDIA YUVA BHARAT POLICY</h4>
+                <div style="text-align: center; margin-bottom: 12px; border-bottom: 2px solid #2c3e50; padding-bottom: 6px;">
+                    <h2 style="margin: 0; color: #1a252f; font-size: 16px; font-weight: bold; text-transform: uppercase;">THE NEW INDIA ASSURANCE CO. LTD.</h2>
+                    <h3 style="margin: 3px 0; color: #2c3e50; font-size: 13px; font-weight: bold;">PREMIUM QUOTATION</h3>
+                    <h4 style="margin: 3px 0; color: #555; font-size: 12px; font-weight: bold;">NEW INDIA YUVA BHARAT POLICY</h4>
                 </div>
 
-                <div style="margin-bottom: 15px; font-size: 12px; line-height: 1.6;">
-                    <strong>BUSINESS OFFICE:</strong> ${busOffice}<br>
-                    <strong>BUSINESS OFFICE CONTACT:</strong> ${busContact}
+                <table style="width: 100%; margin-bottom: 12px; font-size: 10.5px; border-collapse: collapse; table-layout: fixed;">
+                    <tr>
+                        <td style="vertical-align: top; width: 55%; padding: 0;">
+                            <strong>BUSINESS OFFICE:</strong> ${busOffice}<br>
+                            <strong>BUSINESS OFFICE CONTACT:</strong> ${busContact}
+                        </td>
+                        <td style="vertical-align: top; width: 45%; text-align: right; padding: 0;">
+                            <strong>DATE:</strong> ${todayStr}<br>
+                            <strong>Mr/Ms/M/s:</strong> ${primaryName}
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px 10px; margin-bottom: 12px;">
+                    <strong style="font-size: 11px; color: #1e293b; display: block; margin-bottom: 6px; text-transform: uppercase;">Policy Details:</strong>
+                    <table style="width: 100%; font-size: 10px; border-collapse: collapse; table-layout: fixed;">
+                        <tr>
+                            <td style="border: none; padding: 2px 0;"><strong>Zone:</strong> ${zone}</td>
+                            <td style="border: none; padding: 2px 0;"><strong>Plan Type:</strong> ${planType}</td>
+                            <td style="border: none; padding: 2px 0;"><strong>Maternity Cover S.I:</strong> ${maternityCover}</td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; padding: 2px 0;"><strong>Cover Type:</strong> ${indFloater}</td>
+                            <td style="border: none; padding: 2px 0;"><strong>Policy Period:</strong> ${policyPeriod}</td>
+                            <td style="border: none; padding: 2px 0;"><strong>Premium Freq.:</strong> ${frequency}</td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; padding: 2px 0;" colspan="3"><strong>Loyalty Discount:</strong> ${loyaltyDiscount}</td>
+                        </tr>
+                    </table>
                 </div>
 
-                <div style="margin-bottom: 15px; font-size: 12px; line-height: 1.6;">
-                    <strong>DATE:</strong> ${todayStr}<br><br>
-                    <strong>Mr/Ms/M/s:</strong> ${primaryName}
-                </div>
-
-                <p style="line-height: 1.5; margin-bottom: 15px; text-align: justify;">
+                <p style="line-height: 1.45; margin-bottom: 12px; text-align: justify; font-size: 10px;">
                     Greetings from The New India Assurance Co. Ltd., India's Premier Multinational General Insurance Company! We sincerely thank you for choosing us for your insurance needs. Based on the requirements you shared, we are pleased to present our customized quotation for your perusal. The details of your proposed coverage and the estimated premium are outlined below:
                 </p>
 
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px;">
-                    <thead>
-                        <tr style="background-color: #f1f5f9;">
-                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 40px; text-align: center;">Sl No</th>
-                            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align: left;">Name</th>
-                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 50px; text-align: center;">Age</th>
-                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 80px; text-align: center;">Relation</th>
-                            <th style="border: 1px solid #cbd5e1; padding: 6px; width: 90px; text-align: center;">Sum Insured</th>
-                            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align: left;">Riders</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${memberRowsHtml || '<tr><td colspan="6" style="text-align:center; padding: 8px;">No member details entered</td></tr>'}
-                    </tbody>
-                </table>
+                <div id="workingTablePdfHolder" style="margin-bottom: 12px; width: 100%;"></div>
 
-                <div id="workingTablePdfHolder" style="margin-bottom: 20px;"></div>
-
-                <div style="border-top: 2px solid #333; border-bottom: 2px solid #333; padding: 8px 0; margin: 20px 0; font-size: 14px; font-weight: bold;">
-                    FINAL PREMIUM PAYABLE: ₹ ${finalPayable}
+                <div style="border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 6px 10px; margin: 12px 0; font-size: 12px; font-weight: bold; background-color: #f1f5f9; display: flex; justify-content: space-between;">
+                    <span>FINAL PREMIUM PAYABLE:</span>
+                    <span>₹ ${finalPayable}</span>
                 </div>
 
-                <p style="line-height: 1.5; margin-bottom: 20px;">
+                <p style="line-height: 1.4; margin-bottom: 12px; font-size: 10px;">
                     Should you require any modifications to this quote or have further queries, please feel free to reach out to us. We look forward to hearing from you.
                 </p>
 
-                <div style="margin-top: 30px; line-height: 1.6;">
-                    <p style="margin: 0;">Thanking you.</p><br>
-                    <p style="margin: 0;">Sincerely,</p><br><br>
+                <div style="margin-top: 15px; line-height: 1.4; font-size: 10px; page-break-inside: avoid;">
+                    <p style="margin: 0;">Thanking you.</p>
+                    <p style="margin: 4px 0 0 0;">Sincerely,</p><br>
                     <p style="margin: 0;"><strong>Authorized Signatory</strong></p>
                     <p style="margin: 0;">The New India Assurance Co. Ltd.</p>
                 </div>
@@ -1328,16 +1345,25 @@
             document.body.appendChild(pdfContainer);
 
             const opt = {
-                margin:       [0.4, 0.4, 0.4, 0.4],
+                margin:       [0.35, 0.35, 0.35, 0.35],
                 filename:     'Yuva_Bharat_Premium_Quotation.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, letterRendering: true, scrollY: 0, scrollX: 0 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    letterRendering: true, 
+                    scrollY: 0, 
+                    scrollX: 0,
+                    width: 680
+                },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
+                pagebreak:    { mode: ['css', 'legacy'], avoid: ['tr', 'div'] }
             };
 
             html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                document.body.removeChild(pdfContainer);
+                if (document.body.contains(pdfContainer)) {
+                    document.body.removeChild(pdfContainer);
+                }
             }).catch(() => {
                 if (document.body.contains(pdfContainer)) {
                     document.body.removeChild(pdfContainer);
