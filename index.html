@@ -596,15 +596,15 @@
                         <td class="bg-yellow" id="member_prem_6"></td>
                     </tr>
                     <tr>
-                        <td style="background-color: #f9fbfc; border:none;"></td>
-                        <td class="action-col" style="border:none;"></td>
-                        <td class="col-member">1</td>
-                        <td class="col-member">2</td>
-                        <td class="col-member">3</td>
-                        <td class="col-member">4</td>
-                        <td class="col-member">5</td>
-                        <td class="col-member">6</td>
-                    </tr>
+    <td style="background-color: #f9fbfc; border:none;"></td>
+    <td class="action-col" style="border:none;"></td>
+    <td class="col-member" id="name_lbl_bot_1">1</td>
+    <td class="col-member" id="name_lbl_bot_2">2</td>
+    <td class="col-member" id="name_lbl_bot_3">3</td>
+    <td class="col-member" id="name_lbl_bot_4">4</td>
+    <td class="col-member" id="name_lbl_bot_5">5</td>
+    <td class="col-member" id="name_lbl_bot_6">6</td>
+</tr>
                     <tr>
                         <td class="total-row">FINAL TOTAL PREMIUM PAYABLE</td>
                         <td class="bg-yellow" id="final_total_premium"></td>
@@ -951,13 +951,17 @@
                 const cellLTD = document.getElementById(`ltd_amt_${i}`);
                 const cellFinalMember = document.getElementById(`member_prem_${i}`);
 
-                if (age === "" || sumInsured === "") {
-                    if(nameLbl) nameLbl.innerText = i;
-                    [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellCI, cellPPH, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
-                    continue;
-                }
+                const inputName = document.getElementById(`name_${i}`)?.value?.trim();
+const displayName = inputName ? inputName : i;
+const nameLblBot = document.getElementById(`name_lbl_bot_${i}`);
 
-                if(nameLbl) nameLbl.innerText = name;
+if(nameLbl) nameLbl.innerText = displayName;
+if(nameLblBot) nameLblBot.innerText = displayName;
+
+if (age === "" || sumInsured === "") {
+    [cellBP, cellSI, cellBMI, cellDia, cellHyp, cellHosp, cellTotA, cellMat, cellFloat, cellLoyal, cellTotB, cellNM, cellMT, cellDmdReal, cellCI, cellPPH, cellTotC, cellLTD, cellFinalMember].forEach(c => { if(c) c.innerText = ""; });
+    continue;
+}
                 if(cellSI) cellSI.innerText = sumInsured;
                 const ageBand = getAgeBand(age);
 
@@ -1318,20 +1322,19 @@ const planType = document.getElementById('planType')?.value || 'N/A';
             <col style="width: 50%;">
         </colgroup>
         <tr>
-            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Zone:</strong> ${formattedZone}</td>
-            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Policy Period:</strong> ${policyPeriod}</td>
+            <td colspan="2" style="border: none; padding: 3px 0 6px 0; vertical-align: top; word-break: break-word; white-space: normal; line-height: 1.35;"><strong>Zone:</strong> ${formattedZone}</td>
         </tr>
         <tr>
             <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Plan Type:</strong> ${planType}</td>
-            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Premium Freq.:</strong> ${frequency}</td>
+            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Policy Period:</strong> ${policyPeriod}</td>
         </tr>
         <tr>
             <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Maternity Cover S.I:</strong> ${maternityCover}</td>
-            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Loyalty Discount:</strong> ${loyaltyDiscount}</td>
+            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Premium Freq.:</strong> ${frequency}</td>
         </tr>
         <tr>
             <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Cover Type:</strong> ${indFloater}</td>
-            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"></td>
+            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Loyalty Discount:</strong> ${loyaltyDiscount}</td>
         </tr>
     </table>
 </div>
