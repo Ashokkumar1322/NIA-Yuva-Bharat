@@ -1226,9 +1226,20 @@
             const todayStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const primaryName = document.getElementById('name_1')?.value || 'Valued Customer';
 
-            // Fetch Policy Details
-            const zone = document.getElementById('zone')?.value || 'N/A';
-            const planType = document.getElementById('planType')?.value || 'N/A';
+            // Extract First Name from Sl No 1 under 'name'
+const rawFirstName = document.getElementById('name_1')?.value?.trim() || '';
+const firstName = rawFirstName ? rawFirstName.split(/\s+/)[0] : 'Valued Customer';
+
+// Fetch Policy Details & Format Zone
+const zoneVal = document.getElementById('zone')?.value || 'N/A';
+let formattedZone = zoneVal;
+if (zoneVal === 'Zone 2' || zoneVal.includes('Zone 2')) {
+    formattedZone = `${zoneVal} Rest of India`;
+} else if (zoneVal === 'Zone 1' || zoneVal.includes('Zone 1')) {
+    formattedZone = `${zoneVal} (Delhi, National Capital Region (NCR), Mumbai, Mumbai Suburban, Thane and Navi Mumbai, Surat, Ahmedabad and Vadodara)`;
+}
+
+const planType = document.getElementById('planType')?.value || 'N/A';
             const maternityCover = document.getElementById('maternityCover')?.value || 'None';
             const indFloater = document.getElementById('indFloater')?.value || 'N/A';
             const policyPeriod = document.getElementById('policyPeriod')?.value || 'N/A';
@@ -1300,34 +1311,39 @@
                 </table>
 
                 <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px 12px; margin-bottom: 12px;">
-                    <strong style="font-size: 11px; color: #1e293b; display: block; margin-bottom: 6px; text-transform: uppercase;">Policy Details:</strong>
-                    <table style="width: 100%; font-size: 10px; border-collapse: collapse; table-layout: fixed;">
-                        <colgroup>
-                            <col style="width: 50%;">
-                            <col style="width: 50%;">
-                        </colgroup>
-                        <tr>
-                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Zone:</strong> ${zone}</td>
-                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Policy Period:</strong> ${policyPeriod}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Plan Type:</strong> ${planType}</td>
-                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Premium Freq.:</strong> ${frequency}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Maternity Cover S.I:</strong> ${maternityCover}</td>
-                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Loyalty Discount:</strong> ${loyaltyDiscount}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Cover Type:</strong> ${indFloater}</td>
-                            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"></td>
-                        </tr>
-                    </table>
-                </div>
+    <strong style="font-size: 11px; color: #1e293b; display: block; margin-bottom: 6px; text-transform: uppercase;">Policy Details:</strong>
+    <table style="width: 100%; font-size: 10px; border-collapse: collapse; table-layout: fixed;">
+        <colgroup>
+            <col style="width: 50%;">
+            <col style="width: 50%;">
+        </colgroup>
+        <tr>
+            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Zone:</strong> ${formattedZone}</td>
+            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Policy Period:</strong> ${policyPeriod}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Plan Type:</strong> ${planType}</td>
+            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Premium Freq.:</strong> ${frequency}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Maternity Cover S.I:</strong> ${maternityCover}</td>
+            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"><strong>Loyalty Discount:</strong> ${loyaltyDiscount}</td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 3px 6px 3px 0; vertical-align: top;"><strong>Cover Type:</strong> ${indFloater}</td>
+            <td style="border: none; padding: 3px 0 3px 6px; vertical-align: top;"></td>
+        </tr>
+    </table>
+</div>
 
-                <p style="line-height: 1.45; margin-bottom: 12px; text-align: justify; font-size: 10px;">
-                    Greetings from The New India Assurance Co. Ltd., India's Premier Multinational General Insurance Company! We sincerely thank you for choosing us for your insurance needs. Based on the requirements you shared, we are pleased to present our customized quotation for your perusal. The details of your proposed coverage and the estimated premium are outlined below:
-                </p>
+<div style="margin: 10px 0 6px 0; font-size: 11px; font-weight: bold; color: #1a252f;">
+    Mr/Ms. ${firstName}
+</div>
+
+<p style="line-height: 1.45; margin-bottom: 12px; text-align: justify; font-size: 10px;">
+    Greetings from The New India Assurance Co. Ltd., India's Premier Multinational General Insurance Company!   We sincerely thank you for choosing us for your insurance needs. Based on the requirements you shared, we are pleased to present our customized quotation for your perusal. The details of your proposed coverage and the estimated premium are outlined below:
+
+</p>
 
                 <div id="workingTablePdfHolder" style="margin-bottom: 12px; width: 100%;"></div>
 
